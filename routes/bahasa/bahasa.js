@@ -11,6 +11,16 @@ routes.get('/', async(req, res) => {
     }
 })
 
+routes.post('/membuat', async(req, res) => {
+    try {
+        let {bahasa} = req.body
+        let data = {bahasa}
+        await modelBahasa.store(data)
+        res.redirect('pengurus/user/bahasa/bahasa')
+    } catch {
+        req.flash(err)
+    }
+})
 
 
 module.exports = routes
