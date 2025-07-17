@@ -36,6 +36,18 @@ class modelBahasa {
             })
         })
     }
+
+    static async delete(id) {
+        return new Promise((resolve, reject) => {
+            connection.query(`delete bahasa where id = ?`, id, (err, result) => {
+                if (err) {
+                    reject(err)
+                } else {
+                    resolve(result)
+                }
+            })
+        })
+    }
 }
 
 module.exports = modelBahasa

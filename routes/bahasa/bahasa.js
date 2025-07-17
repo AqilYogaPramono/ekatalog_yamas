@@ -34,4 +34,14 @@ routes.post('udpate/:id', async (req, res) => {
     }
 })
 
+routes.post('/delete/:id', async (req, res) => {
+    try {
+        let id = req.params
+        await modelBahasa.delete(id)
+        res.redirect('/pengurus/user/bahasa/bahasa')
+    } catch {
+        req.flash(err)
+    }
+})
+
 module.exports = routes
