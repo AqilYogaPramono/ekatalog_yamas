@@ -7,7 +7,7 @@ database = mysql.createConnection({
     db_name: process.env.DB_NAME
 })
 
-database.conect((err) => {
+database.connect((err) => {
     if(err) return console.log(err)
     return console.log("Berhasil Terhubung")
 })

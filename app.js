@@ -9,6 +9,9 @@ var flash = require('express-flash')
 
 var indexRouter = require('./routes/index');
 
+//folder bahasa
+var bahasaRouter = require('./routes/bahasa/bahasa')
+
 var app = express();
 
 // view engine setup
@@ -23,12 +26,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 //middleware untuk menyimpan data login
 app.use(session({
-    secret: process.env.SERCRET_SESSION,
+    secret: process.env.SECRET_SESSION,
     resave: false,
     saveUninitialized: true,
     rolling: true,
     cookie: {
-        secure: false, //ubah ke true jika sudah di hsoting 
+        secure: false, //ubah ke true jika sudah di hosting 
         maxAge: 600000000
     }
 }))
@@ -37,6 +40,9 @@ app.use(session({
 app.use(flash())
 
 app.use('/', indexRouter);
+
+//folder bahasa
+app.use('/pengurus/bahasa', bahasaRouter)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
