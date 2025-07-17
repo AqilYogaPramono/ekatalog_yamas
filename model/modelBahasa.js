@@ -25,6 +25,17 @@ class modelBahasa {
         })
     }
 
+    static async update(data, id) {
+        return new Promise((resolve, reject) => {
+            connection.query(`update bahasa set ? where id = ?`, [data, id], (err, result) => {
+                if (err) {
+                    reject(err)
+                } else {
+                    resolve(result)
+                }
+            })
+        })
+    }
 }
 
 module.exports = modelBahasa

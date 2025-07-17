@@ -11,7 +11,7 @@ routes.get('/', async(req, res) => {
     }
 })
 
-routes.post('/membuat', async(req, res) => {
+routes.post('/buat', async(req, res) => {
     try {
         let {bahasa} = req.body
         let data = {bahasa}
@@ -22,5 +22,16 @@ routes.post('/membuat', async(req, res) => {
     }
 })
 
+routes.post('udpate/:id', async (req, res) => {
+    try {
+        let id = req.params
+        let {bahasa} = req.body
+        let data = {bahasa}
+        await modelBahasa.update(data, id)
+        res.render('/pengurus/user/bahasa/bahasa')
+    } catch {
+        req.flash(err)
+    }
+})
 
 module.exports = routes
