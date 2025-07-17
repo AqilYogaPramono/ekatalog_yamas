@@ -10648,7 +10648,7 @@ select.tt-hint:focus::-ms-value {
   padding: 0.94rem 1.94rem;
   font-size: 1.25rem;
   line-height: 1.5;
-  border-radius: 0.3rem;
+  border-radius: 0.5rem;
 }
 
 select.form-control[size], select.asColorPicker-input[size], .dataTables_wrapper select[size],
@@ -11083,14 +11083,14 @@ fieldset:disabled .wizard > .actions a,
 
 .btn-primary, .wizard > .actions a {
   color: #fff;
-  background-color: #4B49AC;
-  border-color: #4B49AC;
+  background-color: #0F8EC8;
+  border-color: #0F8EC8;
 }
 
 .btn-primary:hover, .wizard > .actions a:hover {
   color: #fff;
-  background-color: #3f3e91;
-  border-color: #3b3a88;
+  background-color: #4b95b8;
+  border-color: #0F8EC8;
 }
 
 .btn-primary:focus, .wizard > .actions a:focus, .btn-primary.focus, .wizard > .actions a.focus {
@@ -28377,11 +28377,14 @@ div.tagsinput span.tag a {
 }
 
 .auth .brand-logo {
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
 }
 
 .auth .brand-logo img {
-  width: 150px;
+  width: 70px;
+}
+.auth .brand-logo img {
+  align-items: center;
 }
 
 .auth form .form-group {
@@ -28449,7 +28452,7 @@ div.tagsinput span.tag a {
 }
 
 .content-wrapper {
-  background: #F5F7FF;
+  background: #0F8EC8;
   padding: 2.375rem 2.375rem;
   width: 100%;
   -webkit-flex-grow: 1;
