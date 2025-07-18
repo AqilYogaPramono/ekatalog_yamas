@@ -1,17 +1,17 @@
 var express = require('express')
-var routes = express.Router()
+var router = express.Router()
 const modelBahasa = require('../../model/modelBahasa')
 
-routes.get('/', async(req, res) => {
+router.get('/', async(req, res) => {
     try {
         let data = await modelBahasa.getAll()
-    res.render(`pengurus/user/bahsa/index`, {data})
+    res.render('pengurus/user/bahasa/index', {data})
     } catch(err) {
-        req.flash(err)
+        req.flash('error', err.message);
     }
 })
 
-routes.post('/buat', async(req, res) => {
+router.post('/buat', async(req, res) => {
     try {
         let {bahasa} = req.body
         let data = {bahasa}
@@ -22,7 +22,7 @@ routes.post('/buat', async(req, res) => {
     }
 })
 
-routes.post('udpate/:id', async (req, res) => {
+router.post('udpate/:id', async (req, res) => {
     try {
         let id = req.params
         let {bahasa} = req.body
@@ -34,7 +34,7 @@ routes.post('udpate/:id', async (req, res) => {
     }
 })
 
-routes.post('/delete/:id', async (req, res) => {
+router.post('/delete/:id', async (req, res) => {
     try {
         let id = req.params
         await modelBahasa.delete(id)
@@ -44,4 +44,4 @@ routes.post('/delete/:id', async (req, res) => {
     }
 })
 
-module.exports = routes
+module.exports = router

@@ -9,8 +9,9 @@ var flash = require('express-flash')
 
 var indexRouter = require('./routes/index');
 
-//folder bahasa
+//folder pengurus
 var bahasaRouter = require('./routes/bahasa/bahasa')
+var tempatTerbitBukuRouter = require('./routes/buku/tempatTerbitBuku')
 
 var app = express();
 
@@ -41,8 +42,9 @@ app.use(flash())
 
 app.use('/', indexRouter);
 
-//folder bahasa
+//folder pengurus
 app.use('/pengurus/bahasa', bahasaRouter)
+app.use('/pengurus/tempat-terbit-buku', tempatTerbitBukuRouter)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
