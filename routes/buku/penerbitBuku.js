@@ -11,4 +11,15 @@ router.get('/', async(req, res) => {
     }
 })
 
+router.post('/buat', async(req, res) => {
+    try {
+        let {namaPenerbit} = req.body
+        let data = namaPenerbit
+        await modelPenerbitBuku.store(data)
+        res.render('pengurus/user/penerbit')
+    } catch {
+        req.flash(err)
+    }
+})
+
 module.export = router
