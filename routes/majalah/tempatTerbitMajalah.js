@@ -34,5 +34,14 @@ router.post('/edit/:id', async (req, res) => {
     }
 })
 
+router.post('delete/:id', async (req, res) => {
+    try {
+        let id = req.params
+        await modelTempatterbitMajalah.delete(id)
+        res.render('pegurus/user/majalah/tempatTerbitMajalah/index')
+    } catch(err) {
+        req.flash(err)
+    }
+})
 
 module.exports = router
