@@ -24,6 +24,18 @@ class modelTempatterbitMajalah {
             })
         })
     }
+
+    static async update(data, id) {
+        return new Promise((resolve, reject) => {
+            connection.querry(`udpate tempat_terbit_majalah set ? where id = ?`, [data, id], (err, result) => {
+                if (err) {
+                    reject(err)
+                } else {
+                    resolve(result)
+                }
+            })
+        })
+    }
 }
 
 module.exports = modelTempatterbitMajalah

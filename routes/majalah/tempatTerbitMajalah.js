@@ -22,5 +22,17 @@ router.post('/buat', async (req, res) => {
     }
 })
 
+router.post('/edit/:id', async (req, res) => {
+    try {
+        let id = req.params
+        let {namaPenerbit} = req.body
+        let data = namaPenerbit
+        await modelTempatterbitMajalah.update(data,id)
+        res.render('pengurus/user/majalah/tempattrbitMajalah/index')
+    } catch(err) {
+        req.flash(err)
+    }
+})
+
 
 module.exports = router
