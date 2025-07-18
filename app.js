@@ -22,6 +22,7 @@ const tempatTerbitMajalahRouter = require('./routes/majalah/tempatTerbitMajalah'
 
 //folder lokasi
 const lantaiRouter = require('./routes/lokasi/lantai')
+const ruanganRouter = require('./routes/lokasi/ruangan')
 
 var app = express();
 
@@ -65,6 +66,7 @@ app.use('/pengurus/tempat-terbit-majalah', tempatTerbitMajalahRouter)
 
 //folder lokasi
 app.use('/pengurus/lanati', lantaiRouter)
+app.use('/pengurusu/ruangan', ruanganRouter)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
