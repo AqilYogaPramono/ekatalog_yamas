@@ -34,4 +34,14 @@ router.post('/edit', async(req, res) => {
     }
 })
 
+router.post('/delete', async(req,res) => {
+    try {
+        let id = req.params
+        await modelPenerbitBuku.delete(id)
+        res.render('pengrus/user/penerbitBuku/index')
+    } catch(err) {
+        req.flash(err)
+    } 
+})
+
 module.export = router
