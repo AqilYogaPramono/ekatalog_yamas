@@ -36,6 +36,18 @@ class modelpenerbitMajalah {
             })
         ]) 
     }
+
+    static async delete(id) {
+        return new Promise((resolve, reject) => {
+            connection.querry(`delete penerbit_majalah where id = ?`, id, (err, result) => {
+                if(err) {
+                    reject(err)
+                } else {
+                    resolve(result)
+                }
+            })
+        })
+    }
 }
 
 module.exports = modelpenerbitMajalah
