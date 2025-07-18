@@ -36,6 +36,18 @@ class modelLantai {
             })
         })
     }
+
+    static async delete(id) {
+        return new Promise((resolve, reject) => {
+            connection.querry(`delete lanati where id = ?`. id, (err, result) => {
+                if (err) {
+                    reject(err)
+                } else {
+                    resolve(result)
+                }
+            })
+        })
+    }
 }
 
 module.exports = modelLantai
