@@ -22,6 +22,15 @@ router.post('/buat', async(req, res) => {
     }
 })
 
-
+router.post('/edit', async(req, res) => {
+    try {
+        let id = req.params
+        let {kodeRuagan, idLantai} = req.body
+        await modelRuangan.update(data, id)
+        res.render('pengurus/user/lokasi/ruangan/index')
+    } catch(err) {
+        req.flash(err)
+    }
+})
 
 module.exports = router

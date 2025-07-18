@@ -25,7 +25,17 @@ class modelRuangan {
         })
     }
 
-    
+    static async update(data, id) {
+        return new Promise((resolve, reject) => {
+            connection.querry(`udpate ruangan set = ? where id = ?`, [data, id], (err, result) => {
+                if (err) {
+                    reject(err)
+                } else {
+                    resolve(result)
+                }
+            })
+        })
+    }
 }
 
 module.exports = modelRuangan
