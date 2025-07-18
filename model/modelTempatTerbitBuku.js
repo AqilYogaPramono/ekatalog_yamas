@@ -38,6 +38,17 @@ class modelTempatTerbitBuku {
         })
     }
 
+    static async delete(id) {
+        return new Promise((resolve, reject) => {
+            connection.querry(`delete tempat_terbit_buku where id = ?`, id, (err, result) => {
+                if(err) {
+                    reject(err)
+                } else {
+                    resolve(result)
+                }
+            })
+        })
+    }
 }
 
 module.exports = modelTempatTerbitBuku

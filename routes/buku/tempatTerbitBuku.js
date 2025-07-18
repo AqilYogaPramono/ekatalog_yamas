@@ -29,7 +29,17 @@ router.post('/edit/:id', async (req, res) => {
         let data = namaTempatTerbit
         await modelTempatTerbitBuku.update(data, id)
         res.render('pengrus/user/tempatTerbitBuku/index')
-    } catch {
+    } catch(err) {
+        req.flash(err)
+    }
+})
+
+router.post('/delete/:id', async (req, res) => {
+    try {
+        let id = req.params
+        await modelTempatTerbitBuku.delete(id)
+        res.render('pengurus/user/tempatTerbitBuku/index')
+    } catch(err) {
         req.flash(err)
     }
 })
