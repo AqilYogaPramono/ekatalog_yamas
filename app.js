@@ -9,12 +9,19 @@ var flash = require('express-flash')
 
 var indexRouter = require('./routes/index');
 
-//folder pengurus
+//folder bahasa
 const bahasaRouter = require('./routes/bahasa/bahasa')
+
+//folder buku
 const tempatTerbitBukuRouter = require('./routes/buku/tempatTerbitBuku')
-const penerbitBuku = require('./routes/buku/penerbitBuku')
-const penerbitMajalah = require('./routes/majalah/penerbitMajalah')
-const tempatTerbitMajalah = require('./routes/majalah/tempatTerbitMajalah')
+const penerbitBukuRouter = require('./routes/buku/penerbitBuku')
+
+//folder majalah
+const penerbitMajalahRouter = require('./routes/majalah/penerbitMajalah')
+const tempatTerbitMajalahRouter = require('./routes/majalah/tempatTerbitMajalah')
+
+//folder lokasi
+const lantaiRouter = require('./routes/lokasi/lantai')
 
 var app = express();
 
@@ -45,12 +52,19 @@ app.use(flash())
 
 app.use('/', indexRouter);
 
-//folder pengurus
+//folder bahasa
 app.use('/pengurus/bahasa', bahasaRouter)
+
+//folder buku
 app.use('/pengurus/tempat-terbit-buku', tempatTerbitBukuRouter)
-app.use('/pengurus/penerbit-buku', penerbitBuku)
-app.use('/pengurus/penerbit-majalah', penerbitMajalah)
-app.use('/pengurus/tempat-terbit-majalah', tempatTerbitMajalah)
+app.use('/pengurus/penerbit-buku', penerbitBukuRouter)
+
+//folder majalah
+app.use('/pengurus/penerbit-majalah', penerbitMajalahRouter)
+app.use('/pengurus/tempat-terbit-majalah', tempatTerbitMajalahRouter)
+
+//folder lokasi
+app.use('/pengurus/lanati', lantaiRouter)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
