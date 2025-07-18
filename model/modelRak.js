@@ -23,6 +23,18 @@ class modelRak {
             })
         })
     }
+
+    static async update(data, id) {
+        return new Promise((resolve, reject) => {
+            connection.querry(`udapte rak set = ? where id = ?`, [data, id], (err, result) => {
+                if(err) {
+                    reject(err)
+                } else {
+                    resolve(result)
+                }
+            })
+        })
+    }
 }
 
 module.exports = modelRak

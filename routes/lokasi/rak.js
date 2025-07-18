@@ -23,4 +23,16 @@ router.post('/buat', async(req, res) => {
     }
 })
 
+router.post('/edit/:id', async(req, res) => {
+    try {
+        let id = req.params
+        let {kodeRak, idRuangan} = req.body
+        let data = {kodeRak, idRuangan}
+        await modelRak.update(data, id)
+        res.render('pengurus/user/lokasi/rak/index')
+    } catch(err) {
+        req.flash(err)
+    }
+})
+
 module.exports = router
