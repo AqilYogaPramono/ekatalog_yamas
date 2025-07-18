@@ -36,6 +36,18 @@ class modelRuangan {
             })
         })
     }
+
+    static async delete(id) {
+        return new Promise((resolve, reject) => {
+            connection.querry(`delete ruangan where id = ?`, id, (err, result) => {
+                if(err) {
+                    reject(err)
+                } else {
+                    resolve(result)
+                }
+            })
+        })
+    }
 }
 
 module.exports = modelRuangan
