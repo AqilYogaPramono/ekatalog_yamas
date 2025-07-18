@@ -1,4 +1,3 @@
-const { raw } = require('mysql')
 const connection = require('../config/database')
 
 class modelTempatTerbitBuku {
