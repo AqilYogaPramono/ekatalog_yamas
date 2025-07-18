@@ -35,4 +35,14 @@ router.post('/edit/:id', async(req, res) => {
     }
 })
 
+router.post('/delete/:id', async (req, res) => {
+    try {
+        let id = req.params
+        await modelRak.delete(id)
+        res.render('pengurus/user/lokasi/rak/index')
+    } catch(err) {
+        req.flash(err)
+    }
+})
+
 module.exports = router

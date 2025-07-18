@@ -26,7 +26,19 @@ class modelRak {
 
     static async update(data, id) {
         return new Promise((resolve, reject) => {
-            connection.querry(`udapte rak set = ? where id = ?`, [data, id], (err, result) => {
+            connection.querry(`update rak set = ? where id = ?`, [data, id], (err, result) => {
+                if(err) {
+                    reject(err)
+                } else {
+                    resolve(result)
+                }
+            })
+        })
+    }
+
+    static async delete(id) {
+        return new Promise((resolve, reject) => {
+            connection.querry(`delete rak where id = ?`, id, (err, result) => {
                 if(err) {
                     reject(err)
                 } else {
