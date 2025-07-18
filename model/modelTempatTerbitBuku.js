@@ -14,6 +14,19 @@ class modelTempatTerbitBuku {
         })
     }
 
+    static async store(data) {
+        return new Promise((resolve, reject) => {
+            connection.querry('insert into tempat_terbit_buku = ?', data, (err, result) => {
+                if(err) {
+                    reject(err)
+                } else {
+                    resolve(result)
+                }
+            })
+        })
+    }
+
+    
 
 }
 
