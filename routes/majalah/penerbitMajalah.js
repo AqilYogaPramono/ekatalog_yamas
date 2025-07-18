@@ -10,4 +10,17 @@ router.get('/', async (req, res) => {
         req.flash(err)
     }
 })
+
+router.post('/buat', async(req, res) => {
+    try {
+        let {namaPenerbit} = req.body
+        let data = namaPenerbit
+        await modelpenerbitMajalah.store(data)
+        res.render('pengurus/user/majalah/penerbitMajalah/index')
+    } catch(err) {
+        req.flash(err)
+    }
+})
+
+
 module.exports = router

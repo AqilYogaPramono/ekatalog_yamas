@@ -13,6 +13,17 @@ class modelpenerbitMajalah {
         })
     }
 
+    static async store(data) {
+        return new Promise((resolve, reject) => {
+            connection.qurry(`insert into penerbit_majalah`, (err, result) => {
+                if(err) {
+                    reject(err)
+                } else {
+                    resolve(result)
+                }
+            })
+        })
+    }
 }
 
 module.exports = modelpenerbitMajalah
