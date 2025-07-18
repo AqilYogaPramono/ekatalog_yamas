@@ -26,7 +26,17 @@ class modelTempatTerbitBuku {
         })
     }
 
-    
+    static async update(data, id) {
+        return new Promise((resolve, reject) => {
+            connection.querry(`update tempat_terbit_buku set = ? where id = ?`, [data, id], (err, result) => {
+                if(err) {
+                    reject(err)
+                } else {
+                    resolve(result)
+                }
+            })
+        })
+    }
 
 }
 
