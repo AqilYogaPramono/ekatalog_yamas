@@ -15,7 +15,7 @@ class modelpenerbitMajalah {
 
     static async store(data) {
         return new Promise((resolve, reject) => {
-            connection.qurry(`insert into penerbit_majalah`, (err, result) => {
+            connection.qurry(`insert into penerbit_majalah set = ?`, (err, result) => {
                 if(err) {
                     reject(err)
                 } else {
@@ -23,6 +23,18 @@ class modelpenerbitMajalah {
                 }
             })
         })
+    }
+
+    static async update(data, id) {
+        return new Promise((resolve, reject) => [
+            connection.querry(`udpate penrtbit_majalah set = ? where id = ?`, [data, id], (err, result) => {
+                if(err) {
+                    reject(err)
+                } else {
+                    resolve(result)
+                }
+            })
+        ]) 
     }
 }
 
