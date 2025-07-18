@@ -12,7 +12,18 @@ class modelTempatterbitMajalah {
             })
         })
     }
-    
+
+    static async store(data) {
+        return new Promise((resolve, reject) => {
+            connection.querry(`insert into tempat_terbit_majalah`, data, (err, result) => {
+                if(err) {
+                    reject(err)
+                } else {
+                    resolve(resolve)
+                }
+            })
+        })
+    }
 }
 
 module.exports = modelTempatterbitMajalah
