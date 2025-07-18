@@ -12,6 +12,7 @@ class modelTempatterbitMajalah {
             })
         })
     }
+    
 }
 
 module.exports = modelTempatterbitMajalah
