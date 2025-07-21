@@ -1,7 +1,9 @@
 var express = require('express')
 var router = express.Router()
+//import model penerbit buku 
 const modelPenerbitBuku = require('../../model/modelPenerbitBuku')
 
+//menampilakn semua data penerbit buku
 router.get('/', async(req, res) => {
     try {
         let data = await modelPenerbitBuku()
@@ -11,6 +13,7 @@ router.get('/', async(req, res) => {
     }
 })
 
+//menabahkan data penerbit buku baru
 router.post('/buat', async(req, res) => {
     try {
         let {namaPenerbit} = req.body
@@ -22,6 +25,7 @@ router.post('/buat', async(req, res) => {
     }
 })
 
+//memgupdate data penerbit buku berdasarkan id
 router.post('/edit', async(req, res) => {
     try {
         let id = req.params
@@ -34,6 +38,7 @@ router.post('/edit', async(req, res) => {
     }
 })
 
+//mengapus data penerbit buku berdasarakn id
 router.post('/delete', async(req,res) => {
     try {
         let id = req.params

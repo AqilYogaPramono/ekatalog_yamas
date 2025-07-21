@@ -1,16 +1,19 @@
 var express = require('express')
 var router = express.Router()
+//import model bahasa 
 const modelBahasa = require('../../model/modelBahasa')
 
+//menampilakn semua data bahasa
 router.get('/', async(req, res) => {
     try {
         let data = await modelBahasa.getAll()
-    res.render('pengurus/user/bahasa/index', {data})
+        res.render('pengurus/user/bahasa/index', {data})
     } catch(err) {
-        req.flash('error', err.message);
+        req.flash('error', err.message)
     }
 })
 
+//menabahkan data bahasa baru
 router.post('/buat', async(req, res) => {
     try {
         let {bahasa} = req.body
@@ -22,6 +25,7 @@ router.post('/buat', async(req, res) => {
     }
 })
 
+//memgupdate data bahasa berdasarkan id
 router.post('udpate/:id', async (req, res) => {
     try {
         let id = req.params
@@ -34,6 +38,7 @@ router.post('udpate/:id', async (req, res) => {
     }
 })
 
+//mengapus data bahasa berdasarakn id
 router.post('/delete/:id', async (req, res) => {
     try {
         let id = req.params

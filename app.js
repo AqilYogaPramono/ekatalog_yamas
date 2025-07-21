@@ -66,7 +66,7 @@ app.use('/pengurus/penerbit-majalah', penerbitMajalahRouter)
 app.use('/pengurus/tempat-terbit-majalah', tempatTerbitMajalahRouter)
 
 //folder lokasi
-app.use('/pengurus/lanati', lantaiRouter)
+app.use('/pengurus/lantai', lantaiRouter)
 app.use('/pengurusu/ruangan', ruanganRouter)
 app.use('/pengurus/rak', rakRouter)
 
