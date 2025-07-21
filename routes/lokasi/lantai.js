@@ -1,7 +1,9 @@
 const express = require('express')
 const router = express.Router()
+//import model lantai 
 const modelLantai = require('../../model/modelLantai')
 
+//menampilakn semua data lantai
 router.get('/', async (req, res) => {
     try {
         let data = modelLantai.getAll()
@@ -11,6 +13,7 @@ router.get('/', async (req, res) => {
     }
 })
 
+//menabahkan data lantai baru
 router.post('/buat', async (req, res) => {
     try {
         let {kodeLantai} = req.body
@@ -22,6 +25,7 @@ router.post('/buat', async (req, res) => {
     }
 })
 
+//memgupdate data lantai berdasarkan id
 router.post('/edit/:id', async (req, res) => {
     try {
         let id = req.params
@@ -34,6 +38,7 @@ router.post('/edit/:id', async (req, res) => {
     }
 })
 
+//mengapus data lantai berdasarakn id
 router.post('/delete', async (req, res) => {
     try {
         let id = req.params

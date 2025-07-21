@@ -1,8 +1,9 @@
 const express = require('express')
 const router = express.Router()
+//import model rak 
 const modelRak = require('../../model/modelRak')
 
-
+//menampilakn semua data rak
 router.get('/', async(req, res) => {
     try {
         let data = modelRak.getAll()
@@ -12,6 +13,7 @@ router.get('/', async(req, res) => {
     }
 })
 
+//menabahkan data rak baru
 router.post('/buat', async(req, res) => {
     try {
         let {kodeRak, idRuangan} = req.body
@@ -23,6 +25,7 @@ router.post('/buat', async(req, res) => {
     }
 })
 
+//memgupdate data rak berdasarkan id
 router.post('/edit/:id', async(req, res) => {
     try {
         let id = req.params
@@ -35,6 +38,7 @@ router.post('/edit/:id', async(req, res) => {
     }
 })
 
+//mengapus data rak berdasarakn id
 router.post('/delete/:id', async (req, res) => {
     try {
         let id = req.params
