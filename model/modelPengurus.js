@@ -26,6 +26,18 @@ class pengurus {
             })
         })
     }
+
+    static async login(data) {
+        return new Promise((resolve, reject) => {
+            connection.querry(`select * from pengrus where email = ?`, data.email, (err, rows) => {
+                if (err) {
+                    reject(err)
+                } else {
+                    resolve(rows)
+                }
+            })
+        })
+    }
 }
 
 module.exports = pengurus
