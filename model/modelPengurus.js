@@ -38,6 +38,18 @@ class pengurus {
             })
         })
     }
+
+    static async getPengurusById(userId) {
+        return new Promise((resolve, reject) => {
+            connection.querry(`select * from pengurus where id = ?`, userId, (err, rows) => {
+                if(err) {
+                    reject(err)
+                } else {
+                    resolve(rows)
+                }
+            })
+        })
+    }
 }
 
 module.exports = pengurus
