@@ -5,7 +5,7 @@ class modelRuangan {
     //mengambil semua data pada tabel ruangan
     static async getAll() {
         return new Promise((resolve, reject) => {
-            connection.querry(`select * from ruangan`, (err, rows) => {
+            connection.querry(`SELECT r.id, r.kode_ruangan, l.kode_lantai from ruangan as r JOIN lantai as l on r.id_lantai = l.id`, (err, rows) => {
                 if(err) {
                     reject(err)
                 } else {
