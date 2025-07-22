@@ -25,6 +25,9 @@ const lantaiRouter = require('./routes/lokasi/lantai')
 const ruanganRouter = require('./routes/lokasi/ruangan')
 const rakRouter = require('./routes/lokasi/rak')
 
+//folder admin
+const pengurusRouter = require('./routes/admin/admin')
+
 var app = express();
 
 // view engine setup
@@ -69,6 +72,9 @@ app.use('/pengurus/tempat-terbit-majalah', tempatTerbitMajalahRouter)
 app.use('/pengurus/lantai', lantaiRouter)
 app.use('/pengurusu/ruangan', ruanganRouter)
 app.use('/pengurus/rak', rakRouter)
+
+//folder admin
+app.use('/admin/pengurus', pengurusRouter)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

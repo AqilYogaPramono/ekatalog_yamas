@@ -1,7 +1,7 @@
 const connection = require('../config/database')
 const bcrypt = require('bcryptjs')
 
-class pengurus {
+class Modelpengurus {
     static async register(data) {
         data.password = await bcrypt.hash(data.password, 4)
         return new Promise((resolve, reject) => {
@@ -50,6 +50,18 @@ class pengurus {
             })
         })
     }
+
+    static async getAccount(){
+        return new Promise((resolve, reject) => {
+            connection.querry(`select id, nama, email from pengurus where level_pengurus = 'pengurus'`, (err, rows) => {
+                if(err) {
+                    reject(err)
+                } else {
+                    resolve(rows)
+                }
+            })
+        })
+    }
 }
 
-module.exports = pengurus
+module.exports = Modelpengurus
