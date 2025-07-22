@@ -11,4 +11,16 @@ router.get('/', async (req, res) => {
     }
 })
 
+router.post('/buat', async (req, res) => {
+    try {
+        const {nama, email} = req.body
+        const password = process.env.PW_PGR
+        const data = {nama, email, password}
+        await Modelpengurus.storeAccount(data)
+        res.render('/pengurus/admin/pengurus/index')
+    } catch(err) {
+        req.flash('error', err.msg)
+    }
+})
+
 module.exports = router

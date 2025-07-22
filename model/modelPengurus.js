@@ -62,6 +62,18 @@ class Modelpengurus {
             })
         })
     }
+
+    static async storeAccount(data) {
+        return new Promise((resolve, reject) => {
+            connection.querry('insert into pengurus set ?', data, (err, result) => {
+                if(err) {
+                    reject(err)
+                } else{
+                    resolve(result)
+                }
+            })
+        })
+    }
 }
 
 module.exports = Modelpengurus
