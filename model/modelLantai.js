@@ -18,7 +18,7 @@ class modelLantai {
     //menyimpan data baru pada tabel lantai
     static async store(data) {
         return new Promise((resolve, reject) => {
-            connection.querry(`insert lantai into set = ?`, data, (err, result) => {
+            connection.querry(`insert intop lantai set = ?`, data, (err, result) => {
                 if (err) {
                     reject(err)
                 } else {
