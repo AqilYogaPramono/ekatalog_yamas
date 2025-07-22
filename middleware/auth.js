@@ -1,3 +1,4 @@
+//midleware to check level_pengurus
 const modelPengurus = require('../model/modelPengurus')
 
 const authPengurus = async (req, res, next) => {
