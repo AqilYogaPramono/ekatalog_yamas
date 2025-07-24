@@ -1,7 +1,7 @@
 var express = require('express')
 var router = express.Router()
 //import model penerbit buku 
-const modelPenerbitBuku = require('../../model/modelPenerbitBuku')
+const modelPenerbitBuku = require('../../../model/modelPenerbitBuku')
 
 //menampilakn semua data penerbit buku
 router.get('/', async(req, res) => {

@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 //import model tempat terbit majalah 
-const modelTempatterbitMajalah = require('../../model/modelTempatTerbitMajalah')
+const modelTempatterbitMajalah = require('../../../model/modelTempatTerbitMajalah')
 
 //menampilakn semua data tempat terbit majalah
 router.get('/', async (req, res) => {

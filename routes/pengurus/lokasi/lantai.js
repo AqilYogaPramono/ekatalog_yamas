@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 //import model lantai 
-const modelLantai = require('../../model/modelLantai')
+const modelLantai = require('../../../model/modelLantai')
 
 //menampilakn semua data lantai
 router.get('/', async (req, res) => {

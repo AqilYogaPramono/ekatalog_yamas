@@ -1,6 +1,6 @@
 var express = require('express')
 var router = express.Router()
-const modelTempatTerbitBuku = require('../../model/modelTempatTerbitBuku')
+const modelTempatTerbitBuku = require('../../../model/modelTempatTerbitBuku')
 
 router.get('/', async (req, res) => {
     try {
