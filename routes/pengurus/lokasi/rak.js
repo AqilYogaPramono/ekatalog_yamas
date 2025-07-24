@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 //import model rak 
-const modelRak = require('../../model/modelRak')
+const modelRak = require('../../../model/modelRak')
 
 //menampilakn semua data rak
 router.get('/', async(req, res) => {

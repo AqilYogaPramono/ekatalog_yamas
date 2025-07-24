@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 //import model ruangan 
-const modelRuangan = require('../../model/modelRuangan')
+const modelRuangan = require('../../../model/modelRuangan')
 
 //menampilakn semua data ruangan
 router.get('/', async(req, res) => {

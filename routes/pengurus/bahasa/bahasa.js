@@ -1,13 +1,13 @@
 var express = require('express')
 var router = express.Router()
 //import model bahasa 
-const modelBahasa = require('../../model/modelBahasa')
+const modelBahasa = require('../../../model/modelBahasa')
 
 //menampilakn semua data bahasa
 router.get('/', async(req, res) => {
     try {
-        let data = await modelBahasa.getAll()
-        res.render('pengurus/user/bahasa/index', {data})
+        // let data = await modelBahasa.getAll()
+        res.render('pengurus/user/bahasa/index')
     } catch(err) {
         req.flash('error', err.message)
     }
