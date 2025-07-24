@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('../../../partials/__head.ejs', { title: 'Tambah Rak' }) %>
+</head>
+
+<body class="page-lokasi-rak">
+    <div class="container-scroller">
+        <div class="container-fluid page-body-wrapper full-page-wrapper">
+            <%- include('../../../partials/__nav.ejs', { currentPath: '/pengurus/user/lokasi/rak/create' }) %>
+            <div class="main-panel">
+                <div class="content-wrapper">
+                    <div class="row">
+                        <div class="col-12 grid-margin stretch-card">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 class="card-title">Tambah Rak</h4>
+                                    <p class="card-description">Isi detail rak baru</p>
+                                    <form class="forms-sample" action="/pengurus/user/lokasi/rak/create" method="POST">
+                                        <div class="form-group">
+                                            <label for="namaRak">Nama Rak</label>
+                                            <input type="text" class="form-control" id="namaRak" name="nama" placeholder="Masukkan nama rak, contoh: Rak A1" required>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary mr-2">Simpan</button>
+                                        <a href="/pengurus/user/lokasi/rak" class="btn btn-light">Batal</a>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <%- include('../../../partials/__foot.ejs') %>
+</body>
+
+</html>

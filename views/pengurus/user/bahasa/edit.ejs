@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('../../partials/__head.ejs', { title: 'Edit Bahasa' }) %>
+</head>
+
+<body>
+    <div class="container-scroller">
+        <div class="container-fluid page-body-wrapper">
+            <%- include('../../partials/__nav.ejs', { currentPath: '/pengurus/user/bahasa/edit' }) %>
+            <div class="main-panel">
+                <div class="content-wrapper">
+                    <div class="row">
+                        <div class="col-12 grid-margin stretch-card">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 class="card-title">Edit Bahasa</h4>
+
+                                    <form class="forms-sample" id="formEditBahasa">
+                                        <div class="form-group">
+                                            <label for="bahasa">Bahasa</label>
+                                            <input type="text" class="form-control" id="bahasa" placeholder="Edit bahasa yang digunakan, contoh: Indonesia">
+                                        </div>
+                                        <button type="submit" class="btn btn-primary mr-2">Simpan</button>
+                                        <a href="/pengurus/user/bahasa" class="btn btn-light">Batal</a>
+                                    </form>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>    
+    </div>
+    <%- include('../../partials/__foot.ejs') %>
+    <script>
+        const form = document.getElementById('formEditBahasa');
+        if (form) {
+            form.addEventListener('submit', function(event) {
+                event.preventDefault();
+                const bahasaInput = document.getElementById('bahasa');
+                const bahasaValue = bahasaInput.value.trim();
+
+                if (bahasaValue) {
+                    alert(`Data bahasa berhasil diperbarui menjadi '${bahasaValue}'.`);
+                    window.location.href = '/pengurus/user/bahasa';
+                } else {
+                    alert('Silakan masukkan bahasa terlebih dahulu. Kolom tidak boleh kosong.');
+                }
+            });
+        } else {
+            console.error('Elemen form dengan ID "formEditBahasa" tidak ditemukan.');
+        }
+    </script>
+
+</body>
+
+</html>

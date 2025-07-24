@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('../../../partials/__head.ejs', { title: 'Tambah Penerbit Majalah' }) %>
+</head>
+
+<body>
+    <div class="container-scroller">
+        <div class="container-fluid page-body-wrapper">
+        <%- include('../../../partials/__nav.ejs', { currentPath: '/pengurus/user/majalah/penerbit/create' }) %>
+            <div class="main-panel">
+                <div class="content-wrapper">
+                    <div class="row">
+                        <div class="col-12 grid-margin stretch-card">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 class="card-title">Tambah Penerbit Majalah</h4>
+                                    <p class="card-description">Isi detail penerbit majalah baru</p>
+                                    <form class="forms-sample" action="/pengurus/user/majalah/penerbit/create" method="POST">
+                                        <div class="form-group">
+                                            <label for="namaPenerbit">Nama Penerbit</label>
+                                            <input type="text" class="form-control" id="namaPenerbit" name="nama" placeholder="Masukkan nama penerbit, contoh: Tempo" required>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary mr-2">Simpan</button>
+                                        <a href="/pengurus/user/majalah/penerbit" class="btn btn-light">Batal</a>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <%- include('../../../partials/__foot.ejs') %>
+</body>
+
+</html>
