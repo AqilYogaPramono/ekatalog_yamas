@@ -20455,7 +20455,7 @@ code {
 }
 
 .accordion.accordion-solid-header .card .card-header a {
-  padding: 2rem 4.5rem 2rem 2rem;
+  padding: 2rem 45rem 2rem 2rem;
   -webkit-transition: all 0.2s linear;
   -moz-transition: all 0.2s linear;
   -ms-transition: all 0.2s linear;
@@ -23838,8 +23838,8 @@ dl li {
 .pagination .page-item:active .jsgrid .jsgrid-pager .jsgrid-pager-page a,
 .jsgrid .jsgrid-pager .page-item:active .jsgrid-pager-page a, .jsgrid .jsgrid-pager .jsgrid-pager-page .page-item:active a,
 .jsgrid .jsgrid-pager .jsgrid-pager-page:active a {
-  background: #4B49AC;
-  border-color: #4B49AC;
+  background: #0F8EC8;
+  border-color: #0F8EC8;
   color: #ffffff;
 }
 
@@ -28418,15 +28418,14 @@ div.tagsinput span.tag a {
 }
 
 .page-body-wrapper {
-  min-height: calc(100vh - 60px);
-  display: -webkit-flex;
-  display: flex;
-  -webkit-flex-direction: row;
-  flex-direction: row;
-  padding-left: 0;
-  padding-right: 0;
-  padding-top: 60px;
+    min-height: calc(100vh - 60px);
+    display: flex; /*  sidebar dan main-panel bersebelahan */
+    flex-direction: row;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 60px; 
 }
+
 
 .page-body-wrapper.full-page-wrapper {
   width: 100%;
@@ -28452,8 +28451,9 @@ div.tagsinput span.tag a {
 }
 
 .content-wrapper {
-  background: #0F8EC8;
-  padding: 2.375rem 2.375rem;
+  background: #FFFFFF;
+  padding-left: 0.5rem !important;
+  padding-right: 0.5rem !important;
   width: 100%;
   -webkit-flex-grow: 1;
   flex-grow: 1;
@@ -28595,7 +28595,7 @@ div.tagsinput span.tag a {
 
 .sidebar .nav .nav-item.active > .nav-link {
   /* !ini bagian side saat diklik  */
-  background: #000000; 
+  background: #0F8EC8; 
   position: relative;
 }
 
@@ -28627,7 +28627,7 @@ div.tagsinput span.tag a {
 
 .sidebar .nav:not(.sub-menu) > .nav-item:hover > .nav-link, .sidebar .nav:not(.sub-menu) > .nav-item:hover[aria-expanded="true"] {
   /* !ini warna saat dihover */
-  background: #000000;
+  background: #0F8EC8;
   color: #fff;
 }
 
@@ -28637,7 +28637,7 @@ div.tagsinput span.tag a {
 
 .sidebar .nav:not(.sub-menu) > .nav-item > .nav-link[aria-expanded="true"] {
   border-radius: 8px 8px 0 0;
-  background: #000000;
+  background: #0F8EC8;
   color: #fff;
 }
 
@@ -28650,7 +28650,7 @@ div.tagsinput span.tag a {
   margin-top: 0;
   list-style: none;
   padding: 0.25rem 0 0 3.07rem;
-  background: #000000;
+  background: #0F8EC8;
   padding-bottom: 12px;
 }
 
@@ -28835,7 +28835,7 @@ div.tagsinput span.tag a {
 }
 
 .navbar .navbar-brand-wrapper .brand-logo-mini img {
-  width: calc(70px - 30px);
+  width: calc(110px - 90px);
   max-width: 100%;
   margin: auto;
 }
@@ -30597,4 +30597,269 @@ div.tagsinput span.tag a {
   }
 }
 
+
+/* START CSS BARU UNTUK FOOTER */
+body {
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+    background-color: #f0f2f5; /* Warna latar belakang umum */
+}
+
+.footer {
+    background-color: #0F8EC8; /* Warna biru gelap */
+    color: #ffffff;
+    padding: 40px 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: flex-start;
+    font-size: 16px;
+}
+
+.footer-section {
+    flex: 1;
+    min-width: 280px;
+    margin: 15px;
+}
+
+.footer-section h3 {
+    color: #ffffff;
+    font-size: 24px;
+    margin-bottom: 20px;
+    font-weight: 700;
+}
+
+.footer-section p, .footer-section a {
+    color: #ffffff;
+    text-decoration: none;
+    line-height: 1.8;
+    display: flex;
+    align-items: center;
+}
+
+.footer-section a:hover {
+    text-decoration: underline;
+}
+
+.footer-section .icon {
+    margin-right: 10px;
+    font-size: 20px;
+}
+
+.logo-section {
+    display: flex;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.logo-section img {
+    height: 50px; /* Sesuaikan ukuran logo */
+    margin-right: 15px;
+}
+
+.logo-section p {
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.hours-list {
+    list-style: none;
+    padding: 0;
+    margin-top: 20px;
+}
+
+.hours-list li {
+    margin-bottom: 10px;
+}
+
+.maps-placeholder {
+    background-color: #ffffff;
+    color: #333;
+    width: 100%;
+    height: 200px; /* Ukuran placeholder map */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    font-weight: bold;
+    border: 1px solid #ddd;
+}
+
+.copyright {
+    width: 100%;
+    text-align: center;
+    padding: 20px 0 10px;
+    font-size: 14px;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    margin-top: 40px;
+}
+
+.body {
+            background-color: #0F8EC8 !important;
+        }
+
+        .login-box {
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+            margin-top: 30px;
+            margin-bottom: 30px;
+        }
+
+        .auth {
+            background-color: transparent !important;
+        }
+
+.page-lokasi-lantai .main-panel {
+    padding-top: 50px !important; /* Meningkatkan padding-top.. */
+}
+
+/* Opsional: Jika card-title atau card-description masih terlalu mepet di dalam card-body */
+.page-lokasi-lantai .card-body .card-title {
+    margin-top: 20px; /* Memberikan sedikit jarak dari atas card-body */
+}
+
+.page-lokasi-lantai .card-body .card-description {
+    margin-top: 10px; /* Memberikan sedikit jarak dari card-title */
+}
+
+/* Jika tombol "Tambah Lantai" atau elemen header-actions masih perlu penyesuaian */
+.page-lokasi-lantai .header-actions {
+    margin-top: 20px; /* Memberikan jarak dari atas content-wrapper */
+}
+
+/*  Tombol Tambah yang sedikit naik */
+        .header-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start; /* Mengatur alignment ke atas */
+            margin-bottom: 1.5rem; /* Menambah sedikit spasi di bawah header */
+        }
+        .header-actions .btn {
+            margin-top: -5px; /* Menggeser tombol sedikit ke atas */
+        }
+
+        /* Penyesuaian untuk tombol aksi di tabel */
+        .table-actions .btn {
+            padding: .3rem .6rem; /* Padding lebih kecil untuk tombol dalam tabel */
+            font-size: .85rem; /* Ukuran font lebih kecil */
+            line-height: 1.5;
+            border-radius: .2rem;
+        }
+        /* Jika menggunakan btn-group, spasi antar tombol diatur oleh .btn-group */
+        .table-actions .btn-group .btn + .btn {
+            margin-left: 0; /* Hapus margin antar tombol jika dalam grup */
+        }
+        /* Style untuk Datatables pagination buttons */
+        .dataTables_wrapper .dataTables_paginate .paginate_button {
+            padding: 0.5em 0.8em;
+        }
+
+        /* CSS tambahan untuk dialog agar terlihat di tengah */
+        dialog {
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            position: fixed; /* Penting untuk posisi pop-up */
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1000; /* Pastikan di atas elemen lain */
+            min-width: 300px;
+        }
+        dialog::backdrop {
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        dialog h4 {
+            margin-top: 0;
+            margin-bottom: 15px;
+            font-size: 1.25rem;
+        }
+        dialog .dialog-buttons {
+            text-align: right;
+            margin-top: 20px;
+        }
+        dialog .dialog-buttons button {
+            margin-left: 10px;
+        }
+
+    .page-lokasi-rak .main-panel .content-wrapper {
+        margin-top: 60px !important; /* Sesuaikan nilai ini. Mulai dengan 70px,  */
+    }
+
+    /* Jika card-title atau card-description masih terlalu mepet di dalam card-body */
+    .page-lokasi-rak .card-body .card-title {
+        margin-top: 0px; /* Pastikan tidak ada margin-top yang mendorong ke atas */
+    }
+
+    .page-lokasi-rak .card-body .card-description {
+        margin-top: 10px; /* Memberikan sedikit jarak dari card-title */
+    }
+
+    /* Pastikan header-actions memiliki jarak yang konsisten */
+    .page-lokasi-rak .header-actions {
+        margin-top: 0px; /* Reset margin-top jika ada, lalu atur jarak dari atas content-wrapper */
+        padding-top: 20px; /* Memberikan padding di dalam header-actions  */
+    }
+    
+    .page-lokasi-ruangan .main-panel .content-wrapper {
+        margin-top: 60px !important; 
+    }
+
+    .page-lokasi-ruangan .card-body .card-title {
+        margin-top: 0px; 
+    }
+
+    .page-lokasi-ruangan .card-body .card-description {
+        margin-top: 10px;
+    }
+
+    .page-lokasi-ruangan .header-actions {
+        margin-top: 0px; 
+        padding-top: 20px; /* Memberikan padding di dalam header-actions  */
+    }
+    
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .footer {
+        flex-direction: column;
+        align-items: center;
+        padding: 30px 15px;
+    }
+
+    .footer-section {
+        margin: 20px 0;
+        text-align: center;
+    }
+
+    .footer-section h3 {
+        font-size: 22px;
+    }
+
+    .footer-section p, .footer-section a {
+        justify-content: center;
+    }
+
+    .logo-section {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .footer-section h3 {
+        font-size: 20px;
+    }
+    .footer-section p, .footer-section a {
+        font-size: 14px;
+    }
+    .logo-section p {
+        font-size: 18px;
+    }
+    .logo-section img {
+        height: 40px;
+    }
+}
+/* END CSS BARU UNTUK FOOTER */
 /*# sourceMappingURL=../maps/vertical-layout-light/style.css.map */

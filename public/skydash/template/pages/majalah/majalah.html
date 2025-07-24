@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Daftar Buku</title>
+  <title>Daftar Majalah</title>
   <link rel="stylesheet" href="../../vendors/feather/feather.css">
   <link rel="stylesheet" href="../../vendors/ti-icons/css/themify-icons.css">
   <link rel="stylesheet" href="../../vendors/css/vendor.bundle.base.css">
@@ -17,16 +17,15 @@
       color: white;
     }
 
-    /* Mengubah warna nama penulis menjadi putih saat dropdown terbuka */
+    /* Mengubah warna nama penulis menjadi putih saat dropdown trbuka */
     .card-header a[aria-expanded="true"] .text-muted {
       color: white !important;
     }
-
     .content-wrapper {
         padding-left: 1.5rem !important;
         padding-right: 1.5rem !important;
     }
-
+  
     .card.mt-3 {
         margin-top: 1rem;
     }
@@ -107,7 +106,7 @@
           </li>
           <li class="nav-item nav-profile dropdown">
             <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
-              <img src="/skydash/template/images/bumi manusia.jpeg" alt="sampul buku"/>
+              <img src="../../images/faces/face28.jpg" alt="profile" />
             </a>
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
               <a class="dropdown-item">
@@ -147,7 +146,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">
+            <a class="nav-link" href="../majalah/majalah.html">
               <i class="icon-columns menu-icon"></i>
               <span class="menu-title">Majalah</span>
             </a>
@@ -190,43 +189,41 @@
       <div class="main-panel">
         <div class="content-wrapper">
           <div class="d-flex justify-content-between align-items-center mb-4">
-            <h3 class="card-title mb-0">Daftar Buku</h3>
-            <a href="tambah_buku.html" class="btn btn-primary" type="button">
-              <i class="ti-plus"></i> Tambah Buku
+            <h3 class="card-title mb-0">Daftar Majalah</h3>
+            <a href="tambah_majalah.html" class="btn btn-primary" type="button">
+              <i class="ti-plus"></i> Tambah Majalah
             </a>
           </div>
 
           <div class="row">
             <div class="col-12 grid-margin stretch-card">
-              <div class="accordion accordion-solid-header" id="accordionBuku" role="tablist">
+              <div class="accordion accordion-solid-header" id="accordionMajalah" role="tablist">
                 <div class="card mt-3">
                   <div class="card-header" role="tab" id="heading-1">
                     <h6 class="mb-0">
                       <a data-toggle="collapse" href="#collapse-1" aria-expanded="true" aria-controls="collapse-1">
                         <div class="d-flex align-items-center">
-                          <img src="/skydash/template/images/bumi manusia.jpeg" alt="sampul buku" class="rounded-0 mr-3" style="width: 50px; height: auto;">
+                          <img src="../../images/faces/face28.jpg" alt="Sampul Majalah" class="rounded-0 mr-3" style="width: 50px; height: auto;">
                           <div>
-                            <p class="font-weight-bold mb-0">Bumi Manusia</p>
-                            <small class="text-muted">Pramoedya Ananta Toer</small>
+                            <p class="font-weight-bold mb-0">Contoh Judul Majalah</p>
+                            <small class="text-muted">Edisi: 123</small>
                           </div>
                         </div>
                       </a>
                     </h6>
                   </div>
-                  <div id="collapse-1" class="collapse show" role="tabpanel" aria-labelledby="heading-1" data-parent="#accordionBuku">
+                  <div id="collapse-1" class="collapse show" role="tabpanel" aria-labelledby="heading-1" data-parent="#accordionMajalah">
                     <div class="card-body">
                       <div class="row">
                         <div class="col-12">
                           <ul class="list-unstyled">
-                            <li><strong>ISBN/ISSN:</strong> 978-602-8610-86-9</li>
-                            <li><strong>Nomor Klasifikasi:</strong> 813.0113 PRA b</li>
+                            <li><strong>Edisi:</strong> 123</li>
+                            <li><strong>Nomor Klasifikasi:</strong> 813.0113 MAJ m</li>
                             <li><strong>Bahasa:</strong> Indonesia</li>
-                            <li><strong>Total Halaman:</strong> 535</li>
-                            <li><strong>Tahun Terbit:</strong> 2020</li>
+                            <li><strong>Tahun Terbit:</strong> 2024</li>
                             <li><strong>Ketersediaan:</strong> Tersedia</li>
                             <li><strong>Sinopsis:</strong> Lorem ipsum dolor sit amet...</li>
-                            <li><strong>Penerbit:</strong> Hasta Mitra</li>
-                            <li><strong>Tempat Terbit:</strong> Jakarta</li>
+                            <li><strong>Penerbit:</strong> Contoh Penerbit</li>
                             <li><strong>Lokasi Penyimpanan:</strong> Lantai 1, Ruang A, Rak 1</li>
                           </ul>
                         </div>
@@ -240,31 +237,38 @@
                     <h6 class="mb-0">
                       <a class="collapsed" data-toggle="collapse" href="#collapse-2" aria-expanded="false" aria-controls="collapse-2">
                         <div class="d-flex align-items-center">
-                          <img src="/skydash/template/images/Logo Perpustakaan Medayu putih.png" alt="sampul buku" class="rounded-0 mr-3" style="width: 50px; height: auto;">
+                          <img src="../../images/faces/face28.jpg" alt="Sampul Majalah" class="rounded-0 mr-3" style="width: 50px; height: auto;">
                           <div>
-                            <p class="font-weight-bold mb-0">Contoh Judul Buku</p>
-                            <small class="text-muted">Contoh Penulis</small>
+                            <p class="font-weight-bold mb-0">Contoh Judul Majalah Lain</p>
+                            <small class="text-muted">Edisi: 456</small>
                           </div>
                         </div>
                       </a>
                     </h6>
                   </div>
-                  <div id="collapse-2" class="collapse" role="tabpanel" aria-labelledby="heading-2" data-parent="#accordionBuku">
+                  <div id="collapse-2" class="collapse" role="tabpanel" aria-labelledby="heading-2" data-parent="#accordionMajalah">
                     <div class="card-body">
                       <div class="row">
                         <div class="col-12">
                             <ul class="list-unstyled">
-                                <li><strong>ISBN/ISSN:</strong> Contoh ISBN/ISSN</li>
+                                <li><strong>Edisi:</strong> 456</li>
                                 <li><strong>Nomor Klasifikasi:</strong> Contoh Nomor Klasifikasi</li>
-                            </ul>
+                                </ul>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
+
               </div>
             </div>
           </div>
+        </div>
+        <footer class="footer">
+          <div class="d-sm-flex justify-content-center justify-content-sm-between">
+            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © Perpustakaan Medayu Agung 2025
+          </div>
+        </footer>
         </div>
       </div>
     </div>

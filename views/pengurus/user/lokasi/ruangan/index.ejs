@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('../../../partials/__head.ejs', { title: 'Daftar ruangan' }) %>
+</head>
+
+<body class="page-lokasi-ruangan"> 
+    <div class="container-scroller">
+
+        <div class="container-fluid page-body-wrapper full-page-wrapper">
+            <%- include('../../../partials/__nav.ejs', { currentPath: '/pengurus/user/lokasi/ruangan' }) %>
+            <div class="main-panel">
+                <div class="content-wrapper"> 
+                    <div class="row">
+                        <div class="col-lg-12 grid-margin stretch-card">
+                            <div class="card">
+                                <div class="card-body">
+                                    <!-- Header dan tombol aksi untuk Daftar ruangan -->
+                                    <div class="header-actions">
+                                        <h4 class="card-title">Daftar ruangan</h4>
+                                        <!-- Tombol Tambah ruangan -->
+                                        <a href="/pengurus/user/lokasi/ruangan/create" class="btn btn-primary btn-md">
+                                            <i class="ti-plus btn-icon-prepend"></i> Tambah ruangan
+                                        </a>
+                                    </div>
+                                    <p class="card-description">
+                                        Daftar ruangan yang tersedia di perpustakaan.
+                                    </p>
+                                    <div class="table-responsive">
+                                        <table class="table table-striped table-bordered">
+                                            <thead class="bg-primary text-white">
+                                                <tr>
+                                                    <th>No</th>
+                                                    <th>Nama ruangan</th>
+                                                    <th>Aksi</th> 
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <% 
+                                                    if (typeof ruangan !== 'undefined' && ruangan.length > 0) {
+                                                        ruangan.forEach((item, index) => { 
+                                                %>
+                                                <tr>
+                                                    <td><%= index + 1 %></td>
+                                                    <td><%= item.nama %></td>
+                                                    <td class="table-actions">
+                                                        <div class="btn-group" role="group" aria-label="Aksi ruangan">
+                                                            <a href="/pengurus/user/lokasi/ruangan/edit/<%= item.id %>" class="btn btn-info btn-sm">
+                                                                <i class="ti-pencil"></i> Edit
+                                                            </a>
+                                                            <form action="/pengurus/user/lokasi/ruangan/delete/<%= item.id %>" method="POST" style="display:inline;">
+                                                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Apakah Anda yakin ingin menghapus data <%= item.nama %>?');">
+                                                                    <i class="ti-trash"></i> Hapus
+                                                                </button>
+                                                            </form>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <% 
+                                                        });
+                                                    } else { 
+                                                %>
+                                                <tr>
+                                                    <td colspan="3" class="text-center">Tidak ada data ruangan.</td>
+                                                </tr>
+                                                <% } %>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>    
+        </div> 
+    </div> 
+    <%- include('../../../partials/__foot.ejs') %>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const updatedItem = urlParams.get('updated');
+        const createdItem = urlParams.get('created');
+        const deletedItem = urlParams.get('deleted');
+
+        if (updatedItem) {
+            alert(`ruangan '${updatedItem}' berhasil diperbarui.`);
+            urlParams.delete('updated');
+        } else if (createdItem) {
+            alert(`ruangan '${createdItem}' berhasil ditambahkan.`);
+            urlParams.delete('created');
+        } else if (deletedItem) {
+            alert(`ruangan '${deletedItem}' berhasil dihapus.`);
+            urlParams.delete('deleted');
+        }
+
+        // Hapus semua parameter dari URL agar tidak muncul lagi saat reload
+        if (updatedItem || createdItem || deletedItem) { 
+            const url = new URL(window.location);
+            url.search = urlParams.toString(); 
+            window.history.replaceState({}, document.title, url);
+        }
+    </script>
+</body>
+
+</html>
