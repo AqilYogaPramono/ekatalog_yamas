@@ -9,7 +9,9 @@ router.get('/', async(req, res) => {
         let data = await modelBahasa.getAll()
         res.render('pengurus/user/bahasa/index', {data})
     } catch(err) {
-        console.log(err)
+        req.flash("error", "Internal Server Error")
+        console.error(err)
+        return res.redirect('/pengurus/bahasa')
     }
 })
 
@@ -31,7 +33,6 @@ router.post('/create', async(req, res) => {
         return res.redirect('/pengurus/bahasa')
     } catch(err) {
         req.flash("error", "Internal Server Error")
-        console.error(err)
         return res.redirect('/pengurus/bahasa')
     }
 })
@@ -41,7 +42,7 @@ router.get('/edit/:id', async(req, res) => {
     try {
         const {id} = req.params
         const data = await modelBahasa.getById(id)
-        res.render('pengurus/user/bahasa/edit', { bahasa: data })
+        res.render('pengurus/user/bahasa/edit', { data })
     } catch(err) {
         req.flash("error", "Data tidak ditemukan")
         return res.redirect('/pengurus/bahasa')
@@ -62,7 +63,6 @@ router.post('/update/:id', async (req, res) => {
         return res.redirect('/pengurus/bahasa')
     } catch(err) {
         req.flash("error", "Internal Server Error")
-        console.error(err)
         return res.redirect('/pengurus/bahasa')
     }
 })
