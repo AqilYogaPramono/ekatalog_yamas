@@ -18,7 +18,7 @@ class modelBahasa {
     //menyimpan data baru pada tabel bahasa
     static async store(data) {
         return new Promise((resolve, reject) => {
-            connection.query(`insert into bahasa set = ?`, data, (err, result) => {
+            connection.query(`insert into bahasa set ?`, data, (err, result) => {
                 if (err) {
                     reject(err)
                 } else {
@@ -44,11 +44,24 @@ class modelBahasa {
     //menghapus data pada tabel bahasa berdasarkan id
     static async delete(id) {
         return new Promise((resolve, reject) => {
-            connection.query(`delete bahasa where id = ?`, id, (err, result) => {
+            connection.query(`delete from bahasa where id = ?`, id, (err, result) => {
                 if (err) {
                     reject(err)
                 } else {
                     resolve(result)
+                }
+            })
+        })
+    }
+
+    //mengambil satu data bahasa berdasarkan id
+    static async getById(id) {
+        return new Promise((resolve, reject) => {
+            connection.query(`select * from bahasa where id = ?`, id, (err, rows) => {
+                if (err) {
+                    reject(err)
+                } else {
+                    resolve(rows[0])
                 }
             })
         })

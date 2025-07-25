@@ -30055,8 +30055,9 @@ div.tagsinput span.tag a {
   .sidebar-icon-only .sidebar .nav .nav-item.hover-open .nav-link .menu-title:after {
     display: none;
   }
+  /* !ini bagian side saat di hide  */
   .sidebar-icon-only .sidebar .nav .nav-item.hover-open .nav-link:hover .menu-title {
-    background: #4B49AC;
+    background: #000000;
   }
   .sidebar-dark.sidebar-icon-only .sidebar .nav .nav-item.hover-open .nav-link:hover .menu-title {
     background: #232227;
