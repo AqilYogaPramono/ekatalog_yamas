@@ -18,7 +18,7 @@ class modelRuangan {
     //menyimpan data baru pada tabel ruangan
     static async store(data) {
         return new Promise((resolve, reject) => {
-            connection.querry(`insert into ruangan set = ?`, data, (err, result) => {
+            connection.querry(`insert into ruangan set ?`, data, (err, result) => {
                 if (err) {
                     reject(err)
                 } else {
@@ -31,7 +31,7 @@ class modelRuangan {
     //mengupdate data pada tabel ruangan berdasarkan id
     static async update(data, id) {
         return new Promise((resolve, reject) => {
-            connection.querry(`udpate ruangan set = ? where id = ?`, [data, id], (err, result) => {
+            connection.querry(`udpate ruangan set ? where id = ?`, [data, id], (err, result) => {
                 if (err) {
                     reject(err)
                 } else {

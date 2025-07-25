@@ -6,8 +6,8 @@ const modelRuangan = require('../../../model/modelRuangan')
 //menampilakn semua data ruangan
 router.get('/', async(req, res) => {
     try {
-        let data = modelRuangan.getAll()
-        res.render('pengurus/user/lokasi/ruangan/index')
+        const data = await modelRuangan.getAll()
+        res.render('pengurus/user/lokasi/ruangan/index', {data})
     } catch(err) {
         req.flash(err)
     }
@@ -16,8 +16,8 @@ router.get('/', async(req, res) => {
 //menabahkan data ruangan baru
 router.post('/buat', async(req, res) => {
     try {
-        let {kodeRuagan, idLantai} = req.body
-        let data = {kodeRuagan, idLantai}
+        const {kodeRuagan, idLantai} = req.body
+        const data = {kodeRuagan, idLantai}
         await modelRuangan.store(data)
         res.render('pengurus/user/lokasi/ruangan/index')
     } catch(err) {
@@ -28,8 +28,9 @@ router.post('/buat', async(req, res) => {
 //memgupdate data ruangan berdasarkan id
 router.post('/edit/:id', async(req, res) => {
     try {
-        let id = req.params
-        let {kodeRuagan, idLantai} = req.body
+        const {id} = req.params
+        const {kodeRuagan, idLantai} = req.body
+        const data = {kodeRuagan, idLantai}
         await modelRuangan.update(data, id)
         res.render('pengurus/user/lokasi/ruangan/index')
     } catch(err) {
@@ -40,7 +41,7 @@ router.post('/edit/:id', async(req, res) => {
 //mengapus data ruangan berdasarakn id
 router.post('/delete/:id', async (req, res) => {
     try {
-        let id = req.params
+        const id = req.params
         await modelRuangan.delete(id)
         res.render('pengurus/user/lokasi/ruangan/index')
     } catch(err) {

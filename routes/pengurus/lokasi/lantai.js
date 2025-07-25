@@ -30,6 +30,7 @@ router.post('/create', async (req, res) => {
         }
         let data = {kode_lantai}
         await modelLantai.store(data)
+        req.flash('success', 'Data Berhasil Ditambahkan')
         res.redirect('/pengurus/lantai')
     } catch(err) {
         req.flash("error", "Internal Server Error")
@@ -56,6 +57,7 @@ router.post('/update/:id', async (req, res) => {
         let {kode_lantai} = req.body
         let data = {kode_lantai}
         await modelLantai.update(data, id)
+        req.flash('success', 'Data Berhasil Diedit')
         res.redirect('/pengurus/lantai')
     } catch (err) {
         req.flash("error", "Internal Server Error")
@@ -68,6 +70,7 @@ router.post('/delete/:id', async (req, res) => {
     try {
         let {id} = req.params
         await modelLantai.delete(id)
+        req.flash('success', 'Data Berhasil Dihapus')
         res.redirect('/pengurus/lantai')
     } catch(err) {
         req.flash("error", "Internal Server Error")
