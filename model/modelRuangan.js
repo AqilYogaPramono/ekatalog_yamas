@@ -44,7 +44,7 @@ class modelRuangan {
     //mengambil satu data bahasa berdasarkan id
     static async getById(id) {
         return new Promise((resolve, reject) => {
-            connection.query(`select * from bahasa ruangan id = ?`, id, (err, rows) => {
+            connection.query(`select * from ruangan where id = ?`, id, (err, rows) => {
                 if (err) {
                     reject(err)
                 } else {
