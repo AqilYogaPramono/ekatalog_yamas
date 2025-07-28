@@ -32,9 +32,9 @@ router.post('/create', async(req, res) => {
             req.flash("error", "Bahasa Sudah dibuat")
             return res.redirect('/pengurus/bahasa/buat')
         }
-        req.flash("success", "Data bahasa berhasil dibuat")
         await modelBahasa.store(data)
-        return res.redirect('/pengurus/bahasa')
+        req.flash("success", "Data bahasa berhasil ditambahkan")
+        res.redirect('/pengurus/bahasa')
     } catch(err) {
         req.flash("error", err.message)
         return res.redirect('/pengurus/bahasa')
