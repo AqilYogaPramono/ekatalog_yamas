@@ -9,7 +9,6 @@ router.get('/', async (req, res) => {
         let data = await modelLantai.getAll()
         res.render('pengurus/user/lokasi/lantai/index', {data})
     } catch(err) {
-        console.log(err)
         req.flash("error", err.message)
         return res.redirect('/pengurus/lantai')
     }
