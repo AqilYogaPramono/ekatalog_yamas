@@ -1,0 +1,30 @@
+<%- include('../../../../partial/__messages.ejs') %>
+<%- include('../../../../partial/__head.ejs', { title: 'Daftar Rak' }) %>
+<%- include('../../../../partial/__nav-side.ejs') %>
+
+<div class="col-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Tambahkan Rak</h4>
+        <form class="forms-sample" action="/pengurus/rak/create" method="POST">
+          <div class="form-group">
+            <label for="inputRuangan">Pilih Ruangan</label>
+            <select class="form-control" id="inputRuangan" name="id_ruangan" required>
+              <option value="">Pilih Ruangan</option>
+              <% for (let i = 0; i < ruangan.length; i++) { %>
+                <option value="<%= ruangan[i].id %>"><%= ruangan[i].kode_ruangan %></option>
+              <% } %>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="inputRuangan">Kode Rak</label>
+            <input type="text" class="form-control" id="inputRuangan" name="kode_rak" placeholder="Inputkan Kode Rak" required>
+          </div>
+          <button type="submit" class="btn btn-primary mr-2">Submit</button>
+          <a href="/pengurus/rak" class="btn btn-light">Cancel</a>
+        </form>
+      </div>
+    </div>
+  </div>
+
+<%- include('../../../../partial/__script.ejs') %>
