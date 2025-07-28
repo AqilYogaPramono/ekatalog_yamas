@@ -66,6 +66,18 @@ class modelBahasa {
             })
         })
     }
+
+    static async checkBahasa(data) {
+        return new Promise((resolve, reject) => {
+            connection.query(`select * from bahasa where bahasa = ?`, [data.bahasa], (err, rows) => {
+                if (err) {
+                    reject(err)
+                } else {
+                    resolve(rows.length > 0)
+                }
+            })
+        })
+    }
 }
 
 module.exports = modelBahasa

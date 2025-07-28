@@ -9,9 +9,8 @@ router.get('/', async(req, res) => {
         let data = await modelBahasa.getAll()
         res.render('pengurus/user/bahasa/index', {data})
     } catch(err) {
-        req.flash("error", "Internal Server Error")
-        console.error(err)
-        return res.redirect('/pengurus/bahasa')
+        req.flash("error", err.message)
+        res.redirect('/pengurus/bahasa')
     }
 })
 
@@ -25,14 +24,19 @@ router.post('/create', async(req, res) => {
     try {
         let {bahasa} = req.body
         if (!bahasa) {
-            req.flash("error", "Nama bahasa tidak boleh kosong")
-            return res.redirect('/pengurus/bahasa/buat')
+            return req.flash("error", "Nama bahasa tidak boleh kosong")
         }
         let data = {bahasa}
+        const checkBahasa = await modelBahasa.checkBahasa(data)
+        if (checkBahasa) {
+            req.flash("error", "Bahasa Sudah dibuat")
+            return res.redirect('/pengurus/bahasa/buat')
+        }
+        req.flash("success", "Data bahasa berhasil dibuat")
         await modelBahasa.store(data)
         return res.redirect('/pengurus/bahasa')
     } catch(err) {
-        req.flash("error", "Internal Server Error")
+        req.flash("error", err.message)
         return res.redirect('/pengurus/bahasa')
     }
 })
@@ -60,9 +64,10 @@ router.post('/update/:id', async (req, res) => {
         }
         let data = {bahasa}
         await modelBahasa.update(data, id)
-        return res.redirect('/pengurus/bahasa')
+        req.flash("success", "Data bahasa berhasil diperbarui")
+        res.redirect('/pengurus/bahasa')
     } catch(err) {
-        req.flash("error", "Internal Server Error")
+        req.flash("error", err.message)
         return res.redirect('/pengurus/bahasa')
     }
 })
@@ -72,9 +77,10 @@ router.post('/delete/:id', async (req, res) => {
     try {
         let {id} = req.params
         await modelBahasa.delete(id)
+        req.flash("success", "Data bahasa berhasil dihapus")
         res.redirect('/pengurus/bahasa')
     } catch(err) {
-        req.flash("error", "Internal Server Error")
+        req.flash("error", err.message)
         return res.redirect('/pengurus/bahasa')
     }
 })

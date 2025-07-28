@@ -1,0 +1,30 @@
+<%- include('../../../../partial/__messages.ejs') %>
+<%- include('../../../../partial/__head.ejs', { title: 'Daftar Ruangan' }) %>
+<%- include('../../../../partial/__nav-side.ejs') %>
+
+<div class="col-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Tambahkan Ruangan</h4>
+        <form class="forms-sample" action="/pengurus/ruangan/create" method="POST">
+          <div class="form-group">
+            <label for="inputLantai">Pilih Lantai</label>
+            <select class="form-control" id="inputLantai" name="id_lantai" required>
+              <option value="">Pilih Lantai</option>
+              <% for (let i = 0; i < data.length; i++) { %>
+                <option value="<%= data[i].id %>"><%= data[i].kode_lantai %></option>
+              <% } %>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="inputRuangan">Kode Ruangan</label>
+            <input type="text" class="form-control" id="inputRuangan" name="kode_ruangan" placeholder="Inputkan Kode Ruangan" required>
+          </div>
+          <button type="submit" class="btn btn-primary mr-2">Submit</button>
+          <a href="/pengurus/ruangan" class="btn btn-light">Cancel</a>
+        </form>
+      </div>
+    </div>
+  </div>
+
+<%- include('../../../../partial/__script.ejs') %>

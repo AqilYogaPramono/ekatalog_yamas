@@ -1,25 +1,105 @@
-<% if (messages.success) { %>
-  <div id="alert-flash" class="alert alert-success alert-dismissible fade show position-fixed" role="alert" style="top: 32px; right: 32px; z-index: 1055; min-width: 320px; max-width: 420px; box-shadow: 0 4px 24px rgba(0,0,0,0.12); border-radius: 8px; background: rgba(223, 250, 222, 0.98); color: #256029; padding: 18px 24px 18px 20px; font-size: 1rem; font-weight: 500;">
-    <%= messages.success %>
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close" style="top: 8px; right: 12px;">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-<% } else if (messages.error) { %>
-  <div id="alert-flash" class="alert alert-danger alert-dismissible fade show position-fixed" role="alert" style="top: 32px; right: 32px; z-index: 1055; min-width: 320px; max-width: 420px; box-shadow: 0 4px 24px rgba(0,0,0,0.12); border-radius: 8px; background: rgba(255, 235, 238, 0.98); color: #b71c1c; padding: 18px 24px 18px 20px; font-size: 1rem; font-weight: 500;">
-    <%= messages.error %>
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close" style="top: 8px; right: 12px;">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-<% } %>
+<% if (messages.success || messages.error) {
+    var type = messages.success ? 'success' : 'error';
+    var text = messages.success || messages.error;
+%>
+<style>
+  #alert-flash {
+    position: fixed;
+    bottom: 32px;
+    right: 32px;
+    z-index: 1055;
+    min-width: 220px;
+    max-width: 90vw;
+    width: fit-content;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 20px;
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1.4;
+    border-radius: 8px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity .3s ease, transform .3s ease;
+  }
+  #alert-flash.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  #alert-flash.hidden {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  #alert-flash.success {
+    background: rgba(223, 250, 222, 0.98);
+    color: #256029;
+  }
+  #alert-flash.error {
+    background: rgba(255, 235, 238, 0.98);
+    color: #b71c1c;
+  }
+  #alert-flash .flash-text {
+    flex: 1;
+    word-break: break-word;
+    white-space: normal;
+  }
+  #alert-flash .flash-close {
+    background: transparent;
+    border: none;
+    font-size: 1.5rem;
+    color: inherit;
+    opacity: 0.7;
+    cursor: pointer;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  #alert-flash .flash-close:hover {
+    opacity: 1;
+  }
+</style>
+
+<div id="alert-flash" class="<%= type %>" role="alert" aria-live="assertive" aria-atomic="true">
+  <span class="flash-text"><%= text %></span>
+  <button type="button" class="flash-close" aria-label="Close">&times;</button>
+</div>
+
 <script>
-  setTimeout(function() {
-    var alert = document.getElementById('alert-flash');
-    if(alert) {
-      alert.classList.remove('show');
-      alert.classList.add('fade');
-      setTimeout(function() { if(alert) alert.remove(); }, 500);
+  document.addEventListener('DOMContentLoaded', function() {
+    var alertEl = document.getElementById('alert-flash');
+    if (!alertEl) return;
+
+    alertEl.classList.add('visible');
+
+    var closeBtn = alertEl.querySelector('.flash-close');
+    if (closeBtn) {
+      closeBtn.addEventListener('click', function() {
+        alertEl.classList.remove('visible');
+        alertEl.classList.add('hidden');
+        setTimeout(function() {
+          alertEl.remove();
+        }, 300);
+      });
     }
-  }, 3500);
+
+    var delayMillis;
+    if (alertEl.classList.contains('success')) {
+      delayMillis = 3000; // 3 detik untuk success
+    } else {
+      delayMillis = 8000; // 8 detik untuk error
+    }
+
+    setTimeout(function() {
+      alertEl.classList.remove('visible');
+      alertEl.classList.add('hidden');
+      setTimeout(function() {
+        alertEl.remove();
+      }, 500);
+    }, delayMillis);
+  });
 </script>
+<% } %>
