@@ -71,7 +71,7 @@ app.use('/pengurus/penerbit-majalah', penerbitMajalahRouter)
 app.use('/pengurus/tempat-terbit-majalah', tempatTerbitMajalahRouter)
 //folder lokasi
 app.use('/pengurus/lantai', lantaiRouter)
-app.use('/pengurusu/ruangan', ruanganRouter)
+app.use('/pengurus/ruangan', ruanganRouter)
 app.use('/pengurus/rak', rakRouter)
 
 //digunakan untuk router admin

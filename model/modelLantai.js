@@ -5,7 +5,7 @@ class modelLantai {
     //mengambil semua data pada tabel lantai
     static async getAll() {
         return new Promise((resolve, reject) => {
-            connection.querry(`select * from lantai`, (err, rows) => {
+            connection.query(`select * from lantai`, (err, rows) => {
                 if(err) {
                     reject(err)
                 } else {
@@ -18,7 +18,7 @@ class modelLantai {
     //menyimpan data baru pada tabel lantai
     static async store(data) {
         return new Promise((resolve, reject) => {
-            connection.querry(`insert intop lantai set = ?`, data, (err, result) => {
+            connection.query(`insert into lantai set ?`, data, (err, result) => {
                 if (err) {
                     reject(err)
                 } else {
@@ -31,7 +31,7 @@ class modelLantai {
     //mengupdate data pada tabel lantai berdasarkan id
     static async update(data, id) {
         return new Promise((resolve, reject) => {
-            connection.querry(`udpate lanati set = ? where id = ?`, [data, id], (err, result) => {
+            connection.query(`update lantai set ? where id = ?`, [data, id], (err, result) => {
                 if (err) {
                     reject(err)
                 } else {
@@ -41,10 +41,23 @@ class modelLantai {
         })
     }
 
+    //mengambil satu data bahasa berdasarkan id
+    static async getById(id) {
+        return new Promise((resolve, reject) => {
+            connection.query(`select * from lantai where id = ?`, id, (err, rows) => {
+                if (err) {
+                    reject(err)
+                } else {
+                    resolve(rows[0])
+                }
+            })
+        })
+    }
+
     //menghapus data pada tabel lantai berdasarkan id
     static async delete(id) {
         return new Promise((resolve, reject) => {
-            connection.querry(`delete lanati where id = ?`. id, (err, result) => {
+            connection.query(`delete from lantai where id = ?`, id, (err, result) => {
                 if (err) {
                     reject(err)
                 } else {
