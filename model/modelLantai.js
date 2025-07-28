@@ -66,6 +66,19 @@ class modelLantai {
             })
         })
     }
+
+    //memeriksa apakah lantai sudah ada
+    static async checkLantai(data) {
+        return new Promise((resolve, reject) => {
+            connection.query(`select * from lantai where kode_lantai = ?`, data.kode_lantai, (err, rows) => {
+                if (err) {
+                    reject(err)
+                } else {
+                    resolve(rows.length > 0)
+                }
+            })
+        })
+    }
 }
 
 module.exports = modelLantai
