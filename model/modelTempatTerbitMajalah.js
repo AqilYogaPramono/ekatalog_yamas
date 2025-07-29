@@ -5,7 +5,7 @@ class modelTempatterbitMajalah {
     //mengambil semua data pada tabel temapt terbit majalah
     static async getAll() {
         return new Promise((resolve, reject) => {
-            connection.querry(`select * from tempat_terbit_majalah`, (err, rows) => {
+            connection.query(`select * from tempat_terbit_majalah`, (err, rows) => {
                 if(err) {
                     reject(err)
                 } else {
@@ -18,7 +18,7 @@ class modelTempatterbitMajalah {
     //menyimpan data baru pada tabel temapt terbit majalah
     static async store(data) {
         return new Promise((resolve, reject) => {
-            connection.querry(`insert into tempat_terbit_majalah`, data, (err, result) => {
+            connection.query(`insert into tempat_terbit_majalah set ?`, data, (err, result) => {
                 if(err) {
                     reject(err)
                 } else {
@@ -31,7 +31,7 @@ class modelTempatterbitMajalah {
     //mengupdate data pada tabel temapt terbit majalah berdasarkan id
     static async update(data, id) {
         return new Promise((resolve, reject) => {
-            connection.querry(`udpate tempat_terbit_majalah set ? where id = ?`, [data, id], (err, result) => {
+            connection.query(`update tempat_terbit_majalah set ? where id = ?`, [data, id], (err, result) => {
                 if (err) {
                     reject(err)
                 } else {
@@ -44,11 +44,23 @@ class modelTempatterbitMajalah {
     //menghapus data pada tabel temapt terbit majalah berdasarkan id
     static async delete(id) {
         return new Promise((resolve, reject) => {
-            connection.querry(`delete tempat_terbit_majalah where id = ?`, id, (err, result) => {
+            connection.query(`delete from tempat_terbit_majalah where id = ?`, id, (err, result) => {
                 if (err) {
                     reject(err)
                 } else {
                     resolve(result)
+                }
+            })
+        })
+    }
+
+    static async getById(id) {
+        return new Promise((resolve, reject) => {
+            connection.query(`select * from tempat_terbit_majalah where id = ?`, id, (err, rows) => {
+                if(err) {
+                    reject(err)
+                } else {
+                    resolve(rows[0])
                 }
             })
         })

@@ -1,106 +1,100 @@
-<!DOCTYPE html>
-<html lang="en">
+<%- include('../../../../partial/__messages.ejs') %>
+<%- include('../../../../partial/__head.ejs', { title: 'Daftar Tempat Terbit Majalah' }) %>
+<%- include('../../../../partial/__nav-side.ejs') %>
 
-<head>
-    <%- include('../../../partials/__head.ejs', { title: 'Daftar Tempat Terbit Majalah' }) %>
-</head>
+<style>
+  .cell-no {
+    width: 22px;
+    text-align: center;
+  }
+  .cell-namaTempatTerbitMajalah {
+    padding-left: 12px !important;
+    padding-right: 0 !important;
+  }
+  .cell-aksi {
+    width: 172px;
+    padding-left: 0 !important;
+    padding-right: 8px !important;
+  }
+  .aksi-spacer {
+    display: inline-block;
+    width: 74px;
+    height: 1px;
+  }
+  .aksi-flex {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.7rem;
+  }
+</style>
 
-<body>
-    <div class="container-scroller">
+<div class="col-lg-12 grid-margin stretch-card">
+  <div class="card"><div class="card-body">
 
-        <div class="container-fluid page-body-wrapper">
-            <%- include('../../../partials/__nav.ejs', { currentPath: '/pengurus/user/majalah/tempatTerbitMajalah' }) %>
-            <div class="main-panel">
-                <div class="content-wrapper">
-                    <div class="row">
-                        <div class="col-lg-12 grid-margin stretch-card">
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="header-actions">
-                                        <h4 class="card-title">Daftar Tempat Terbit Majalah</h4>
-                                        <!-- Tombol Tambah Tempat Terbit Majalah -->
-                                        <a href="/pengurus/user/majalah/tempatTerbitMajalah/create" class="btn btn-primary btn-md">
-                                            <i class="ti-plus btn-icon-prepend"></i> Tambah Tempat Terbit
-                                        </a>
-                                    </div>
-                                    <p class="card-description">
-                                        Daftar tempat terbit majalah yang tersedia di perpustakaan.
-                                    </p>
-                                    <div class="table-responsive">
-                                        <table class="table table-striped table-bordered">
-                                            <thead class="bg-primary text-white">
-                                                <tr>
-                                                    <th>No</th>
-                                                    <th>Tempat Terbit Majalah</th>
-                                                    <th>Aksi</th> 
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <% 
-                                                    if (typeof tempatTerbitMajalahs !== 'undefined' && tempatTerbitMajalahs.length > 0) {
-                                                        tempatTerbitMajalahs.forEach((tempatTerbit, index) => { 
-                                                %>
-                                                <tr>
-                                                    <td><%= index + 1 %></td>
-                                                    <td><%= tempatTerbit.nama %></td>
-                                                    <td class="table-actions">
-                                                        <div class="btn-group" role="group" aria-label="Aksi Tempat Terbit">
-                                                            <a href="/pengurus/user/majalah/tempatTerbitMajalah/edit/<%= tempatTerbit.id %>" class="btn btn-info btn-sm">
-                                                                <i class="ti-pencil"></i> Edit
-                                                            </a>
-                                                            <form action="/pengurus/user/majalah/tempatTerbitMajalah/delete/<%= tempatTerbit.id %>" method="POST" style="display:inline;">
-                                                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Apakah Anda yakin ingin menghapus data <%= tempatTerbit.nama %>?');">
-                                                                    <i class="ti-trash"></i> Hapus
-                                                                </button>
-                                                            </form>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <% 
-                                                        });
-                                                    } else { 
-                                                %>
-                                                <tr>
-                                                    <td colspan="3" class="text-center">Tidak ada data tempat terbit majalah.</td>
-                                                </tr>
-                                                <% } %>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h4 class="card-title mb-0">Daftar Tempat Terbit Majalah</h4>
+      <a href="/pengurus/tempat-terbit-majalah/buat" class="btn btn-primary" id="btnTambah">
+        <i class="mdi mdi-plus"></i> Tambah Tempat Terbit Majalah
+      </a>
+    </div>
+
+    <div class="table-responsive">
+      <table class="table table-striped table-hover table-bordered align-middle">
+        <thead class="table-light">
+          <tr>
+            <th class="cell-no">No</th>
+            <th class="cell-tempat_terbit_majalah">Tempat Terbit Majalah</th>
+            <th class="cell-aksi">
+              <div class="d-flex justify-content-center align-items-center" style="gap: 0.7rem;">
+                <span class="aksi-spacer"></span>
+                <span>Aksi</span>
+                <span class="aksi-spacer"></span>
+              </div>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <% for (let i = 0; i < data.length; i++) { %>
+          <tr>
+            <td class="cell-no"><%= i + 1 %></td>
+            <td class="cell-namaTempatTerbitMajalah"><%= data[i].nama_tempat_terbit_majalah %></td>
+            <td class="align-middle cell-aksi">
+              <div class="aksi-flex">
+                <a href="/pengurus/tempat-terbit-majalah/edit/<%= data[i].id %>" class="btn btn-sm btn-warning">
+                  <i class="mdi mdi-pencil"></i> Edit
+                </a>
+                <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#modalDelete<%= data[i].id %>">
+                  <i class="mdi mdi-delete"></i> Hapus
+                </button>
+              </div>
+              <div class="modal fade" id="modalDelete<%= data[i].id %>" tabindex="-1" role="dialog" aria-labelledby="modalDeleteLabel<%= data[i].id %>" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                  <form action="/pengurus/tempat-terbit-majalah/delete/<%= data[i].id %>" method="POST">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="modalDeleteLabel<%= data[i].id %>">Konfirmasi Hapus</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                      </div>
+                      <div class="modal-body">
+                        Apakah Anda yakin ingin menghapus Nama Tempat Terbit Majalah "<%= data[i].nama_tempat_terbit_majalah %>"?
+                      </div>
+                      <div class="modal-footer text-right">
+                        <button type="button" class="btn btn-light" data-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-danger">Hapus</button>
+                      </div>
                     </div>
+                  </form>
                 </div>
-            </div>    
-        </div> 
-    </div> 
-    <%- include('../../../partials/__foot.ejs') %>
+              </div>
+            </td>
+          </tr>
+          <% } %>
+        </tbody>
+      </table>
+    </div>
 
-    <script>
-        const urlParams = new URLSearchParams(window.location.search);
-        const updatedTempatTerbit = urlParams.get('updated');
-        const createdTempatTerbit = urlParams.get('created');
-        const deletedTempatTerbit = urlParams.get('deleted');
+  </div></div>
+</div>
 
-        if (updatedTempatTerbit) {
-            alert(`Tempat terbit majalah '${updatedTempatTerbit}' berhasil diperbarui.`);
-            urlParams.delete('updated');
-        } else if (createdTempatTerbit) {
-            alert(`Tempat terbit majalah '${createdTempatTerbit}' berhasil ditambahkan.`);
-            urlParams.delete('created');
-        } else if (deletedTempatTerbit) {
-            alert(`Tempat terbit majalah '${deletedTempatTerbit}' berhasil dihapus.`);
-            urlParams.delete('deleted');
-        }
-
-        // Hapus semua parameter dari URL agar tidak muncul lagi saat reload
-        if (updatedTempatTerbit || createdTempatTerbit || deletedTempatTerbit) { 
-            const url = new URL(window.location);
-            url.search = urlParams.toString(); 
-            window.history.replaceState({}, document.title, url);
-        }
-    </script>
-</body>
-
-</html>
+<%- include('../../../../partial/__script.ejs') %>
