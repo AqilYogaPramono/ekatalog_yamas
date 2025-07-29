@@ -5,13 +5,13 @@
 <div class="col-12 grid-margin stretch-card">
     <div class="card">
       <div class="card-body">
-        <h4 class="card-title">Edit penerbit-buku</h4>
-        <form class="forms-sample" action="/pengurus/penerbit-buku/update/<%= data.id %>" method="POST">
+        <h4 class="card-title">Tambahkan Penerbit Buku</h4>
+        <form class="forms-sample" action="/pengurus/penerbit-buku/create" method="POST">
           <div class="form-group">
-            <label for="inputPenerbitBuku">Penerbit Buku</label>
-            <input type="text" class="form-control" id="inputPenerbitBuku" name="nama_penerbit" placeholder="Inputkan Penerbit Buku" value="<%= data.nama_penerbit %>" required>
+            <label for="inputPenerbitBuku">Nama Penerbit Buku</label>
+            <input type="text" class="form-control" id="inputPenerbitBuku" name="nama_penerbit" placeholder="Inputkan Nama Penerbit Buku" required>
           </div>
-          <button type="submit" class="btn btn-primary mr-2">Update</button>
+          <button type="submit" class="btn btn-primary mr-2">Submit</button>
           <a href="/pengurus/penerbit-buku" class="btn btn-light">Cancel</a>
         </form>
       </div>

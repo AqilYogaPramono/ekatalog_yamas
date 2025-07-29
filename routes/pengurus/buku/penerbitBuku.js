@@ -6,46 +6,68 @@ const modelPenerbitBuku = require('../../../model/modelPenerbitBuku')
 //menampilakn semua data penerbit buku
 router.get('/', async(req, res) => {
     try {
-        let data = await modelPenerbitBuku()
-        res.render('pengurus/user/penerbitBuku/index')
+        const data = await modelPenerbitBuku.getAll()
+        res.render('pengurus/user/buku/penerbitBuku/index', {data})
     } catch(err) {
-        req.flash(err)
+        req.flash('error', err.message)
+        res.redirect('/pengurus/penerbit-buku')
     }
 })
 
+router.get('/buat', async(req, res) => {
+    res.render('pengurus/user/buku/penerbitBuku/buat')
+})
+
 //menabahkan data penerbit buku baru
-router.post('/buat', async(req, res) => {
+router.post('/create', async(req, res) => {
     try {
-        let {namaPenerbit} = req.body
-        let data = namaPenerbit
+        const {nama_penerbit} = req.body
+        const data = {nama_penerbit}
         await modelPenerbitBuku.store(data)
-        res.render('pengurus/user/penerbitBuku/index')
-    } catch {
-        req.flash(err)
+        req.flash('success', 'Data Berhasil Ditambah')
+        res.redirect('/pengurus/penerbit-buku')
+    } catch(err) {
+        req.flash('error', err.message)
+        res.redirect('/pengurus/penerbit-buku')
+    }
+})
+
+router.get('/edit/:id', async(req, res) => {
+    try {
+        const {id} = req.params
+        const data = await modelPenerbitBuku.getById(id)
+        res.render('pengurus/user/buku/penerbitBuku/edit', {data})
+    } catch (err) {
+        req.flash('error', err.message)
+        res.redirect('/pengurus/penerbit-buku')
     }
 })
 
 //memgupdate data penerbit buku berdasarkan id
-router.post('/edit', async(req, res) => {
+router.post('/update/:id', async(req, res) => {
     try {
-        let id = req.params
-        let {namaPenerbit} = req.body
-        let data = namaPenerbit
-        await modelPenerbitBuku.update(id, data)
-        res.render('pengurus/user/penerbitBuku/index')
+        const {id} = req.params
+        const {nama_penerbit} = req.body
+        const data = {nama_penerbit}
+        await modelPenerbitBuku.update(data, id)
+        req.flash('success', 'Data Berhasil Diupdate')
+        res.redirect('/pengurus/penerbit-buku')
     } catch(err) {
-        req.flash(err)
+        req.flash('error', err.message)
+        res.redirect('/pengurus/penerbit-buku')
     }
 })
 
 //mengapus data penerbit buku berdasarakn id
-router.post('/delete', async(req,res) => {
+router.post('/delete/:id', async(req,res) => {
     try {
-        let id = req.params
+        const {id} = req.params
         await modelPenerbitBuku.delete(id)
-        res.render('pengrus/user/penerbitBuku/index')
+        req.flash('success', 'Data Berhasil Dihapus')
+        res.redirect('/pengurus/penerbit-buku')
     } catch(err) {
-        req.flash(err)
+        req.flash('error', err.message)
+        res.redirect('/pengurus/penerbit-buku')
     } 
 })
 
