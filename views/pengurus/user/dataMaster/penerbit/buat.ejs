@@ -1,18 +1,18 @@
 <%- include('../../../../partial/__messages.ejs') %>
-<%- include('../../../../partial/__head.ejs', { title: 'Daftar Penerbit Buku' }) %>
+<%- include('../../../../partial/__head.ejs', { title: 'Daftar Penerbit' }) %>
 <%- include('../../../../partial/__nav-side.ejs') %>
 
 <div class="col-12 grid-margin stretch-card">
     <div class="card">
       <div class="card-body">
-        <h4 class="card-title">Tambahkan Penerbit Buku</h4>
-        <form class="forms-sample" action="/pengurus/penerbit-buku/create" method="POST">
+        <h4 class="card-title">Tambahkan Penerbit</h4>
+        <form class="forms-sample" action="/pengurus/penerbit/create" method="POST">
           <div class="form-group">
-            <label for="inputPenerbitBuku">Nama Penerbit Buku</label>
-            <input type="text" class="form-control" id="inputPenerbitBuku" name="nama_penerbit" placeholder="Inputkan Nama Penerbit Buku" required>
+            <label for="inputPenerbit">Nama Penerbit</label>
+            <input type="text" class="form-control" id="inputPenerbit" name="nama_penerbit" placeholder="Inputkan Nama Penerbit" required>
           </div>
           <button type="submit" class="btn btn-primary mr-2">Submit</button>
-          <a href="/pengurus/penerbit-buku" class="btn btn-light">Cancel</a>
+          <a href="/pengurus/penerbit" class="btn btn-light">Cancel</a>
         </form>
       </div>
     </div>
