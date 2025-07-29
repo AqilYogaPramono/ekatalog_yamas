@@ -7,27 +7,29 @@ require('dotenv').config()
 var session = require('express-session')
 var flash = require('express-flash')
 
+//digunakan untuk router admin
+//folder admin
+const pengurusRouter = require('./routes/admin/admin')
+
 //digunakan untuk router pengguna
 //folder pengguna
 const penggunaRouter = require('./routes/pengguna/pengguna')
 
 //digunakan untuk router pengurus
-//folder bahasa
-const bahasaRouter = require('./routes/pengurus/bahasa/bahasa')
 //folder buku
-const tempatTerbitBukuRouter = require('./routes/pengurus/buku/tempatTerbitBuku')
-const penerbitBukuRouter = require('./routes/pengurus/buku/penerbitBuku')
-//folder majalah
-const penerbitMajalahRouter = require('./routes/pengurus/majalah/penerbitMajalah')
-const tempatTerbitMajalahRouter = require('./routes/pengurus/majalah/tempatTerbitMajalah')
+// const bukuRouter = require('./routes/pengurus/buku/buku')
+// const kategoriBukuRouter = require('./routes/pengurus/buku/kategoriBuku')
+// const pengarangBukuRouter = require('./routes/pengurus/buku/pengarangBuku')
+//folder data master
+const bahasaRouter = require('./routes/pengurus/dataMaster/bahasa')
+const  tempatTerbitRouter= require('./routes/pengurus/dataMaster/tempatTerbit')
+const penerbitRouter = require('./routes/pengurus/dataMaster/penerbit')
 //folder lokasi
 const lantaiRouter = require('./routes/pengurus/lokasi/lantai')
 const ruanganRouter = require('./routes/pengurus/lokasi/ruangan')
 const rakRouter = require('./routes/pengurus/lokasi/rak')
-
-//digunakan untuk router admin
-//folder admin
-const pengurusRouter = require('./routes/admin/admin')
+//folder majalah
+const majalahRouter = require('./routes/pengurus/majalah/majalah')
 
 var app = express();
 
@@ -57,6 +59,10 @@ app.use(session({
 //middleware untuk mengirim pesan
 app.use(flash())
 
+//digunakan untuk router admin
+//folder admin
+app.use('/admin/pengurus', pengurusRouter)
+
 //digunakan untuk router pengguna
 //folder pengguna
 app.use('/', penggunaRouter)
@@ -64,19 +70,17 @@ app.use('/', penggunaRouter)
 //folder bahasa
 app.use('/pengurus/bahasa', bahasaRouter)
 //folder buku
-app.use('/pengurus/tempat-terbit-buku', tempatTerbitBukuRouter)
-app.use('/pengurus/penerbit-buku', penerbitBukuRouter)
-//folder majalah
-app.use('/pengurus/penerbit-majalah', penerbitMajalahRouter)
-app.use('/pengurus/tempat-terbit-majalah', tempatTerbitMajalahRouter)
+// app.use('/pengurus/buku', bukuRouter)
+// app.use('/pengurus/kategori-buku', kategoriBukuRouter)
+// app.use('/pengurus/pengarang-buku', pengarangBukuRouter)
+//folder data master
+app.use('/pengurs/bahasa', bahasaRouter)
+app.use('/pengurus/tempat-terbit', tempatTerbitRouter)
+app.use('/pengurus/penerbit', penerbitRouter)
 //folder lokasi
 app.use('/pengurus/lantai', lantaiRouter)
 app.use('/pengurus/ruangan', ruanganRouter)
 app.use('/pengurus/rak', rakRouter)
-
-//digunakan untuk router admin
-//folder admin
-app.use('/admin/pengurus', pengurusRouter)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

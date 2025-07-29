@@ -1,0 +1,21 @@
+<%- include('../../../../partial/__messages.ejs') %>
+<%- include('../../../../partial/__head.ejs', { title: 'Daftar Tempat Terbit Buku' }) %>
+<%- include('../../../../partial/__nav-side.ejs') %>
+
+<div class="col-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Edit tempat-terbit-buku</h4>
+        <form class="forms-sample" action="/pengurus/tempat-terbit-buku/update/<%= data.id %>" method="POST">
+          <div class="form-group">
+            <label for="inputTempatTerbit">Tempat Terbit Buku</label>
+            <input type="text" class="form-control" id="inputTempatTerbit" name="nama_tempat_terbit" placeholder="Inputkan Tempat Terbit Buku" value="<%= data.nama_tempat_terbit %>" required>
+          </div>
+          <button type="submit" class="btn btn-primary mr-2">Update</button>
+          <a href="/pengurus/tempat-terbit-buku" class="btn btn-light">Cancel</a>
+        </form>
+      </div>
+    </div>
+  </div>
+
+<%- include('../../../../partial/__script.ejs') %>

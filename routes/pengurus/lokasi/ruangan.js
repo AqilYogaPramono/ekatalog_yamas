@@ -68,7 +68,7 @@ router.get('/edit/:id', async (req, res) => {
 })
 
 //memgupdate data ruangan berdasarkan id
-router.post('/edit/:id', async(req, res) => {
+router.post('/update/:id', async(req, res) => {
     try {
         const {id} = req.params
         const {kode_ruangan, id_lantai} = req.body
@@ -82,7 +82,7 @@ router.post('/edit/:id', async(req, res) => {
         }
         const data = {kode_ruangan, id_lantai}
         await modelRuangan.update(data, id)
-        req.flash('success', 'Data ruangan berhasil diupdate')
+        req.flash('success', 'Data berhasil diupdate')
         res.redirect('/pengurus/ruangan')
     } catch(err) {
         req.flash('error', err.message)
