@@ -1,10 +1,10 @@
 var express = require('express')
 var router = express.Router()
-const modelTempatTerbitBuku = require('../../../model/modelTempatTerbitBuku')
+const modelTempatTerbit = require('../../../model/modelTempatTerbit')
 
 router.get('/', async (req, res) => {
     try {
-        const data = await modelTempatTerbitBuku.getAll()
+        const data = await modelTempatTerbit.getAll()
         res.render('pengurus/user/buku/tempatTerbitBuku/index', {data})
     } catch(err) {
         req.flash("error", err.message)
@@ -20,7 +20,7 @@ router.post('/create', async (req, res) => {
     try {
         const {nama_tempat_terbit} = req.body
         const data = {nama_tempat_terbit}
-        await modelTempatTerbitBuku.store(data)
+        await modelTempatTerbit.store(data)
         req.flash('success', 'Data Berhasil Ditambah')
         res.redirect('/pengurus/tempat-terbit-buku')
     } catch(err) {
@@ -32,7 +32,7 @@ router.post('/create', async (req, res) => {
 router.get('/edit/:id', async (req, res) => {
     try {
         const {id} = req.params
-        const data = await modelTempatTerbitBuku.getById(id)
+        const data = await modelTempatTerbit.getById(id)
         res.render('pengurus/user/buku/tempatTerbitBuku/edit', {data})
     } catch(err) {
         req.flash("error", err.message)
@@ -45,7 +45,7 @@ router.post('/update/:id', async (req, res) => {
         const {id} = req.params
         const {nama_tempat_terbit} = req.body
         const data = {nama_tempat_terbit}
-        await modelTempatTerbitBuku.update(data, id)
+        await modelTempatTerbit.update(data, id)
         req.flash('success', 'Data berhasil Diupdate')
         res.redirect('/pengurus/tempat-terbit-buku')
     } catch(err) {
@@ -57,7 +57,7 @@ router.post('/update/:id', async (req, res) => {
 router.post('/delete/:id', async (req, res) => {
     try {
         const {id} = req.params
-        await modelTempatTerbitBuku.delete(id)
+        await modelTempatTerbit.delete(id)
         req.flash('success', 'Data berhasil dihapus')
         res.redirect('/pengurus/tempat-terbit-buku')
     } catch(err) {

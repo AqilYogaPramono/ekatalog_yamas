@@ -1,12 +1,12 @@
 var express = require('express')
 var router = express.Router()
 //import model penerbit buku 
-const modelPenerbitBuku = require('../../../model/modelPenerbitBuku')
+const modelPenerbit = require('../../../model/modelPenerbit')
 
 //menampilakn semua data penerbit buku
 router.get('/', async(req, res) => {
     try {
-        const data = await modelPenerbitBuku.getAll()
+        const data = await modelPenerbit.getAll()
         res.render('pengurus/user/buku/penerbitBuku/index', {data})
     } catch(err) {
         req.flash('error', err.message)
@@ -23,7 +23,7 @@ router.post('/create', async(req, res) => {
     try {
         const {nama_penerbit} = req.body
         const data = {nama_penerbit}
-        await modelPenerbitBuku.store(data)
+        await modelPenerbit.store(data)
         req.flash('success', 'Data Berhasil Ditambah')
         res.redirect('/pengurus/penerbit-buku')
     } catch(err) {
@@ -35,7 +35,7 @@ router.post('/create', async(req, res) => {
 router.get('/edit/:id', async(req, res) => {
     try {
         const {id} = req.params
-        const data = await modelPenerbitBuku.getById(id)
+        const data = await modelPenerbit.getById(id)
         res.render('pengurus/user/buku/penerbitBuku/edit', {data})
     } catch (err) {
         req.flash('error', err.message)
@@ -49,7 +49,7 @@ router.post('/update/:id', async(req, res) => {
         const {id} = req.params
         const {nama_penerbit} = req.body
         const data = {nama_penerbit}
-        await modelPenerbitBuku.update(data, id)
+        await modelPenerbit.update(data, id)
         req.flash('success', 'Data Berhasil Diupdate')
         res.redirect('/pengurus/penerbit-buku')
     } catch(err) {
@@ -62,7 +62,7 @@ router.post('/update/:id', async(req, res) => {
 router.post('/delete/:id', async(req,res) => {
     try {
         const {id} = req.params
-        await modelPenerbitBuku.delete(id)
+        await modelPenerbit.delete(id)
         req.flash('success', 'Data Berhasil Dihapus')
         res.redirect('/pengurus/penerbit-buku')
     } catch(err) {

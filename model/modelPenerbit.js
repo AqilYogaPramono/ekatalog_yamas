@@ -1,11 +1,11 @@
 const connection = require('../config/database')
 
 //membaut class yang beriris CRUD pada tabel penerbit buku
-class modelPenerbitBuku {
+class modelPenerbit {
     //mengambil semua data pada tabel penerbit buku
     static async getAll() {
         return new Promise((resolve, reject) => {
-            connection.query(`select * from penerbit_buku`, (err, rows) => {
+            connection.query(`select * from penerbit`, (err, rows) => {
                 if(err) {
                     reject(err)
                 } else {
@@ -18,7 +18,7 @@ class modelPenerbitBuku {
     //menyimpan data baru pada tabel penerbit buku
     static async store(data) {
         return new Promise((resolve, reject) => {
-            connection.query(`insert into penerbit_buku set ?`, data, (err, result) => {
+            connection.query(`insert into penerbit set ?`, data, (err, result) => {
                 if(err) {
                     reject(err)
                 } else {
@@ -31,7 +31,7 @@ class modelPenerbitBuku {
     //mengupdate data pada tabel penerbit buku berdasarkan id
     static async update(data, id) {
         return new Promise((resolve, reject) => {
-            connection.query(`update penerbit_buku set ? where id = ?`, [data, id], (err, result) => {
+            connection.query(`update penerbit set ? where id = ?`, [data, id], (err, result) => {
                 if(err) {
                     reject(err)
                 } else {
@@ -44,7 +44,7 @@ class modelPenerbitBuku {
     //menghapus data pada tabel penerbit buku berdasarkan id
     static async delete(id) {
         return new Promise((resolve, reject) => {
-            connection.query(`delete from penerbit_buku where id = ?`, id, (err, result) => {
+            connection.query(`delete from penerbit where id = ?`, id, (err, result) => {
                 if(err) {
                     reject(err)
                 } else {
@@ -56,7 +56,7 @@ class modelPenerbitBuku {
 
     static async getById(id) {
         return new Promise((resolve, reject) => {
-            connection.query(`select * from penerbit_buku where id = ?`, id, (err, rows) => {
+            connection.query(`select * from penerbit where id = ?`, id, (err, rows) => {
                 if(err) {
                     reject(err)
                 } else {
@@ -67,4 +67,4 @@ class modelPenerbitBuku {
     }
 }
 
-module.exports = modelPenerbitBuku
+module.exports = modelPenerbit

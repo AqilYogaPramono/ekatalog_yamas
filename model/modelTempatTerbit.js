@@ -1,11 +1,11 @@
 const connection = require('../config/database')
 
-//membaut class yang beriris CRUD pada tabel penerbit majalah
-class modelPenerbitMajalah {
-    //mengambil semua data pada tabel penerbit majalah
+//membaut class yang beriris CRUD pada tabel temapt terbit buku
+class modelTempatTerbit {
+    //mengambil semua data pada tabel temapt terbit buku
     static async getAll() {
         return new Promise((resolve, reject) => {
-            connection.query(`select * from penerbit_majalah`, (err, rows) => {
+            connection.query(`select * from tempat_terbit`, (err, rows) => {
                 if(err) {
                     reject(err)
                 } else {
@@ -15,10 +15,10 @@ class modelPenerbitMajalah {
         })
     }
 
-    //menyimpan data baru pada tabel penerbit majalah
+    //menyimpan data baru pada tabel temapt terbit buku
     static async store(data) {
         return new Promise((resolve, reject) => {
-            connection.query(`insert into penerbit_majalah set ?`, data, (err, result) => {
+            connection.query('insert into tempat_terbit set ?', data, (err, result) => {
                 if(err) {
                     reject(err)
                 } else {
@@ -28,23 +28,23 @@ class modelPenerbitMajalah {
         })
     }
 
-    //mengupdate data pada tabel penerbit majalah berdasarkan id
+    //mengupdate data pada tabel temapt terbit buku berdasarkan id
     static async update(data, id) {
         return new Promise((resolve, reject) => {
-            connection.query(`update penerbit_majalah set ? where id = ?`, [data, id], (err, result) => {
+            connection.query(`update tempat_terbit set ? where id = ?`, [data, id], (err, result) => {
                 if(err) {
                     reject(err)
                 } else {
                     resolve(result)
                 }
             })
-    }) 
+        })
     }
 
-    //menghapus data pada tabel penerbit majalah berdasarkan id
+    //menghapus data pada tabel temapt terbit buku berdasarkan id
     static async delete(id) {
         return new Promise((resolve, reject) => {
-            connection.query(`delete from penerbit_majalah where id = ?`, id, (err, result) => {
+            connection.query(`delete from tempat_terbit where id = ?`, id, (err, result) => {
                 if(err) {
                     reject(err)
                 } else {
@@ -56,7 +56,7 @@ class modelPenerbitMajalah {
 
     static async getById(id) {
         return new Promise((resolve, reject) => {
-            connection.query(`select * from penerbit_majalah where id = ?`, id, (err, rows) => {
+            connection.query(`select * from tempat_terbit where id = ?`, id, (err, rows) => {
                 if(err) {
                     reject(err)
                 } else {
@@ -67,4 +67,4 @@ class modelPenerbitMajalah {
     }
 }
 
-module.exports = modelPenerbitMajalah
+module.exports = modelTempatTerbit

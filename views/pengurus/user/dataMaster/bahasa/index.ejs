@@ -1,6 +1,6 @@
-<%- include('../../../partial/__messages.ejs') %>
-<%- include('../../../partial/__head.ejs', { title: 'Daftar Bahasa' }) %>
-<%- include('../../../partial/__nav-side.ejs') %>
+<%- include('../../../../partial/__messages.ejs') %>
+<%- include('../../../../partial/__head.ejs', { title: 'Daftar Bahasa' }) %>
+<%- include('../../../../partial/__nav-side.ejs') %>
 
 <style>
   .cell-no {
@@ -77,7 +77,7 @@
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                       </div>
                       <div class="modal-body">
-                        Apakah Anda yakin ingin menghapus bahasa "<%= data[i].bahasa %>"?
+                        Apakah Anda yakin ingin menghapus bahasa "<%= data[i].nama_bahasa %>"?
                       </div>
                       <div class="modal-footer text-right">
                         <button type="button" class="btn btn-light" data-dismiss="modal">Batal</button>
@@ -97,4 +97,4 @@
   </div></div>
 </div>
 
-<%- include('../../../partial/__script.ejs') %>
+<%- include('../../../../partial/__script.ejs') %>

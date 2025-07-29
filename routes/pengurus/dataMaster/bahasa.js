@@ -7,7 +7,7 @@ const modelBahasa = require('../../../model/modelBahasa')
 router.get('/', async(req, res) => {
     try {
         const data = await modelBahasa.getAll()
-        res.render('pengurus/user/bahasa/index', {data})
+        res.render('pengurus/user/dataMaster/bahasa/index', {data})
     } catch(err) {
         req.flash("error", err.message)
         res.redirect('/pengurus/bahasa')
@@ -16,16 +16,13 @@ router.get('/', async(req, res) => {
 
 //menampilkan halaman untuk menambahkan data bahasa
 router.get('/buat', async(req, res) => {
-    res.render('pengurus/user/bahasa/buat')
+    res.render('pengurus/user/dataMaster/bahasa/buat')
 })
 
 //menabahkan data bahasa baru
 router.post('/create', async(req, res) => {
     try {
         const {nama_bahasa} = req.body
-        if (!nama_bahasa) {
-            return req.flash("error", "Nama bahasa tidak boleh kosong")
-        }
         const data = {nama_bahasa}
         const checkBahasa = await modelBahasa.checkBahasa(data)
         if (checkBahasa) {
@@ -48,9 +45,9 @@ router.get('/edit/:id', async(req, res) => {
     try {
         const {id} = req.params
         const data = await modelBahasa.getById(id)
-        res.render('pengurus/user/bahasa/edit', { data })
+        res.render('pengurus/user/dataMaster/bahasa/edit', { data })
     } catch(err) {
-        req.flash("error", "Data tidak ditemukan")
+        req.flash("error", err.message)
         return res.redirect('/pengurus/bahasa')
     }
 })
@@ -60,11 +57,12 @@ router.post('/update/:id', async (req, res) => {
     try {
         const {id} = req.params
         const {nama_bahasa} = req.body
-        if (!nama_bahasa) {
-            req.flash("error", "Nama bahasa tidak boleh kosong")
-            return res.redirect(`/pengurus/bahasa/edit/${id}`)
-        }
         const data = {nama_bahasa}
+        const checkBahasa = await modelBahasa.checkBahasa(data)
+        if (checkBahasa) {
+            req.flash("error", "Bahasa Sudah dibuat")
+            return res.redirect('/pengurus/bahasa/buat')
+        }
         await modelBahasa.update(data, id)
         req.flash("success", "Data bahasa berhasil diperbarui")
         res.redirect('/pengurus/bahasa')
