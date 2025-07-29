@@ -69,7 +69,7 @@ class modelBahasa {
 
     static async checkBahasa(data) {
         return new Promise((resolve, reject) => {
-            connection.query(`select * from bahasa where bahasa = ?`, [data.bahasa], (err, rows) => {
+            connection.query(`select * from bahasa where nama_bahasa = ?`, [data.nama_bahasa], (err, rows) => {
                 if (err) {
                     reject(err)
                 } else {
