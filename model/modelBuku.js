@@ -12,6 +12,31 @@ class modelBuku {
             })
         })
     }
+
+    static async getAll() {
+        return new Promise((resolve, reject) => {
+            connection.query(`SELECT b.id, b.judul_buku, b.tahun_terbit_buku, b.ketersediaan, GROUP_CONCAT(DISTINCT pb.nama_pengarang SEPARATOR ', ') AS pengarang, GROUP_CONCAT(DISTINCT kb.nama_kategori SEPARATOR ', ') AS kategori FROM buku b LEFT JOIN pengarang_buku pb ON b.id = pb.id_buku LEFT JOIN kategori_buku kb ON b.id = kb.id_buku WHERE b.status = 'Tampil' GROUP BY b.id;`, (err, rows) => {
+                if(err) {
+                    reject(err)
+                } else {
+                    resolve(rows)
+                }
+            })
+        })
+    }
+
+    static async store(data) {
+        return new Promise((resolve, reject) => {
+            connection.query(`INSERT INTO buku SET ?`, data, (err, result) => {
+                if (err) {
+                    reject(err)
+                } else {
+                    resolve(result)
+                }
+            })
+        })
+    }
+
 }
 
 module.exports = modelBuku

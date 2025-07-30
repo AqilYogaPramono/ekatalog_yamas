@@ -17,7 +17,7 @@ const penggunaRouter = require('./routes/pengguna/pengguna')
 
 //digunakan untuk router pengurus
 //folder buku
-// const bukuRouter = require('./routes/pengurus/buku/buku')
+const bukuRouter = require('./routes/pengurus/buku/buku')
 const kategoriBukuRouter = require('./routes/pengurus/buku/kategoriBuku')
 const pengarangBukuRouter = require('./routes/pengurus/buku/pengarangBuku')
 //folder data master
@@ -70,7 +70,7 @@ app.use('/', penggunaRouter)
 //folder bahasa
 app.use('/pengurus/bahasa', bahasaRouter)
 //folder buku
-// app.use('/pengurus/buku', bukuRouter)
+app.use('/pengurus/buku', bukuRouter)
 app.use('/pengurus/kategori-buku', kategoriBukuRouter)
 app.use('/pengurus/pengarang-buku', pengarangBukuRouter)
 //folder data master

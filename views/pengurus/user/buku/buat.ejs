@@ -1,0 +1,117 @@
+<%- include('../../../partial/__messages.ejs') %>
+<%- include('../../../partial/__head.ejs', { title: 'Tambah Buku' }) %>
+<%- include('../../../partial/__nav-side.ejs') %>
+
+<div class="col-12 grid-margin stretch-card">
+  <div class="card">
+    <div class="card-body">
+      <h4 class="card-title">Tambah Buku</h4>
+      <form class="forms-sample" action="/pengurus/buku/tambah" method="POST">
+
+        <div class="form-group">
+          <label for="judulBuku">Judul Buku</label>
+          <input type="text" class="form-control" id="judulBuku" name="judul_buku" required>
+        </div>
+
+        <div class="form-group">
+          <label for="cover">Foto Cover</label>
+          <input type="text" class="form-control" id="cover" name="foto_cover_buku" placeholder="URL atau path gambar">
+        </div>
+
+        <div class="form-group">
+          <label for="isbn">ISBN/ISSN</label>
+          <input type="text" class="form-control" id="isbn" name="isbn_issn">
+        </div>
+
+        <div class="form-group">
+          <label for="klasifikasi">No Klasifikasi</label>
+          <input type="text" class="form-control" id="klasifikasi" name="no_klasifikasi_buku">
+        </div>
+
+        <div class="form-group">
+          <label for="id_bahasa">Bahasa</label>
+          <input type="number" class="form-control" id="id_bahasa" name="id_bahasa">
+        </div>
+
+        <div class="form-group">
+          <label for="halaman">Total Halaman</label>
+          <input type="number" class="form-control" id="halaman" name="total_halaman_buku">
+        </div>
+
+        <div class="form-group">
+          <label for="tahun">Tahun Terbit</label>
+          <input type="number" class="form-control" id="tahun" name="tahun_terbit_buku" min="1000" max="9999">
+        </div>
+
+        <div class="form-group">
+          <label for="sinopsis">Sinopsis</label>
+          <textarea class="form-control" id="sinopsis" name="sinopsis_buku" rows="4"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="id_tempat_terbit">Tempat Terbit (ID)</label>
+          <input type="number" class="form-control" id="id_tempat_terbit" name="id_tempat_terbit">
+        </div>
+
+        <div class="form-group">
+          <label for="id_penerbit">Penerbit (ID)</label>
+          <input type="number" class="form-control" id="id_penerbit" name="id_penerbit">
+        </div>
+
+        <div class="form-group">
+          <label for="id_rak">Rak (ID)</label>
+          <input type="number" class="form-control" id="id_rak" name="id_rak">
+        </div>
+
+        <div class="form-group">
+          <label for="pengurus">Pengurus Buat</label>
+          <input type="text" class="form-control" id="pengurus" name="pengurus_buat" required>
+        </div>
+
+        <!-- Input pengarang buku (boleh lebih dari satu) -->
+        <div class="form-group">
+          <label>Pengarang Buku</label>
+          <div id="pengarang-wrapper">
+            <input type="text" class="form-control mb-2" name="pengarang_buku[]" required>
+          </div>
+          <button type="button" class="btn btn-sm btn-info" onclick="tambahPengarang()">+ Tambah Pengarang</button>
+        </div>
+
+        <!-- Input kategori buku (boleh lebih dari satu) -->
+        <div class="form-group">
+          <label>Kategori Buku</label>
+          <div id="kategori-wrapper">
+            <input type="text" class="form-control mb-2" name="kategori_buku[]" required>
+          </div>
+          <button type="button" class="btn btn-sm btn-info" onclick="tambahKategori()">+ Tambah Kategori</button>
+        </div>
+
+        <button type="submit" class="btn btn-primary mr-2">Simpan</button>
+        <a href="/pengurus/buku" class="btn btn-light">Cancel</a>
+      </form>
+    </div>
+  </div>
+</div>
+
+<%- include('../../../partial/__script.ejs') %>
+
+<!-- Tambah input dinamis -->
+<script>
+  function tambahPengarang() {
+    const wrapper = document.getElementById('pengarang-wrapper');
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.name = 'pengarang_buku[]';
+    input.className = 'form-control mb-2';
+    wrapper.appendChild(input);
+  }
+
+  function tambahKategori() {
+    const wrapper = document.getElementById('kategori-wrapper');
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.name = 'kategori_buku[]';
+    input.className = 'form-control mb-2';
+    wrapper.appendChild(input);
+  }
+</script>
