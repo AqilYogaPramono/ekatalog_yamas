@@ -1,98 +1,153 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
-    <%- include('../partials/__head.ejs') %>
+    <%- include('../../partials/__head.ejs', { title: 'Detail Buku' }) %>
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: "Nunito", sans-serif;
+        }
+        .navbar {
+            box-shadow: 0 2px 4px rgba(0,0,0,.04);
+        }
+        .detail-header {
+            font-weight: 700;
+            font-size: 2rem;
+            color: #212529;
+            margin-bottom: 1.5rem;
+        }
+        .detail-cover-img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        .detail-info-item {
+            margin-bottom: 1rem;
+            display: flex;
+        }
+        .detail-info-label {
+            font-weight: 700;
+            color: #495057;
+            min-width: 150px;
+        }
+        .detail-info-value {
+            color: #5f6870;
+            flex-grow: 1;
+            text-align: justify;
+        }
+        .footer {
+            background-color: #0F8EC8;
+            color: #fff;
+            padding: 40px 2.45rem;
+            font-family: "Nunito", sans-serif;
+        }
+        .footer-content-wrapper { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-start; width: 100%; }
+        .footer-section { flex: 1; padding: 0 20px; min-width: 280px; margin-bottom: 30px; }
+        .logo-section { display: flex; flex-direction: row; align-items: center; margin-top: 20px; }
+        .logo-section img { max-height: 50px; margin-right: 10px; }
+        .logo-section p { color: #fff; font-size: 1.2rem; font-weight: 600; white-space: nowrap; margin: 0; }
+        .footer-section h3 { color: #fff; font-size: 1.4rem; margin-bottom: 20px; font-weight: 600; }
+        .footer-section p, .footer-section ul li { color: #fff; font-size: 0.95rem; line-height: 1.6; margin-bottom: 10px; display: flex; align-items: flex-start; }
+        .footer-section ul { list-style: none; padding: 0; margin: 0; }
+        .footer-section .icon { margin-right: 10px; display: inline-flex; align-items: center; }
+        .footer-section .icon svg { fill: #fff; width: 18px; height: 18px; }
+        .maps-placeholder iframe { width: 100%; height: 100%; border: none; }
+        .copyright { width: 100%; text-align: center; padding-top: 20px; border-top: 1px solid rgba(255, 255, 255, 0.2); margin-top: 30px; color: #fff; font-size: 0.85rem; }
+    </style>
 </head>
 <body>
-    <div class="container-scroller">
-        <div class="container-fluid page-body-wrapper">   
-            <%- include('../partials/__nav.ejs') %>         
-            <div class="main-panel">
-                <div class="content-wrapper">
-                    <!-- <div class="row">
-                        <div class="col-lg-12 grid-margin stretch-card">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h4 class="card-title">Daftar Buku</h4>
-                                    <div class="table-responsive">
-                                        <table class="table table-striped">
-                                            <thead class="bg-primary text-white">
-                                                <tr>
-                                                    <th>Judul</th>
-                                                    <th>Penulis</th>
-                                                    <th>Penerbit</th>
-                                                    <th>Tahun</th>
-                                                    <th>Klasifikasi</th>
-                                                    <th>Status</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <% if (buku && buku.length > 0) { %>
-                                                    <% buku.forEach(function(item) { %>
-                                                        <tr>
-                                                            <td><%= item.judul %></td>
-                                                            <td><%= item.penulis %></td>
-                                                            <td><%= item.penerbit %></td>
-                                                            <td><%= item.tahun %></td>
-                                                            <td><%= item.klasifikasi %></td>
-                                                            <td><label class="badge <%= item.status === 'Tersedia' ? 'badge-success' : 'badge-danger' %>"><%= item.status %></label></td>
-                                                        </tr>
-                                                    <% }); %>
-                                                <% } else { %>
-                                                    <tr>
-                                                        <td colspan="6">Belum ada data buku.</td>
-                                                    </tr>
-                                                <% } %>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div> -->
+<div class="container-fluid page-body-wrapper flex flex-grow">
+    <%- include('../../partials/__nav.ejs') %>
+    <div class="container mt-5 mb-5">
+        <div class="row">
+            <div class="col-md-4 text-center mb-4">
+                <img src="" alt="Cover Majalah" class="detail-cover-img" id="magazine-cover">
+            </div>
 
-                    <div class="row mt-4">
-                        <div class="col-lg-12 grid-margin stretch-card mt-4">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h4 class="card-title">Daftar Majalah</h4>
-                                    <div class="table-responsive">
-                                        <table class="table table-striped">
-                                            <thead class="bg-primary text-white">
-                                                <tr>
-                                                    <th>Judul</th>
-                                                    <th>Edisi</th>
-                                                    <th>Penerbit</th>
-                                                    <th>Tahun</th>
-                                                    <th>Klasifikasi</th>
-                                                    <th>Status</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <% if (majalah && majalah.length > 0) { %>
-                                                    <% majalah.forEach(function(item) { %>
-                                                        <tr>
-                                                            <td><%= item.judul %></td>
-                                                            <td><%= item.edisi %></td>
-                                                            <td><%= item.penerbit %></td>
-                                                            <td><%= item.tahun %></td>
-                                                            <td><%= item.klasifikasi %></td>
-                                                            <td><label class="badge <%= item.status === 'Tersedia' ? 'badge-success' : 'badge-danger' %>"><%= item.status %></label></td>
-                                                        </tr>
-                                                    <% }); %>
-                                                <% } else { %>
-                                                    <tr>
-                                                        <td colspan="6">Belum ada data majalah.</td>
-                                                    </tr>
-                                                <% } %>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+            <div class="col-md-8">
+                <h1 class="detail-header" id="magazine-title"></h1>
+
+                <div class="mb-4">
+                    <div class="detail-info-item">
+                        <span class="detail-info-label">Edisi</span>
+                        <span class="detail-info-value" id="magazine-edition"></span>
+                    </div>
+                    <div class="detail-info-item">
+                        <span class="detail-info-label">No. Klasifikasi</span>
+                        <span class="detail-info-value" id="magazine-classification"></span>
+                    </div>
+                    <div class="detail-info-item">
+                        <span class="detail-info-label">Bahasa</span>
+                        <span class="detail-info-value" id="magazine-language"></span>
+                    </div>
+                    <div class="detail-info-item">
+                        <span class="detail-info-label">Tahun Terbit</span>
+                        <span class="detail-info-value" id="magazine-year"></span>
+                    </div>
+                    <div class="detail-info-item">
+                        <span class="detail-info-label">Tempat Terbit</span>
+                        <span class="detail-info-value" id="magazine-publication-place"></span>
+                    </div>
+                    <div class="detail-info-item">
+                        <span class="detail-info-label">Penerbit</span>
+                        <span class="detail-info-value" id="magazine-publisher"></span>
+                    </div>
+                    <div class="detail-info-item">
+                        <span class="detail-info-label">Lokasi</span>
+                        <span class="detail-info-value" id="magazine-location"></span>
+                    </div>
+                    <div class="detail-info-item">
+                        <span class="detail-info-label">Ketersediaan</span>
+                        <span class="detail-info-value" id="magazine-availability"></span>
+                    </div>
+                    <div class="detail-info-item">
+                        <span class="detail-info-label">Sinopsis</span>
+                        <span class="detail-info-value" id="magazine-synopsis"></span>
                     </div>
                 </div>
-                </div> </div> </div> <%- include('../partials/__foot.ejs') %> 
-    </body>
+            </div>
+        </div>
+    </div>
+</div>
+    
+    <%- include('../../partials/__foot.ejs') %>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        const magazineData = {
+            cover: "https://images.unsplash.com/photo-1579894451006-218413b5d2ef?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+            title: "National Geographic Indonesia",
+            edition: "Edisi Khusus 'Keajaiban Laut'",
+            classification: "059.922 1 NAT k",
+            language: "Indonesia",
+            year: "2024",
+            publicationPlace: "Jakarta",
+            publisher: "Gramedia Majalah",
+            location: "Rak Majalah, Baris 3",
+            availability: "Tersedia (5 dari 8)",
+            synopsis: "Majalah ini mengulas secara mendalam keindahan dan keunikan ekosistem laut Indonesia. Dilengkapi dengan foto-foto eksklusif, artikel ini membahas terumbu karang, kehidupan biota laut langka, serta upaya konservasi yang dilakukan untuk menjaga kelestarian perairan nusantara."
+        };
+
+        function displayMagazineDetails(data) {
+            document.getElementById('magazine-cover').src = data.cover;
+            document.getElementById('magazine-cover').alt = `Cover Majalah ${data.title}`;
+            document.getElementById('magazine-title').textContent = data.title;
+            
+            document.getElementById('magazine-edition').textContent = `: ${data.edition}`;
+            document.getElementById('magazine-classification').textContent = `: ${data.classification}`;
+            document.getElementById('magazine-language').textContent = `: ${data.language}`;
+            document.getElementById('magazine-year').textContent = `: ${data.year}`;
+            document.getElementById('magazine-publication-place').textContent = `: ${data.publicationPlace}`;
+            document.getElementById('magazine-publisher').textContent = `: ${data.publisher}`;
+            document.getElementById('magazine-location').textContent = `: ${data.location}`;
+            document.getElementById('magazine-availability').textContent = `: ${data.availability}`;
+            document.getElementById('magazine-synopsis').textContent = `: ${data.synopsis}`;
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            displayMagazineDetails(magazineData);
+        });
+    </script>
+</body>
 </html>
