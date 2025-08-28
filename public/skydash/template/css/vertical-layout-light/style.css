@@ -9132,7 +9132,7 @@ mark,
 .img-thumbnail {
   padding: 0.25rem;
   background-color: #fff;
-  border: 1px solid #dee2e6;
+  border: 1px solid #737e8a;
   border-radius: 0.25rem;
   max-width: 100%;
   height: auto;
@@ -11059,7 +11059,7 @@ textarea.is-invalid.tt-hint {
 
 .btn:focus, .fc button:focus, .ajax-upload-dragdrop .ajax-file-upload:focus, .swal2-modal .swal2-buttonswrapper .swal2-styled:focus, .wizard > .actions a:focus, .btn.focus, .fc button.focus, .ajax-upload-dragdrop .focus.ajax-file-upload, .swal2-modal .swal2-buttonswrapper .focus.swal2-styled, .wizard > .actions a.focus {
   outline: 0;
-  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  box-shadow: 0 0 0 0.2rem rgba(1, 124, 255, 0.25);
 }
 
 .btn.disabled, .fc button.disabled, .ajax-upload-dragdrop .disabled.ajax-file-upload, .swal2-modal .swal2-buttonswrapper .disabled.swal2-styled, .wizard > .actions a.disabled, .btn:disabled, .fc button:disabled, .ajax-upload-dragdrop .ajax-file-upload:disabled, .swal2-modal .swal2-buttonswrapper .swal2-styled:disabled, .wizard > .actions a:disabled {
@@ -11097,7 +11097,7 @@ fieldset:disabled .wizard > .actions a,
   color: #fff;
   background-color: #3f3e91;
   border-color: #3b3a88;
-  box-shadow: 0 0 0 0.2rem rgba(102, 100, 184, 0.5);
+  box-shadow: 0 0 0 0.2rem rgba(209, 90, 90, 0.5);
 }
 
 .btn-primary.disabled, .wizard > .actions a.disabled, .btn-primary:disabled, .wizard > .actions a:disabled {
@@ -11198,14 +11198,14 @@ fieldset:disabled .wizard > .actions a,
 
 .btn-info {
   color: #fff;
-  background-color: #248AFD;
-  border-color: #248AFD;
+  background-color: #d5bd09;
+  border-color: #feed3a;
 }
 
 .btn-info:hover {
   color: #fff;
-  background-color: #0276f8;
-  border-color: #0270ec;
+  background-color: #f4d92c;
+  border-color: #fdde46;
 }
 
 .btn-info:focus, .btn-info.focus {
@@ -11968,9 +11968,10 @@ input[type="button"].btn-block {
   padding: 0.25rem 1.5rem;
   color: #1F1F1F;
 }
-
+/* button majalah */
 .btn-group, .fc .fc-button-group,
 .btn-group-vertical {
+  padding-top: 40px;
   position: relative;
   display: inline-flex;
   vertical-align: middle;
@@ -13774,17 +13775,7 @@ input[type="button"].btn-block {
   color: #fff;
 }
 
-.card {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-  word-wrap: break-word;
-  background-color: #fff;
-  background-clip: border-box;
-  border: 1px solid #e3e3e3;
-  border-radius: 20px;
-}
+
 
 .card > hr {
   margin-right: 0;
@@ -13823,10 +13814,6 @@ input[type="button"].btn-block {
   margin-bottom: 0.75rem;
 }
 
-.card-subtitle {
-  margin-top: -0.375rem;
-  margin-bottom: 0;
-}
 
 .card-text:last-child {
   margin-bottom: 0;
@@ -17024,7 +17011,7 @@ button.bg-dark:focus,
 
 .mt-3, .template-demo > .btn, .fc .template-demo > button, .ajax-upload-dragdrop .template-demo > .ajax-file-upload, .swal2-modal .swal2-buttonswrapper .template-demo > .swal2-styled, .wizard > .actions .template-demo > a, .template-demo > .btn-toolbar,
 .my-3 {
-  margin-top: 1rem !important;
+  margin-top: 0rem !important;
 }
 
 .mr-3, .template-demo > .btn-toolbar,
@@ -19433,7 +19420,7 @@ input:focus {
 /* Typography */
 body {
   font-size: 1rem;
-  font-family: "Nunito", sans-serif;
+  font-family: "", sans-serif;
   font-weight: initial;
   line-height: normal;
   -webkit-font-smoothing: antialiased;
@@ -19698,30 +19685,158 @@ code {
 }
 
 /* Footer */
+/* Footer */
 .footer {
-  background: #F5F7FF;
-  padding: 30px 2.45rem;
-  transition: all 0.25s ease;
-  -moz-transition: all 0.25s ease;
-  -webkit-transition: all 0.25s ease;
-  -ms-transition: all 0.25s ease;
-  font-size: calc(0.875rem - 0.05rem);
-  font-family: "Nunito", sans-serif;
-  font-weight: 400;
-  border-top: 1px solid rgba(0, 0, 0, 0.06);
+    background-color: #0F8EC8;
+    padding: 40px 2.45rem;
+    color: #fff;
+    font-family: "Nunito", sans-serif;
+    position: relative;
+    min-height: 160px;
+    padding-top: 0;
+    display: flex; /* Menggunakan flexbox untuk penataan konten utama */
+    flex-direction: column;
+    justify-content: flex-end; /* Menyelaraskan konten ke bawah */
 }
 
-.footer a {
-  color: #4B49AC;
-  font-size: inherit;
+/* Logo Section */
+.logo-section {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 0;
+    margin-top: 20px; /* Jarak dari konten di atasnya */
 }
 
-@media (max-width: 991px) {
-  .footer {
-    margin-left: 0;
+.logo-section img {
+    max-height: 50px;
+    margin-right: 10px;
+}
+
+.logo-section p {
+    color: #fff;
+    font-size: 1.2rem;
+    font-weight: 600;
+    white-space: nowrap;
+    margin: 0;
+}
+
+/* Bagian Footer Lainnya */
+.footer-content-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between; /* Menjaga jarak antar kolom */
+    align-items: flex-start;
     width: 100%;
-  }
+    box-sizing: border-box;
 }
+
+.footer-section {
+    flex: 1;
+    padding: 0 20px;
+    min-width: 280px;
+    margin-bottom: 30px;
+}
+
+.footer-section h3 {
+    color: #fff;
+    font-size: 1.4rem;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+.footer-section p,
+.footer-section ul li {
+    color: #fff;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: flex-start;
+}
+
+.footer-section ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-section .icon {
+    margin-right: 10px;
+    display: inline-flex;
+    align-items: center;
+}
+
+.footer-section .icon svg {
+    fill: #fff;
+    width: 18px;
+    height: 18px;
+}
+
+/* Jam operasional specific styling */
+.hours-list li {
+    margin-bottom: 5px;
+}
+
+/* Lokasi section specific styling for map placeholder */
+.maps-placeholder {
+    background-color: #f0f0f0;
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #333;
+    font-size: 0.9rem;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.maps-placeholder iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+/* Copyright Section */
+.copyright {
+    width: 100%;
+    text-align: center;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    margin-top: 30px;
+    color: #fff;
+    font-size: 0.85rem;
+}
+
+/* Media Queries for responsiveness */
+@media (max-width: 991px) {
+    .footer-content-wrapper {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .footer-section {
+        padding: 0 10px;
+        text-align: center;
+        align-items: center;
+    }
+
+    .footer-section p,
+    .footer-section ul li {
+        justify-content: center;
+    }
+
+    /* Logo di tengah saat di layar kecil */
+    .logo-section {
+        justify-content: center; /* Menyelaraskan item ke tengah secara horizontal */
+        width: 100%; /* Mengisi lebar penuh */
+    }
+
+    .logo-section p {
+        font-size: 1rem;
+    }
+  }
+/* enf if footer */
 
 /* Utilities */
 .grid-margin {
@@ -20301,11 +20416,12 @@ code {
   border-top-right-radius: 8;
   border-radius: 8px;
 }
-
+/* //dropdownnya majalah */
 .accordion > .card .card-header {
   background-color: transparent;
   border: none;
   padding: 2rem;
+  border: 1px solid #737F8B;
   border-radius: 8px;
 }
 
@@ -20350,7 +20466,7 @@ code {
 }
 
 .accordion > .card .card-body {
-  font-size: 14px;
+  font-size: 1px;
   padding: 0 2rem 2rem 2rem;
   font-weight: 400;
   line-height: 1.5;
@@ -28289,134 +28405,135 @@ div.tagsinput span.tag a {
   margin: 0 0 0 1em;
 }
 
-/*-------------------------------------------------------------------*/
-/* === Landing screens === */
-/* Auth */
-.auth .login-half-bg {
-  background: url("../../images/auth/login-bg.jpg");
-  background-size: cover;
+/* === Perubahan Tampilan Login === */
+
+.container-scroller {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f8f9fa; 
 }
 
-.auth .register-half-bg {
-  background: url("../../images/auth/register-bg.jpg");
-  background-size: cover;
+/* tampilan form login utama */
+.auth-form-light {
+    border-radius: 12px;
+    /* border: 1px solid #0F8EC8; */
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15); 
+    padding: 40px;
+    background-color: #fff;
+    width: 100%;
+    max-width: 450px;
 }
 
-.auth.lock-full-bg {
-  background: url("../../images/auth/lockscreen-bg.jpg");
-  background-size: cover;
-}
-
-.auth .lock-profile-img {
-  width: 90px;
-  height: 90px;
-  border-radius: 100%;
-}
-
-.auth .auth-form-light {
-  background: #ffffff;
-}
-
-.auth .auth-form-light select {
-  color: #c9c8c8;
-}
-
-.auth .auth-form-light .input-group .form-control:focus, .auth .auth-form-light .asColorPicker-wrap .form-control:focus, .auth .auth-form-light .input-group .asColorPicker-input:focus, .auth .auth-form-light .asColorPicker-wrap .asColorPicker-input:focus, .auth .auth-form-light .input-group .dataTables_wrapper select:focus, .dataTables_wrapper .auth .auth-form-light .input-group select:focus, .auth .auth-form-light .asColorPicker-wrap .dataTables_wrapper select:focus, .dataTables_wrapper .auth .auth-form-light .asColorPicker-wrap select:focus, .auth .auth-form-light .input-group .jsgrid .jsgrid-table .jsgrid-filter-row input:focus[type=text], .jsgrid .jsgrid-table .jsgrid-filter-row .auth .auth-form-light .input-group input:focus[type=text], .auth .auth-form-light .asColorPicker-wrap .jsgrid .jsgrid-table .jsgrid-filter-row input:focus[type=text], .jsgrid .jsgrid-table .jsgrid-filter-row .auth .auth-form-light .asColorPicker-wrap input:focus[type=text],
-.auth .auth-form-light .input-group .jsgrid .jsgrid-table .jsgrid-filter-row select:focus, .jsgrid .jsgrid-table .jsgrid-filter-row .auth .auth-form-light .input-group select:focus,
-.auth .auth-form-light .asColorPicker-wrap .jsgrid .jsgrid-table .jsgrid-filter-row select:focus, .jsgrid .jsgrid-table .jsgrid-filter-row .auth .auth-form-light .asColorPicker-wrap select:focus, .auth .auth-form-light .input-group .jsgrid .jsgrid-table .jsgrid-filter-row input:focus[type=number], .jsgrid .jsgrid-table .jsgrid-filter-row .auth .auth-form-light .input-group input:focus[type=number], .auth .auth-form-light .asColorPicker-wrap .jsgrid .jsgrid-table .jsgrid-filter-row input:focus[type=number], .jsgrid .jsgrid-table .jsgrid-filter-row .auth .auth-form-light .asColorPicker-wrap input:focus[type=number], .auth .auth-form-light .input-group .select2-container--default .select2-selection--single:focus, .select2-container--default .auth .auth-form-light .input-group .select2-selection--single:focus, .auth .auth-form-light .asColorPicker-wrap .select2-container--default .select2-selection--single:focus, .select2-container--default .auth .auth-form-light .asColorPicker-wrap .select2-selection--single:focus, .auth .auth-form-light .input-group .select2-container--default .select2-selection--single .select2-search__field:focus, .select2-container--default .select2-selection--single .auth .auth-form-light .input-group .select2-search__field:focus, .auth .auth-form-light .asColorPicker-wrap .select2-container--default .select2-selection--single .select2-search__field:focus, .select2-container--default .select2-selection--single .auth .auth-form-light .asColorPicker-wrap .select2-search__field:focus, .auth .auth-form-light .input-group .typeahead:focus, .auth .auth-form-light .asColorPicker-wrap .typeahead:focus,
-.auth .auth-form-light .input-group .tt-query:focus,
-.auth .auth-form-light .asColorPicker-wrap .tt-query:focus,
-.auth .auth-form-light .input-group .tt-hint:focus,
-.auth .auth-form-light .asColorPicker-wrap .tt-hint:focus, .auth .auth-form-light .input-group .form-control:active, .auth .auth-form-light .asColorPicker-wrap .form-control:active, .auth .auth-form-light .input-group .asColorPicker-input:active, .auth .auth-form-light .asColorPicker-wrap .asColorPicker-input:active, .auth .auth-form-light .input-group .dataTables_wrapper select:active, .dataTables_wrapper .auth .auth-form-light .input-group select:active, .auth .auth-form-light .asColorPicker-wrap .dataTables_wrapper select:active, .dataTables_wrapper .auth .auth-form-light .asColorPicker-wrap select:active, .auth .auth-form-light .input-group .jsgrid .jsgrid-table .jsgrid-filter-row input:active[type=text], .jsgrid .jsgrid-table .jsgrid-filter-row .auth .auth-form-light .input-group input:active[type=text], .auth .auth-form-light .asColorPicker-wrap .jsgrid .jsgrid-table .jsgrid-filter-row input:active[type=text], .jsgrid .jsgrid-table .jsgrid-filter-row .auth .auth-form-light .asColorPicker-wrap input:active[type=text],
-.auth .auth-form-light .input-group .jsgrid .jsgrid-table .jsgrid-filter-row select:active, .jsgrid .jsgrid-table .jsgrid-filter-row .auth .auth-form-light .input-group select:active,
-.auth .auth-form-light .asColorPicker-wrap .jsgrid .jsgrid-table .jsgrid-filter-row select:active, .jsgrid .jsgrid-table .jsgrid-filter-row .auth .auth-form-light .asColorPicker-wrap select:active, .auth .auth-form-light .input-group .jsgrid .jsgrid-table .jsgrid-filter-row input:active[type=number], .jsgrid .jsgrid-table .jsgrid-filter-row .auth .auth-form-light .input-group input:active[type=number], .auth .auth-form-light .asColorPicker-wrap .jsgrid .jsgrid-table .jsgrid-filter-row input:active[type=number], .jsgrid .jsgrid-table .jsgrid-filter-row .auth .auth-form-light .asColorPicker-wrap input:active[type=number], .auth .auth-form-light .input-group .select2-container--default .select2-selection--single:active, .select2-container--default .auth .auth-form-light .input-group .select2-selection--single:active, .auth .auth-form-light .asColorPicker-wrap .select2-container--default .select2-selection--single:active, .select2-container--default .auth .auth-form-light .asColorPicker-wrap .select2-selection--single:active, .auth .auth-form-light .input-group .select2-container--default .select2-selection--single .select2-search__field:active, .select2-container--default .select2-selection--single .auth .auth-form-light .input-group .select2-search__field:active, .auth .auth-form-light .asColorPicker-wrap .select2-container--default .select2-selection--single .select2-search__field:active, .select2-container--default .select2-selection--single .auth .auth-form-light .asColorPicker-wrap .select2-search__field:active, .auth .auth-form-light .input-group .typeahead:active, .auth .auth-form-light .asColorPicker-wrap .typeahead:active,
-.auth .auth-form-light .input-group .tt-query:active,
-.auth .auth-form-light .asColorPicker-wrap .tt-query:active,
-.auth .auth-form-light .input-group .tt-hint:active,
-.auth .auth-form-light .asColorPicker-wrap .tt-hint:active {
-  border-color: #CED4DA;
-}
-
-.auth .auth-form-transparent {
-  background: transparent;
-}
-
-.auth .auth-form-transparent .form-control, .auth .auth-form-transparent .asColorPicker-input, .auth .auth-form-transparent .dataTables_wrapper select, .dataTables_wrapper .auth .auth-form-transparent select, .auth .auth-form-transparent .jsgrid .jsgrid-table .jsgrid-filter-row input[type=text], .jsgrid .jsgrid-table .jsgrid-filter-row .auth .auth-form-transparent input[type=text],
-.auth .auth-form-transparent .jsgrid .jsgrid-table .jsgrid-filter-row select, .jsgrid .jsgrid-table .jsgrid-filter-row .auth .auth-form-transparent select, .auth .auth-form-transparent .jsgrid .jsgrid-table .jsgrid-filter-row input[type=number], .jsgrid .jsgrid-table .jsgrid-filter-row .auth .auth-form-transparent input[type=number], .auth .auth-form-transparent .select2-container--default .select2-selection--single, .select2-container--default .auth .auth-form-transparent .select2-selection--single, .auth .auth-form-transparent .select2-container--default .select2-selection--single .select2-search__field, .select2-container--default .select2-selection--single .auth .auth-form-transparent .select2-search__field, .auth .auth-form-transparent .typeahead,
-.auth .auth-form-transparent .tt-query,
-.auth .auth-form-transparent .tt-hint,
-.auth .auth-form-transparent .input-group-text {
-  border-color: #a3a4a5;
-}
-
-.auth .auth-form-transparent .form-control:focus, .auth .auth-form-transparent .asColorPicker-input:focus, .auth .auth-form-transparent .dataTables_wrapper select:focus, .dataTables_wrapper .auth .auth-form-transparent select:focus, .auth .auth-form-transparent .jsgrid .jsgrid-table .jsgrid-filter-row input:focus[type=text], .jsgrid .jsgrid-table .jsgrid-filter-row .auth .auth-form-transparent input:focus[type=text],
-.auth .auth-form-transparent .jsgrid .jsgrid-table .jsgrid-filter-row select:focus, .jsgrid .jsgrid-table .jsgrid-filter-row .auth .auth-form-transparent select:focus, .auth .auth-form-transparent .jsgrid .jsgrid-table .jsgrid-filter-row input:focus[type=number], .jsgrid .jsgrid-table .jsgrid-filter-row .auth .auth-form-transparent input:focus[type=number], .auth .auth-form-transparent .select2-container--default .select2-selection--single:focus, .select2-container--default .auth .auth-form-transparent .select2-selection--single:focus, .auth .auth-form-transparent .select2-container--default .select2-selection--single .select2-search__field:focus, .select2-container--default .select2-selection--single .auth .auth-form-transparent .select2-search__field:focus, .auth .auth-form-transparent .typeahead:focus,
-.auth .auth-form-transparent .tt-query:focus,
-.auth .auth-form-transparent .tt-hint:focus, .auth .auth-form-transparent .form-control:active, .auth .auth-form-transparent .asColorPicker-input:active, .auth .auth-form-transparent .dataTables_wrapper select:active, .dataTables_wrapper .auth .auth-form-transparent select:active, .auth .auth-form-transparent .jsgrid .jsgrid-table .jsgrid-filter-row input:active[type=text], .jsgrid .jsgrid-table .jsgrid-filter-row .auth .auth-form-transparent input:active[type=text],
-.auth .auth-form-transparent .jsgrid .jsgrid-table .jsgrid-filter-row select:active, .jsgrid .jsgrid-table .jsgrid-filter-row .auth .auth-form-transparent select:active, .auth .auth-form-transparent .jsgrid .jsgrid-table .jsgrid-filter-row input:active[type=number], .jsgrid .jsgrid-table .jsgrid-filter-row .auth .auth-form-transparent input:active[type=number], .auth .auth-form-transparent .select2-container--default .select2-selection--single:active, .select2-container--default .auth .auth-form-transparent .select2-selection--single:active, .auth .auth-form-transparent .select2-container--default .select2-selection--single .select2-search__field:active, .select2-container--default .select2-selection--single .auth .auth-form-transparent .select2-search__field:active, .auth .auth-form-transparent .typeahead:active,
-.auth .auth-form-transparent .tt-query:active,
-.auth .auth-form-transparent .tt-hint:active,
-.auth .auth-form-transparent .input-group-text:focus,
-.auth .auth-form-transparent .input-group-text:active {
-  border-color: #a3a4a5;
-}
-
-.auth .auth-form-transparent select {
-  outline-color: #a3a4a5;
-}
-
-.auth.auth-img-bg {
-  padding: 0;
-}
-
-@media (min-width: 768px) {
-  .auth.auth-img-bg .auth-form-transparent {
-    width: 55%;
-    margin: auto;
-  }
-}
-
-.auth .brand-logo {
-  margin-bottom: 1rem;
-}
-
+/* Logo Perpustakaan */
 .auth .brand-logo img {
-  width: 70px;
-}
-.auth .brand-logo img {
-  align-items: center;
+    width: 30%; /* Ukuran logo */
+    margin-bottom: 0.5rem;
 }
 
-.auth form .form-group {
-  margin-bottom: 1.5rem;
+/* Judul dan Subjudul */
+.login-box h2 {
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #343a40; 
 }
 
-.auth form .form-group label {
-  font-size: .8125rem;
+.login-box .login-subtitle {
+    font-size: 0.9rem;
+    color: #6c757d;
+    margin-bottom: 2rem;
 }
 
-.auth form .form-group .form-control, .auth form .form-group .asColorPicker-input, .auth form .form-group .dataTables_wrapper select, .dataTables_wrapper .auth form .form-group select, .auth form .form-group .jsgrid .jsgrid-table .jsgrid-filter-row input[type=text], .jsgrid .jsgrid-table .jsgrid-filter-row .auth form .form-group input[type=text],
-.auth form .form-group .jsgrid .jsgrid-table .jsgrid-filter-row select, .jsgrid .jsgrid-table .jsgrid-filter-row .auth form .form-group select, .auth form .form-group .jsgrid .jsgrid-table .jsgrid-filter-row input[type=number], .jsgrid .jsgrid-table .jsgrid-filter-row .auth form .form-group input[type=number], .auth form .form-group .select2-container--default .select2-selection--single, .select2-container--default .auth form .form-group .select2-selection--single, .auth form .form-group .select2-container--default .select2-selection--single .select2-search__field, .select2-container--default .select2-selection--single .auth form .form-group .select2-search__field, .auth form .form-group .typeahead,
-.auth form .form-group .tt-query,
-.auth form .form-group .tt-hint {
-  background: transparent;
-  border-radius: 0;
-  font-size: .9375rem;
+/* Form dan Input Field */
+.form-group {
+    margin-bottom: 1.5rem; /* Jarak antar form group */
 }
 
+.input-group {
+    border: 1px solid #9aa4af; /* Border pada seluruh grup input */
+    border-radius: 8px; 
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.input-group:focus-within {
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 0.25);
+}
+
+.input-group-prepend .input-group-text,
+.input-group-append .input-group-text {
+    background-color: transparent;
+    border: none;
+    color: #727a83;
+    padding: 0.75rem 1rem;
+    display: flex;
+    align-items: center;
+}
+
+.input-group-prepend .input-group-text i,
+.input-group-append .input-group-text i {
+    font-size: 1.25rem;
+}
+
+.form-control-lg {
+    border: none;
+    padding: 0.75rem 1rem;
+    background-color: transparent;
+    font-size: 1rem;
+    color: #495057;
+}
+
+.form-control-lg::placeholder {
+    color: #727a83;
+}
+
+.form-control-lg:focus {
+    box-shadow: none;
+    border-color: transparent;
+}
+
+/* Validasi error */
+.validation-error {
+    color: #dc3545;
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+}
+
+/* Tombol "LOGIN" */
 .auth form .auth-form-btn {
-  padding: 1rem 3rem;
-  line-height: 1.5;
+    font-weight: bold;
+    letter-spacing: 1px;
+    border-radius: 8px;
+    padding: 0.75rem;
+    font-size: 1.1rem;
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-.auth form .auth-link {
-  font-size: 0.875rem;
+.auth form .auth-form-btn:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
-.auth form .auth-link:hover {
-  color: initial;
-}
+/* Media query untuk tampilan mobile */
+@media (max-width: 767.98px) {
+    .auth-form-light {
+        padding: 30px;
+    }
 
+    .auth .brand-logo img {
+        width: 100px;
+        margin-bottom: 2rem;
+    }
+
+    .auth form .auth-form-btn {
+        padding: 0.6rem;
+        font-size: 1rem;
+    }
+}
 .page-body-wrapper {
     min-height: calc(100vh - 60px);
     display: flex; /*  sidebar dan main-panel bersebelahan */
@@ -28425,7 +28542,7 @@ div.tagsinput span.tag a {
     padding-right: 0;
     padding-top: 60px; 
 }
-
+/* majalah perbaikan terlalu ke atas */
 
 .page-body-wrapper.full-page-wrapper {
   width: 100%;
@@ -28616,6 +28733,7 @@ div.tagsinput span.tag a {
 }
 
 .sidebar .nav:not(.sub-menu) {
+  padding-top: 20%;
   margin-top: 1.45rem;
   margin-left: 1rem;
   margin-right: 1rem;
@@ -30055,9 +30173,8 @@ div.tagsinput span.tag a {
   .sidebar-icon-only .sidebar .nav .nav-item.hover-open .nav-link .menu-title:after {
     display: none;
   }
-  /* !ini bagian side saat di hide  */
   .sidebar-icon-only .sidebar .nav .nav-item.hover-open .nav-link:hover .menu-title {
-    background: #000000;
+    background: #4B49AC;
   }
   .sidebar-dark.sidebar-icon-only .sidebar .nav .nav-item.hover-open .nav-link:hover .menu-title {
     background: #232227;
@@ -30602,8 +30719,8 @@ div.tagsinput span.tag a {
 /* START CSS BARU UNTUK FOOTER */
 body {
     margin: 0;
-    font-family: 'Roboto', sans-serif;
-    background-color: #f0f2f5; /* Warna latar belakang umum */
+    font-family: 'Nunito', sans-serif;
+    background-color: #f0f2f5; 
 }
 
 .footer {
@@ -30654,7 +30771,7 @@ body {
 }
 
 .logo-section img {
-    height: 50px; /* Sesuaikan ukuran logo */
+    height: 50px; 
     margin-right: 15px;
 }
 
@@ -30695,79 +30812,55 @@ body {
     margin-top: 40px;
 }
 
-.body {
-            background-color: #0F8EC8 !important;
-        }
-
-        .login-box {
-            border: 1px solid #ccc;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            background-color: #fff;
-            margin-top: 30px;
-            margin-bottom: 30px;
-        }
-
-        .auth {
-            background-color: transparent !important;
-        }
 
 .page-lokasi-lantai .main-panel {
-    padding-top: 50px !important; /* Meningkatkan padding-top.. */
+    padding-top: 50px !important; 
 }
 
-/* Opsional: Jika card-title atau card-description masih terlalu mepet di dalam card-body */
 .page-lokasi-lantai .card-body .card-title {
-    margin-top: 20px; /* Memberikan sedikit jarak dari atas card-body */
-}
+    margin-top: 20px; 
+  }
 
 .page-lokasi-lantai .card-body .card-description {
-    margin-top: 10px; /* Memberikan sedikit jarak dari card-title */
+    margin-top: 10px; 
 }
 
-/* Jika tombol "Tambah Lantai" atau elemen header-actions masih perlu penyesuaian */
 .page-lokasi-lantai .header-actions {
-    margin-top: 20px; /* Memberikan jarak dari atas content-wrapper */
+    margin-top: 20px;
 }
 
-/*  Tombol Tambah yang sedikit naik */
         .header-actions {
             display: flex;
             justify-content: space-between;
             align-items: flex-start; /* Mengatur alignment ke atas */
-            margin-bottom: 1.5rem; /* Menambah sedikit spasi di bawah header */
+            margin-bottom: 1.5rem; 
         }
         .header-actions .btn {
             margin-top: -5px; /* Menggeser tombol sedikit ke atas */
         }
 
-        /* Penyesuaian untuk tombol aksi di tabel */
         .table-actions .btn {
-            padding: .3rem .6rem; /* Padding lebih kecil untuk tombol dalam tabel */
+            padding: .3rem .6rem; 
             font-size: .85rem; /* Ukuran font lebih kecil */
             line-height: 1.5;
             border-radius: .2rem;
         }
-        /* Jika menggunakan btn-group, spasi antar tombol diatur oleh .btn-group */
         .table-actions .btn-group .btn + .btn {
-            margin-left: 0; /* Hapus margin antar tombol jika dalam grup */
+            margin-left: 0; 
         }
-        /* Style untuk Datatables pagination buttons */
         .dataTables_wrapper .dataTables_paginate .paginate_button {
             padding: 0.5em 0.8em;
         }
-
-        /* CSS tambahan untuk dialog agar terlihat di tengah */
         dialog {
             border: 1px solid #ccc;
             border-radius: 8px;
             padding: 20px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            position: fixed; /* Penting untuk posisi pop-up */
+            position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            z-index: 1000; /* Pastikan di atas elemen lain */
+            z-index: 1000; 
             min-width: 300px;
         }
         dialog::backdrop {
@@ -30787,22 +30880,20 @@ body {
         }
 
     .page-lokasi-rak .main-panel .content-wrapper {
-        margin-top: 60px !important; /* Sesuaikan nilai ini. Mulai dengan 70px,  */
+        margin-top: 60px !important; 
     }
 
-    /* Jika card-title atau card-description masih terlalu mepet di dalam card-body */
     .page-lokasi-rak .card-body .card-title {
-        margin-top: 0px; /* Pastikan tidak ada margin-top yang mendorong ke atas */
+        margin-top: 0px; 
     }
 
     .page-lokasi-rak .card-body .card-description {
         margin-top: 10px; /* Memberikan sedikit jarak dari card-title */
     }
 
-    /* Pastikan header-actions memiliki jarak yang konsisten */
     .page-lokasi-rak .header-actions {
-        margin-top: 0px; /* Reset margin-top jika ada, lalu atur jarak dari atas content-wrapper */
-        padding-top: 20px; /* Memberikan padding di dalam header-actions  */
+        margin-top: 0px; 
+        padding-top: 20px; 
     }
     
     .page-lokasi-ruangan .main-panel .content-wrapper {
@@ -30819,9 +30910,118 @@ body {
 
     .page-lokasi-ruangan .header-actions {
         margin-top: 0px; 
-        padding-top: 20px; /* Memberikan padding di dalam header-actions  */
+        padding-top: 20px; 
     }
-    
+  
+
+/* landing page */
+.hero-section {
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('/images/hero-bg.jpg');
+            background-size: cover;
+            background-position: center;
+            height: 60vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+        }
+
+        .hero-title {
+            font-size: 3rem;
+            font-weight: 700;
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+        }
+
+        .search-form {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .search-input {
+            border-radius: 50px 0 0 50px;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            box-shadow: none;
+        }
+
+        .search-button {
+            border-radius: 0 50px 50px 0;
+            background-color: #0F8EC8;
+            border-color: #0F8EC8;
+        }
+
+        .section-title-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-top: 1.5rem;
+        }
+
+        .section-title {
+            font-size: 1.75rem;
+            font-weight: 600;
+        }
+
+        .card {
+            border: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .book-cover,
+        .magazine-cover {
+            object-fit: cover;
+            height: 250px;
+            width: 100%;
+        }
+
+        .card-title {
+            font-size: 1rem;
+            font-weight: 600;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+
+        .card-text {
+            font-size: 0.875rem;
+        }
+
+        .stretched-link::after {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 1;
+            content: "";
+        }
+/* end of user landing page */
+/* maps footer */
+.maps-placeholder {
+    width: 100%;
+    overflow: hidden; 
+}
+
+.maps-placeholder iframe {
+    display: block; 
+    width: 100%;    
+    height: 200px;  
+    border: none;   /* tidak ada border */
+    border-radius: 5px; 
+}
 /* Responsive adjustments */
 @media (max-width: 768px) {
     .footer {
@@ -30859,8 +31059,9 @@ body {
         font-size: 18px;
     }
     .logo-section img {
-        height: 40px;
+        height: 4zz0px;
     }
 }
-/* END CSS BARU UNTUK FOOTER */
+
+/* END CSS UNTUK FOOTER */
 /*# sourceMappingURL=../maps/vertical-layout-light/style.css.map */
