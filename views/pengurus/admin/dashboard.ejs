@@ -5,13 +5,13 @@
 </head>
 <body>
     <div class="container-scroller">
-        <div class="container-fluid page-body-wrapper">   
-            <%- include('../partials/__nav.ejs') %>         
+        <div class="container-fluid page-body-wrapper">
+            <%- include('../partials/__nav.ejs') %>
             <div class="main-panel">
                 <div class="content-wrapper">
                     <div class="row">
                         <div class="col-md-6 grid-margin stretch-card">
-                            <div class="card text-white bg-primary">
+                            <div class="card text-white" style="background-color: #0F8EC8;">
                                 <div class="card-body">
                                     <h5 class="card-title text-white">Jumlah Buku</h5>
                                     <h2><%= totalBuku ? totalBuku.toLocaleString('id-ID') : '0' %></h2>
@@ -19,7 +19,7 @@
                             </div>
                         </div>
                         <div class="col-md-6 grid-margin stretch-card">
-                            <div class="card text-white bg-success">
+                            <div class="card text-white" style="background-color: #0F8EC8;">
                                 <div class="card-body">
                                     <h5 class="card-title text-white">Jumlah Majalah</h5>
                                     <h2><%= totalMajalah ? totalMajalah.toLocaleString('id-ID') : '0' %></h2>
@@ -35,14 +35,10 @@
                                     <h4 class="card-title">Daftar Buku</h4>
                                     <div class="table-responsive">
                                         <table class="table table-striped">
-                                            <thead class="bg-primary text-white">
+                                            <thead style="background-color: #0F8EC8;" class="text-white">
                                                 <tr>
                                                     <th>Judul</th>
                                                     <th>Penulis</th>
-                                                    <th>Penerbit</th>
-                                                    <th>Tahun</th>
-                                                    <th>Klasifikasi</th>
-                                                    <th>Status</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -51,9 +47,6 @@
                                                         <tr>
                                                             <td><%= item.judul %></td>
                                                             <td><%= item.penulis %></td>
-                                                            <td><%= item.penerbit %></td>
-                                                            <td><%= item.tahun %></td>
-                                                            <td><%= item.klasifikasi %></td>
                                                             <td><label class="badge <%= item.status === 'Tersedia' ? 'badge-success' : 'badge-danger' %>"><%= item.status %></label></td>
                                                         </tr>
                                                     <% }); %>
@@ -77,14 +70,10 @@
                                     <h4 class="card-title">Daftar Majalah</h4>
                                     <div class="table-responsive">
                                         <table class="table table-striped">
-                                            <thead class="bg-primary text-white">
+                                            <thead style="background-color: #0F8EC8;" class="text-white">
                                                 <tr>
                                                     <th>Judul</th>
                                                     <th>Edisi</th>
-                                                    <th>Penerbit</th>
-                                                    <th>Tahun</th>
-                                                    <th>Klasifikasi</th>
-                                                    <th>Status</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -93,9 +82,6 @@
                                                         <tr>
                                                             <td><%= item.judul %></td>
                                                             <td><%= item.edisi %></td>
-                                                            <td><%= item.penerbit %></td>
-                                                            <td><%= item.tahun %></td>
-                                                            <td><%= item.klasifikasi %></td>
                                                             <td><label class="badge <%= item.status === 'Tersedia' ? 'badge-success' : 'badge-danger' %>"><%= item.status %></label></td>
                                                         </tr>
                                                     <% }); %>
@@ -112,6 +98,9 @@
                         </div>
                     </div>
                 </div>
-                </div> </div> </div> <%- include('../partials/__foot.ejs') %> 
-    </body>
+            </div>
+        </div>
+    </div>
+    <%- include('../partials/__foot.ejs') %>
+</body>
 </html>
