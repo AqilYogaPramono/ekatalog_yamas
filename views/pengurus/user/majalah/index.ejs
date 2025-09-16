@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <%- include('../../partials/__head.ejs', { title: 'Daftar Majalah' }) %>
+    <%- include('../../../partials/__head.ejs', { title: 'Daftar Majalah' }) %>
     <style>
         body {
             font-family: 'Poppins', sans-serif;
@@ -296,7 +296,7 @@
 <body class="page-majalah-index">
     <div class="container-scroller">
         <div class="container-fluid page-body-wrapper full-page-wrapper">
-            <%- include('../../partials/__nav.ejs', { currentPath: '/majalah' }) %>
+            <%- include('../../../partials/__nav.ejs', { currentPath: '/majalah' }) %>
             <div class="main-panel">
                 <div class="container-custom">
                     <div class="header-controls">
@@ -375,7 +375,7 @@
 
     <input type="file" id="excelUpload" accept=".xlsx, .xls" style="display: none;">
 
-    <%- include('../../partials/__foot.ejs') %>
+    <%- include('../../../partials/__foot.ejs') %>
     <script src="../../vendors/js/vendor.bundle.base.js"></script>
     <script src="../../vendors/typeahead.js/typeahead.bundle.min.js"></script>
     <script src="../../vendors/select2/select2.min.js"></script>
