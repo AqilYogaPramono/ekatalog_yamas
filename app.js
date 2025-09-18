@@ -7,9 +7,15 @@ require('dotenv').config()
 var session = require('express-session')
 var flash = require('express-flash')
 
+//digunakan untuk router auth
+const authRouter = require('./routes/auth')
+
 //digunakan untuk router admin
 //folder admin
-const pengurusRouter = require('./routes/admin/admin')
+const dashboardAdminRouter = require('./routes/admin/dashboard')
+const pengurusRouter = require('./routes/admin/pengurus')
+const bukuAdminRouter = require('./routes/admin/buku')
+const majalahAdminRouter = require('./routes/admin/majalah')
 
 //digunakan untuk router pengguna
 //folder pengguna
