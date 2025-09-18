@@ -22,21 +22,20 @@ const majalahAdminRouter = require('./routes/admin/majalah')
 const penggunaRouter = require('./routes/pengguna/pengguna')
 
 //digunakan untuk router pengurus
+//folder dashboard
+const dashboardPengurusRouter = require('./routes/pengurus/dashboard')
+//folder ubah password
+const changePasswordRouter = require('./routes/pengurus/pengurus/pengurus')
+
 //folder buku
-// const bukuRouter = require('./routes/pengurus/buku/buku')
-const kategoriBukuRouter = require('./routes/pengurus/buku/kategoriBuku')
-const pengarangBukuRouter = require('./routes/pengurus/buku/pengarangBuku')
-//folder data master
-const bahasaRouter = require('./routes/pengurus/dataMaster/bahasa')
-const  tempatTerbitRouter= require('./routes/pengurus/dataMaster/tempatTerbit')
-const penerbitRouter = require('./routes/pengurus/dataMaster/penerbit')
+const bukuRouter = require('./routes/pengurus/buku/buku')
+//folder majalah
+const majalahRouter = require('./routes/pengurus/majalah/majalah')
+
 //folder lokasi
 const lantaiRouter = require('./routes/pengurus/lokasi/lantai')
 const ruanganRouter = require('./routes/pengurus/lokasi/ruangan')
 const rakRouter = require('./routes/pengurus/lokasi/rak')
-//folder majalah
-const majalahRouter = require('./routes/pengurus/majalah/majalah')
-
 var app = express();
 
 // view engine setup
