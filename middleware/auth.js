@@ -1,10 +1,11 @@
-//midleware to check level_pengurus
+//midleware to check peran
 const modelPengurus = require('../model/modelPengurus')
 
 const authPengurus = async (req, res, next) => {
     try {
-        const checkLevel = await modelPengurus.getPengurusById(req.session.pengurusId)
-        if(checkLevel.level_pengurus == "Pengurus") return next()
+        const pengurusId = req.session.pengurusId
+        const checkLevel = await modelPengurus.getPengurusById(pengurusId)
+        if(checkLevel.peran == "Pengurus") return next()
     } catch(err) {
         req.flash('error', 'Terjadi kesalahan saat login')
         res.redirect('/login')
@@ -13,8 +14,9 @@ const authPengurus = async (req, res, next) => {
 
 const authAdmin = async (req, res, next) => {
     try {
-        const checkLevel = await modelPengurus.getPengurusById(req.session.pengurusId)
-        if(checkLevel.level_pengurus == "Admin") return next()
+        const pengurusId = req.session.pengurusId
+        const checkLevel = await modelPengurus.getPengurusById(pengurusId)
+        if(checkLevel.peran == "Admin") return next()
     } catch(err) {
         req.flash('error', 'Terjadi kelasalahan saat login')
         res.redirect('/login')
