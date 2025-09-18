@@ -1,83 +1,66 @@
 const connection = require('../config/database')
 
-//membaut class yang beriris CRUD pada tabel ruangan
-class modelRuangan {
-    //mengambil semua data pada tabel ruangan
+// membuat class yang berisi CRUD pada tabel ruangan
+class ModelRuangan {
+    // mengambil semua data pada tabel ruangan (join dengan lantai)
     static async getAll() {
-        return new Promise((resolve, reject) => {
-            connection.query(`SELECT r.id, r.kode_ruangan, l.kode_lantai from ruangan as r JOIN lantai as l on r.id_lantai = l.id`, (err, rows) => {
-                if(err) {
-                    reject(err)
-                } else {
-                    resolve(rows)
-                }
-            })
-        })
+        try {
+            const [rows] = await connection.query(`SELECT r.id, r.kode_ruangan, l.kode_lantai FROM ruangan AS r LEFT JOIN lantai AS l ON r.id_lantai = l.id`)
+            return rows
+        } catch (err) {
+            throw err
+        }
     }
 
-    //menyimpan data baru pada tabel ruangan
+    // menyimpan data baru pada tabel ruangan
     static async store(data) {
-        return new Promise((resolve, reject) => {
-            connection.query(`insert into ruangan set ?`, data, (err, result) => {
-                if (err) {
-                    reject(err)
-                } else {
-                    resolve(result)
-                }
-            })
-        })
+        try {
+            const [result] = await connection.query(`INSERT INTO ruangan SET ?`,[data])
+            return result
+        } catch (err) {
+            throw err
+        }
     }
 
-    //mengupdate data pada tabel ruangan berdasarkan id
+    // mengupdate data pada tabel ruangan berdasarkan id
     static async update(data, id) {
-        return new Promise((resolve, reject) => {
-            connection.query(`update ruangan set ? where id = ?`, [data, id], (err, result) => {
-                if (err) {
-                    reject(err)
-                } else {
-                    resolve(result)
-                }
-            })
-        })
+        try {
+            const [result] = await connection.query(`UPDATE ruangan SET ? WHERE id = ?`,[data, id])
+            return result
+        } catch (err) {
+            throw err
+        }
     }
 
-    //mengambil satu data bahasa berdasarkan id
+    // mengambil satu data ruangan berdasarkan id
     static async getById(id) {
-        return new Promise((resolve, reject) => {
-            connection.query(`select * from ruangan where id = ?`, id, (err, rows) => {
-                if (err) {
-                    reject(err)
-                } else {
-                    resolve(rows[0])
-                }
-            })
-        })
+        try {
+            const [rows] = await connection.query(`SELECT * FROM ruangan WHERE id = ?`,[id])
+            return rows[0] || null
+        } catch (err) {
+            throw err
+        }
     }
 
-    //menghapus data pada tabel ruangan berdasarkan id
+    // menghapus data pada tabel ruangan berdasarkan id
     static async delete(id) {
-        return new Promise((resolve, reject) => {
-            connection.query(`delete from ruangan where id = ?`, id, (err, result) => {
-                if(err) {
-                    reject(err)
-                } else {
-                    resolve(result)
-                }
-            })
-        })
+        try {
+            const [result] = await connection.query(`DELETE FROM ruangan WHERE id = ?`,[id])
+            return result
+        } catch (err) {
+            throw err
+        }
     }
 
+    // cek apakah kode_ruangan sudah ada
     static async checkKodeRuangan(data) {
-        return new Promise((resolve, reject) => {
-            connection.query(`select * from ruangan where kode_ruangan = ?`, [data.kode_ruangan], (err, rows) => {
-                if (err) {
-                    reject(err)
-                } else {
-                    resolve(rows.length > 0)
-                }
-            })
-        })
+        try {
+            const [rows] = await connection.query(`SELECT * FROM ruangan WHERE kode_ruangan = ?`,[data.kode_ruangan])
+            return rows.length > 0
+        } catch (err) {
+            throw err
+        }
     }
 }
 
-module.exports = modelRuangan
+module.exports = ModelRuangan
