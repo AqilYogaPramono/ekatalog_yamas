@@ -2,12 +2,17 @@ const express = require('express')
 const router = express.Router()
 //import model lantai 
 const modelLantai = require('../../../model/modelLantai')
+const {authPengurus} = require('../.././../middleware/auth')
+const modelPengurus = require('../../../model/modelPengurus')
 
 //menampilakn semua data lantai
-router.get('/', async (req, res) => {
+router.get('/', authPengurus, async (req, res) => {
     try {
         let data = await modelLantai.getAll()
-        res.render('pengurus/user/lokasi/lantai/index', {data})
+        const userId = req.session.pengurusId
+
+        const  user = await modelPengurus.getPengurusById(userId)
+        res.render('pengurus/user/lokasi/lantai/index', {data, user})
     } catch(err) {
         req.flash("error", err.message)
         return res.redirect('/pengurus/lantai')
@@ -15,12 +20,15 @@ router.get('/', async (req, res) => {
 })
 
 //menampilkan halaman untuk menambahkan data lantai
-router.get('/buat', async (req, res) => {
-    res.render('pengurus/user/lokasi/lantai/buat')
+router.get('/buat', authPengurus, async (req, res) => {
+    const userId = req.session.pengurusId
+
+    const  user = await modelPengurus.getPengurusById(userId)
+    res.render('pengurus/user/lokasi/lantai/buat', { user })
 })
 
 //menabahkan data lantai baru
-router.post('/create', async (req, res) => {
+router.post('/create', authPengurus, async (req, res) => {
     try {
         let {kode_lantai} = req.body
         if (!kode_lantai) {
@@ -43,19 +51,22 @@ router.post('/create', async (req, res) => {
 })
 
 //menampilkan halaman untuk mengedit kode lantai
-router.get('/edit/:id', async(req, res) => {
+router.get('/edit/:id', authPengurus, async(req, res) => {
     try {
         const {id} = req.params
         const data = await modelLantai.getById(id)
-        res.render('pengurus/user/lokasi/lantai/edit', {data})
+        const userId = req.session.pengurusId
+
+        const  user = await modelPengurus.getPengurusById(userId)
+        res.render('pengurus/user/lokasi/lantai/edit', {data, user})
     } catch(err) {
-        req.flash("error", "Dta tidak ditemukan")
+        req.flash("error", err.message)
         return res.redirect('/pengurus/lantai')
     }
 })
 
 //memgupdate data lantai berdasarkan id
-router.post('/update/:id', async (req, res) => {
+router.post('/update/:id', authPengurus, async (req, res) => {
     try {
         let {id} = req.params
         let {kode_lantai} = req.body
@@ -74,7 +85,7 @@ router.post('/update/:id', async (req, res) => {
 })
 
 //mengapus data lantai berdasarakn id
-router.post('/delete/:id', async (req, res) => {
+router.post('/delete/:id', authPengurus, async (req, res) => {
     try {
         let {id} = req.params
         await modelLantai.delete(id)
