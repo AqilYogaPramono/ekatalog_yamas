@@ -4,20 +4,34 @@ const router = express.Router()
 const modelRak = require('../../../model/modelRak')
 //import model ruangan untuk menampilkan data ruanga
 const modelRuangan = require('../../../model/modelRuangan')
+const {authPengurus} = require('../.././../middleware/auth')
+const modelPengurus = require('../../../model/modelPengurus')
+
 //menampilakn semua data rak
-router.get('/', async(req, res) => {
+router.get('/', authPengurus, async(req, res) => {
     try {
         let data = await modelRak.getAll()
-        res.render('pengurus/user/lokasi/rak/index', {data})
+
+        const userId = req.session.pengurusId
+
+        const  user = await modelPengurus.getPengurusById(userId)
+
+        res.render('pengurus/user/lokasi/rak/index', {data, user})
     } catch(err) {
         req.flash('error', err.message)
+        res.redirect('/pengurus/dashboard')
     }
 })
 
-router.get('/buat', async (req, res) => {
+router.get('/buat', authPengurus, async (req, res) => {
     try {
         const ruangan = await modelRuangan.getAll()
-        res.render('pengurus/user/lokasi/rak/buat', {ruangan})
+
+        const userId = req.session.pengurusId
+
+        const  user = await modelPengurus.getPengurusById(userId)
+
+        res.render('pengurus/user/lokasi/rak/buat', {ruangan, user})
     } catch (err) {
         req.flash('error', err.message)
         res.redirect('/pengurus/rak')
@@ -25,7 +39,7 @@ router.get('/buat', async (req, res) => {
 })
 
 //menabahkan data rak baru
-router.post('/create', async(req, res) => {
+router.post('/create', authPengurus, async(req, res) => {
     try {
         let {id_ruangan, kode_rak} = req.body
         let data = {id_ruangan, kode_rak}
@@ -42,12 +56,15 @@ router.post('/create', async(req, res) => {
     }
 })
 
-router.get('/edit/:id', async (req, res) => {
+router.get('/edit/:id', authPengurus, async (req, res) => {
     try {
         const {id} = req.params
         const rak = await modelRak.getById(id)
         const ruangan = await modelRuangan.getAll()
-        res.render('pengurus/user/lokasi/rak/edit', {rak, ruangan})
+        const userId = req.session.pengurusId
+
+        const  user = await modelPengurus.getPengurusById(userId)
+        res.render('pengurus/user/lokasi/rak/edit', {rak, ruangan, user})
     } catch(err) {
         req.flash('error', err.message)
         res.redirect('/pengurus/rak')
@@ -55,7 +72,7 @@ router.get('/edit/:id', async (req, res) => {
 })
 
 //memgupdate data rak berdasarkan id
-router.post('/update/:id', async(req, res) => {
+router.post('/update/:id', authPengurus, async(req, res) => {
     try {
         const {id} = req.params
         const {kode_rak, id_ruangan} = req.body
@@ -76,7 +93,7 @@ router.post('/update/:id', async(req, res) => {
 })
 
 //mengapus data rak berdasarakn id
-router.post('/delete/:id', async (req, res) => {
+router.post('/delete/:id', authPengurus, async (req, res) => {
     try {
         const {id} = req.params
         await modelRak.delete(id)
