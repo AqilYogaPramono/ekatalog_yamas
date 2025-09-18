@@ -65,24 +65,30 @@ app.use(session({
 //middleware untuk mengirim pesan
 app.use(flash())
 
+//digunakan untuk router auth
+app.use('/', authRouter)
+
 //digunakan untuk router admin
 //folder admin
+app.use('/admin/dashboard', dashboardAdminRouter)
 app.use('/admin/pengurus', pengurusRouter)
+app.use('/admin/buku', bukuAdminRouter)
+app.use('/admin/majalah', majalahAdminRouter)
 
 //digunakan untuk router pengguna
 //folder pengguna
 app.use('/', penggunaRouter)
 
-//folder bahasa
-app.use('/pengurus/bahasa', bahasaRouter)
+//folder dashboard
+app.use('/pengurus/dashboard', dashboardPengurusRouter)
+//folder ubah password
+app.use('/pengurus', changePasswordRouter)
+
 //folder buku
-// app.use('/pengurus/buku', bukuRouter)
-app.use('/pengurus/kategori-buku', kategoriBukuRouter)
-app.use('/pengurus/pengarang-buku', pengarangBukuRouter)
-//folder data master
-app.use('/pengurs/bahasa', bahasaRouter)
-app.use('/pengurus/tempat-terbit', tempatTerbitRouter)
-app.use('/pengurus/penerbit', penerbitRouter)
+app.use('/pengurus/buku', bukuRouter)
+//folder majalah
+app.use('/pengurus/majalah', majalahRouter)
+
 //folder lokasi
 app.use('/pengurus/lantai', lantaiRouter)
 app.use('/pengurus/ruangan', ruanganRouter)
