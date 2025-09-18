@@ -1,35 +1,117 @@
-const express = require(express)
+const express = require('express')
 const router = express.Router()
 const modelPengurus = require('../model/modelPengurus')
 const bcrypt = require('bcryptjs')
 
-router.post('/login', async(req, res) => {
+router.get('/dyIZXvc0ER2acma', (req, res) => {
+    res.render('auth/register')
+})
+
+router.post('/register', async (req, res) => {
     try {
-        const {email, password} = req.body
-        const data = {email, password}
+        const { nama, email, kata_sandi, konfirmasi_kata_sandi } = req.body
+
+        if (!nama) {
+            req.flash('error', 'Nama tidak boleh kosong')
+            return res.redirect('/dyIZXvc0ER2acma')
+        }
+
+        if (!email) {
+            req.flash('error', 'Email tidak boleh kosong')
+            return res.redirect('/dyIZXvc0ER2acma')
+        }
+
+        if (await modelPengurus.checkEmail(email)) {
+            req.flash('error', 'Email sudah terdaftar')
+            return res.redirect('/dyIZXvc0ER2acma')
+        }
+
+        if (!kata_sandi) {
+            req.flash('error', 'Password tidak boleh kosong')
+            return res.redirect('/dyIZXvc0ER2acma')
+        }
+
+        if (!konfirmasi_kata_sandi) {
+            req.flash('error', 'Konfirmasi Password tidak boleh kosong')
+            return res.redirect('/dyIZXvc0ER2acma')
+        }
+
+        if (kata_sandi.length < 6) {
+            req.flash('error', 'Password Minimal 6 karakter')
+            return res.redirect('/dyIZXvc0ER2acma')
+        }
+        if (!/[A-Z]/.test(kata_sandi)) {
+            req.flash('error', 'Password Minimal 1 Huruf Kapital')
+            return res.redirect('/dyIZXvc0ER2acma')
+        }
+        if (!/[a-z]/.test(kata_sandi)) {
+            req.flash('error', 'Password Minimal 1 Huruf Kecil')
+            return res.redirect('/dyIZXvc0ER2acma')
+        }
+        if (!/\d/.test(kata_sandi)) {
+            req.flash('error', 'Password Minimal 1 Angka')
+            return res.redirect('/dyIZXvc0ER2acma')
+        }
+
+        if (kata_sandi != konfirmasi_kata_sandi) {
+            req.flash('error', 'Password dan konfirmasi password tidak cocok')
+            return res.redirect('/dyIZXvc0ER2acma')
+        }
+
+        const data = { nama, email, kata_sandi }
+
+        await modelPengurus.register(data)
+
+        req.flash('success', 'Pendaftaran berhasil, silahkan tunggu aktivasi akun dari admin')
+        res.redirect('/login')
+    } catch (err) {
+        console.log(err)
+        req.flash('error', err.message)
+        res.redirect('/')
+    }
+})
+
+router.get('/login', (req, res) => {
+    res.render('auth/login')
+})
+
+router.post('/log', async(req, res) => {
+    try {
+        const {email, kata_sandi} = req.body
+        const data = {email, kata_sandi}
 
         const pengrus = await modelPengurus.login(data)
 
         if (!pengrus) {
             req.flash('error', 'Email yang anda masukkan salah')
+            return res.redirect('/login')
         }
 
-        if (!(await bcrypt.compare(password, pengrus.password))) {
-            req.flash('error', 'Password yang anda masukkan salah')
+        if (!(await bcrypt.compare(kata_sandi, pengrus.kata_sandi))) {
+            req.flash('error', 'Kata Sandi yang anda masukkan salah')
+            return res.redirect('/login')
+        }
+
+        if (pengrus.status_akun != 'Aktif') {
+            req.flash('error', 'Status akun belum aktif, Silahkan hubungi admin')
+            return res.redirect('/login')
         }
 
         req.session.pengurusId = pengrus.id
-        if(pengrus.level_pengurus == "pengurus") return res.redirect('/pengurus/dashboards')
-        if(pengrus.level_pengurus == "admin") return res.redirect('/admin/dashboard')
+        if(pengrus.peran == "Pengurus") return res.redirect('/pengurus/dashboard')
+        if(pengrus.peran == "Admin") return res.redirect('/admin/dashboard')
         req.flash('success', 'Selamat Datang')
     } catch(err) {
         req.flash('error', err.msg)
+        res.redirect('/')
     }
 })
 
-router.post('/logout', async(req, res) => {
+router.get('/logout', async(req, res) => {
     req.session.destroy(err => {
-        if (err) return res.redirect('/')
+        if (err)  {
+            req.flash('error', 'Gagal Logout')
+        }
         res.redirect('/')
     }) 
 })
