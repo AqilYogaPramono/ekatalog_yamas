@@ -65,7 +65,6 @@ router.post('/register', async (req, res) => {
         req.flash('success', 'Pendaftaran berhasil, silahkan tunggu aktivasi akun dari admin')
         res.redirect('/login')
     } catch (err) {
-        console.log(err)
         req.flash('error', err.message)
         res.redirect('/')
     }
@@ -80,29 +79,29 @@ router.post('/log', async(req, res) => {
         const {email, kata_sandi} = req.body
         const data = {email, kata_sandi}
 
-        const pengrus = await modelPengurus.login(data)
+        const pengurus = await modelPengurus.login(data)
 
-        if (!pengrus) {
+        if (!pengurus) {
             req.flash('error', 'Email yang anda masukkan salah')
             return res.redirect('/login')
         }
 
-        if (!(await bcrypt.compare(kata_sandi, pengrus.kata_sandi))) {
+        if (!(await bcrypt.compare(kata_sandi, pengurus.kata_sandi))) {
             req.flash('error', 'Kata Sandi yang anda masukkan salah')
             return res.redirect('/login')
         }
 
-        if (pengrus.status_akun != 'Aktif') {
+        if (pengurus.status_akun != 'Aktif') {
             req.flash('error', 'Status akun belum aktif, Silahkan hubungi admin')
             return res.redirect('/login')
         }
 
-        req.session.pengurusId = pengrus.id
-        if(pengrus.peran == "Pengurus") return res.redirect('/pengurus/dashboard')
-        if(pengrus.peran == "Admin") return res.redirect('/admin/dashboard')
+        req.session.pengurusId = pengurus.id
+        if(pengurus.peran == "Pengurus") return res.redirect('/pengurus/dashboard')
+        if(pengurus.peran == "Admin") return res.redirect('/admin/dashboard')
         req.flash('success', 'Selamat Datang')
     } catch(err) {
-        req.flash('error', err.msg)
+        req.flash('error', err.message)
         res.redirect('/')
     }
 })

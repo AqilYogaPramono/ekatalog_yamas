@@ -5,7 +5,7 @@ class modelLantai {
     // mengambil semua data pada tabel lantai
     static async getAll() {
         try {
-            const [rows] = await connection.query(`SELECT * FROM lantai`)
+            const [rows] = await connection.query(`SELECT * FROM lantai ORDER BY id ASC`)
             return rows
         } catch (err) {
             throw err
