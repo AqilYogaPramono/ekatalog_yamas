@@ -1,33 +1,25 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <%- include('../../partials/__head.ejs', { title: 'Detail Buku' }) %>
+    <%- include('../partials/__head.ejs', { title: 'Detail Buku' }) %>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.min.css">
     <style>
         body {
+            font-family: 'Poppins', sans-serif;
             background-color: #f8f9fa;
-            font-family: "Nunito", sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-        .main-wrapper {
-            display: flex;
-            flex: 1;
-        }
-        .sidebar {
-            width: 250px;
-            background-color: #ffffff;
-            box-shadow: 2px 0 5px rgba(0,0,0,.05);
-            padding: 20px;
-        }
-        .content-area {
-            flex-grow: 1;
-            padding: 2rem;
         }
         .navbar {
             box-shadow: 0 2px 4px rgba(0,0,0,.04);
+        }
+        .btn-add {
+            background-color: #0F8EC8;
+            color: white;
+            border: 1px solid #0F8EC8;
+        }
+
+        .btn-add:hover {
+            background-color: #0c75a4;
+            transform: translateY(-2px);
         }
         .detail-header {
             font-weight: 700;
@@ -40,85 +32,97 @@
             height: auto;
             border-radius: 8px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
         }
         .detail-info-item {
             margin-bottom: 1rem;
             display: flex;
         }
         .detail-info-label {
-            font-weight: 600;
+            font-weight: 700;
             color: #495057;
             min-width: 150px;
         }
         .detail-info-value {
-            color: #6c757d;
+            color: #5f6870;
             flex-grow: 1;
             text-align: justify;
+        }
+        .mfp-close {
+            color: #fff !important;
+            opacity: 1;
+            font-size: 30px !important;
+            right: 0px !important;
+            top: 0px !important;
         }
     </style>
 </head>
 <body>
-<div class="container-fluid page-body-wrapper flex flex-grow">
-    <%- include('../../partials/__nav.ejs') %>
-    <div class="main-wrapper">
-        <div class="content-area">
-            <div class="container mt-5 mb-5">
-                <div class="row">
-                    <div class="col-md-4 text-center mb-4">
+    <div class="container-fluid page-body-wrapper flex flex-grow">
+        <div class="container mt-5 mb-5">
+            <a href="javascript:history.back()" class="btn btn-add mb-3">
+                <i class="bi bi-arrow-left"></i> Kembali
+            </a>
+            
+            <div class="row">
+                <div class="col-md-4 text-center mb-4">
+                    <a href="" class="portfolio-popup" id="book-cover-link">
                         <img src="" alt="Cover Buku" class="detail-cover-img" id="book-cover">
-                    </div>
+                    </a>
+                </div>
 
-                    <div class="col-md-8">
-                        <h1 class="detail-header" id="book-title"></h1>
+                        <div class="col-md-8">
+                            <h1 class="detail-header" id="book-title"></h1>
 
-                        <div class="mb-4">
-                            <div class="detail-info-item">
-                                <span class="detail-info-label">Pengarang</span>
-                                <span class="detail-info-value" id="book-author"></span>
-                            </div>
-                            <div class="detail-info-item">
-                                <span class="detail-info-label">ISBN / ISSN</span>
-                                <span class="detail-info-value" id="book-isbn"></span>
-                            </div>
-                            <div class="detail-info-item">
-                                <span class="detail-info-label">No. Klasifikasi</span>
-                                <span class="detail-info-value" id="book-classification"></span>
-                            </div>
-                            <div class="detail-info-item">
-                                <span class="detail-info-label">Bahasa</span>
-                                <span class="detail-info-value" id="book-language"></span>
-                            </div>
-                            <div class="detail-info-item">
-                                <span class="detail-info-label">Jumlah Halaman</span>
-                                <span class="detail-info-value" id="book-pages"></span>
-                            </div>
-                            <div class="detail-info-item">
-                                <span class="detail-info-label">Tahun Terbit</span>
-                                <span class="detail-info-value" id="book-year"></span>
-                            </div>
-                            <div class="detail-info-item">
-                                <span class="detail-info-label">Tempat Terbit</span>
-                                <span class="detail-info-value" id="book-publication-place"></span>
-                            </div>
-                            <div class="detail-info-item">
-                                <span class="detail-info-label">Penerbit</span>
-                                <span class="detail-info-value" id="book-publisher"></span>
-                            </div>
-                            <div class="detail-info-item">
-                                <span class="detail-info-label">Kategori</span>
-                                <span class="detail-info-value" id="book-category"></span>
-                            </div>
-                            <div class="detail-info-item">
-                                <span class="detail-info-label">Lokasi</span>
-                                <span class="detail-info-value" id="book-location"></span>
-                            </div>
-                            <div class="detail-info-item">
-                                <span class="detail-info-label">Ketersediaan</span>
-                                <span class="detail-info-value" id="book-availability"></span>
-                            </div>
-                            <div class="detail-info-item">
-                                <span class="detail-info-label">Sinopsis</span>
-                                <span class="detail-info-value" id="book-synopsis"></span>
+                            <div class="mb-4">
+                                <div class="detail-info-item">
+                                    <span class="detail-info-label">Pengarang</span>
+                                    <span class="detail-info-value" id="book-author"></span>
+                                </div>
+                                <div class="detail-info-item">
+                                    <span class="detail-info-label">ISBN / ISSN</span>
+                                    <span class="detail-info-value" id="book-isbn"></span>
+                                </div>
+                                <div class="detail-info-item">
+                                    <span class="detail-info-label">No. Klasifikasi</span>
+                                    <span class="detail-info-value" id="book-classification"></span>
+                                </div>
+                                <div class="detail-info-item">
+                                    <span class="detail-info-label">Bahasa</span>
+                                    <span class="detail-info-value" id="book-language"></span>
+                                </div>
+                                <div class="detail-info-item">
+                                    <span class="detail-info-label">Jumlah Halaman</span>
+                                    <span class="detail-info-value" id="book-pages"></span>
+                                </div>
+                                <div class="detail-info-item">
+                                    <span class="detail-info-label">Tahun Terbit</span>
+                                    <span class="detail-info-value" id="book-year"></span>
+                                </div>
+                                <div class="detail-info-item">
+                                    <span class="detail-info-label">Tempat Terbit</span>
+                                    <span class="detail-info-value" id="book-publication-place"></span>
+                                </div>
+                                <div class="detail-info-item">
+                                    <span class="detail-info-label">Penerbit</span>
+                                    <span class="detail-info-value" id="book-publisher"></span>
+                                </div>
+                                <div class="detail-info-item">
+                                    <span class="detail-info-label">Kategori</span>
+                                    <span class="detail-info-value" id="book-category"></span>
+                                </div>
+                                <div class="detail-info-item">
+                                    <span class="detail-info-label">Lokasi</span>
+                                    <span class="detail-info-value" id="book-location"></span>
+                                </div>
+                                <div class="detail-info-item">
+                                    <span class="detail-info-label">Ketersediaan</span>
+                                    <span class="detail-info-value" id="book-availability"></span>
+                                </div>
+                                <div class="detail-info-item">
+                                    <span class="detail-info-label">Sinopsis</span>
+                                    <span class="detail-info-value" id="book-synopsis"></span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -126,10 +130,11 @@
             </div>
         </div>
     </div>
-</div>
     
-    <%- include('../../partials/__foot.ejs') %>
+    <%- include('../partials/__foot.ejs') %>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js"></script>
 
     <script>
         const bookData = {
@@ -139,13 +144,13 @@
             isbn: "978-9799106280",
             classification: "813.54 PRO b",
             language: "Indonesia",
-            pages: "550 hlm",
+            pages: "550",
             year: "1980",
             publicationPlace: "Jakarta",
             publisher: "Hasta Mitra",
             category: "Fiksi Sejarah",
-            location: "Rak 5, Baris 1",
-            availability: "Tersedia (2 dari 10)",
+            location: "Rak 5",
+            availability: "Tersedia",
             synopsis: "Bumi Manusia adalah novel pertama dari Tetralogi Buru karya Pramoedya Ananta Toer. Novel ini menceritakan kisah Minke, seorang pribumi yang berkesempatan sekolah di HBS, sekolah menengah bergengsi untuk orang-orang Belanda dan Eropa. Di tengah diskriminasi dan ketidakadilan kolonial, Minke berjuang untuk mempertahankan martabatnya dan cintanya pada Annelies, putri Nyai Ontosoroh. Novel ini adalah cerminan perjuangan, cinta, dan identitas di masa kolonial Hindia Belanda."
         };
 
@@ -169,6 +174,25 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             displayBookDetails(bookData);
+        });
+
+        $(document).ready(function() {
+            $('.portfolio-popup').magnificPopup({
+                type: 'image',
+                removalDelay: 300,
+                mainClass: 'mfp-fade',
+                gallery: {
+                    enabled: true
+                },
+                zoom: {
+                    enabled: true,
+                    duration: 300,
+                    easing: 'ease-in-out',
+                    opener: function(openerElement) {
+                        return openerElement.is('img') ? openerElement : openerElement.find('img');
+                    }
+                }
+            });
         });
     </script>
 </body>
