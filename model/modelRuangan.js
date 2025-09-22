@@ -5,7 +5,7 @@ class ModelRuangan {
     // mengambil semua data pada tabel ruangan (join dengan lantai)
     static async getAll() {
         try {
-            const [rows] = await connection.query(`SELECT r.id, r.kode_ruangan, l.kode_lantai FROM ruangan AS r LEFT JOIN lantai AS l ON r.id_lantai = l.id`)
+            const [rows] = await connection.query(`SELECT r.id, r.kode_ruangan, l.kode_lantai FROM ruangan AS r LEFT JOIN lantai AS l ON r.id_lantai = l.id ORDER BY id ASC`)
             return rows
         } catch (err) {
             throw err
