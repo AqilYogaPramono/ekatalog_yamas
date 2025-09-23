@@ -1,0 +1,164 @@
+<%- include('../../../partialsAdmin/__messages.ejs') %>
+<%- include('../../../partialsAdmin/__head.ejs', { title: 'Daftar Buku Dihapus' }) %>
+<%- include('../../../partialsAdmin/__nav-side.ejs') %>
+
+<div id="loadingSpinner" style="display: none;">
+  <div class="spinner"></div>
+  <p>Uploading dan memproses file... Mohon tunggu.</p>
+</div>
+
+<style>
+  #loadingSpinner {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(255, 255, 255, 0.85);
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    font-family: sans-serif;
+  }
+
+  .spinner {
+    width: 48px;
+    height: 48px;
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid #3498db;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 15px;
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0); }
+    100% { transform: rotate(360deg); }
+  }
+</style>
+
+<div class="col-lg-12 grid-margin stretch-card">
+  <div class="card">
+    <div class="card-body">
+
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4 class="card-title mb-0">Daftar Buku Dihapus</h4>
+      </div>
+
+      <% if (buku.length === 0) { %>
+        <p>Tidak ada buku yang dihapus.</p>
+      <% } else { %>
+        <div class="list-group">
+          <% buku.forEach(item => { %>
+            <div class="list-group-item mb-3 border rounded">
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <strong><%= item.judul %></strong><br>
+                  <small>Pengarang: <%= item.pengarang || '-' %> | Kategori: <%= item.kategori || '-' %></small>
+                </div>
+                <div class="d-flex align-items-center gap-2">
+                  <button class="btn btn-sm btn-outline-secondary" type="button" data-toggle="collapse" data-target="#collapse<%= item.id %>">
+                    Detail <i class="mdi mdi-chevron-down"></i>
+                  </button>
+
+                  <!-- Tombol "Tampilkan Kembali" -->
+                  <button class="btn btn-sm btn-success" data-toggle="modal" data-target="#modalTampilkan<%= item.id %>">
+                    <i class="mdi mdi-eye"></i> Tampilkan
+                  </button>
+
+                  <!-- Tombol "Hapus Permanen" -->
+                  <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#modalDelete<%= item.id %>">
+                    <i class="mdi mdi-delete"></i> Hapus
+                  </button>
+                </div>
+              </div>
+
+              <!-- Detail Collapse -->
+              <div class="collapse mt-3" id="collapse<%= item.id %>">
+                <div class="border-top pt-3">
+                  <div class="mb-3">
+                    <img src="/images/buku/<%= item.foto_cover %>" alt="Cover" style="width: 120px; height: auto; object-fit: cover;">
+                  </div>
+                  <p><strong>ISBN/ISSN:</strong> <%= item.isbn_issn || '-' %></p>
+                  <p><strong>Bahasa:</strong> <%= item.bahasa %></p>
+                  <p><strong>Jumlah Halaman:</strong> <%= item.jumlah_halaman || '-' %></p>
+                  <p><strong>Tahun Terbit:</strong> <%= item.tahun_terbit || '-' %></p>
+                  <p><strong>Tempat Terbit:</strong> <%= item.tempat_terbit || '-' %></p>
+                  <p><strong>Penerbit:</strong> <%= item.penerbit || '-' %></p>
+                  <p><strong>Lokasi Buku:</strong> <%= item.lokasi_buku || '-' %></p>
+                  <p><strong>Ketersediaan:</strong> <%= item.ketersediaan %></p>
+                  <p><strong>Sinopsis:</strong> <%= item.sinopsis || '-' %></p>
+                  <p><strong>Dihapus Oleh:</strong> <%= item.dihapus_oleh || '-' %></p>
+                  <p><strong>Dihapus Pada:</strong> 
+                    <% if (item.dihapus_pada) { %>
+                      <%= new Date(item.dihapus_pada).toLocaleString() %>
+                    <% } else { %> - <% } %>
+                  </p>
+                </div>
+              </div>
+
+              <!-- Modal: Tampilkan Kembali -->
+              <div class="modal fade" id="modalTampilkan<%= item.id %>" tabindex="-1" role="dialog" aria-labelledby="modalTampilkanLabel<%= item.id %>" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                  <form action="/admin/buku/edit/<%= item.id %>" method="POST">
+                    <input type="hidden" name="status_data" value="Tampil">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">Konfirmasi Tampilkan Buku</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                      </div>
+                      <div class="modal-body">
+                        Apakah Anda yakin ingin menampilkan kembali buku "<%= item.judul %>"?
+                      </div>
+                      <div class="modal-footer text-right">
+                        <button type="button" class="btn btn-light" data-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-success">Tampilkan</button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+
+              <!-- Modal: Hapus Permanen -->
+              <div class="modal fade" id="modalDelete<%= item.id %>" tabindex="-1" role="dialog" aria-labelledby="modalDeleteLabel<%= item.id %>" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                  <form action="/admin/buku/delete/<%= item.id %>" method="POST">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">Konfirmasi Hapus Permanen</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                      </div>
+                      <div class="modal-body">
+                        Buku "<%= item.judul %>" akan dihapus secara permanen. Lanjutkan?
+                      </div>
+                      <div class="modal-footer text-right">
+                        <button type="button" class="btn btn-light" data-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-danger">Hapus</button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+
+            </div>
+          <% }) %>
+        </div>
+      <% } %>
+
+    </div>
+  </div>
+</div>
+
+<%- include('../../../partialsAdmin/__script.ejs') %>
+
+<!-- Spinner script -->
+<script>
+  const uploadForm = document.getElementById('formUploadBatch')
+  const spinner = document.getElementById('loadingSpinner')
+
+  if (uploadForm) {
+    uploadForm.addEventListener('submit', function () {
+      spinner.style.display = 'flex'
+    })
+  }
+</script>
