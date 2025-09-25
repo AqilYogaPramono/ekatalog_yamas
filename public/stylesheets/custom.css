@@ -16,6 +16,8 @@
 :root {
     --sidebar-primary: #0F8EC8;
     --sidebar-text: #fff;
+    --sidebar-width: 260px;
+    --sidebar-width-collapsed: 70px;
 }
 
 .sidebar .nav .nav-item.active > .nav-link {
@@ -76,14 +78,6 @@ html body .sidebar .nav .nav-item.active > .nav-link,
     background-color: var(--sidebar-primary) !important;
 }
 
-*[style*="background: #4B49AC"],
-*[style*="background-color: #4B49AC"],
-*[style*="background:#4B49AC"],
-*[style*="background-color:#4B49AC"] {
-    background: var(--sidebar-primary) !important;
-    background-color: var(--sidebar-primary) !important;
-}
-
 @media (min-width: 992px) {
     .sidebar-icon-only .sidebar .nav .nav-item .nav-link .menu-title,
     .sidebar-icon-only .sidebar .nav .nav-item.hover-open .nav-link .menu-title,
@@ -98,3 +92,29 @@ html body .sidebar .nav .nav-item.active > .nav-link,
     }
 }
 /* sidebar custom color end */
+
+@media (min-width: 992px) {
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        height: 100vh;
+        overflow-y: auto;
+        width: var(--sidebar-width, 260px);
+        z-index: 1029;
+    }
+
+    .main-panel {
+        margin-left: var(--sidebar-width, 260px);
+        transition: margin-left 0.2s ease-in-out;
+    }
+
+    body.sidebar-icon-only .sidebar {
+        width: var(--sidebar-width-collapsed, 70px);
+    }
+
+    body.sidebar-icon-only .main-panel {
+        margin-left: var(--sidebar-width-collapsed, 70px);
+    }
+}
