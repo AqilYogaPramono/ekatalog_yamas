@@ -1,30 +1,40 @@
-<%- include('../../../../partial/__messages.ejs') %>
-<%- include('../../../../partial/__head.ejs', { title: 'Daftar Rak' }) %>
-<%- include('../../../../partial/__nav-side.ejs') %>
+<%- include('../../../../partials1/header/__header.ejs', { title: 'Tambah Rak' }) %>
+<%- include('../../../../partials1/nav-side/__nav-sidePengurus.ejs') %>
+<%- include('../../../../partials1/messages/messagesDashboard.ejs') %>
 
-<div class="col-12 grid-margin stretch-card">
-    <div class="card">
-      <div class="card-body">
-        <h4 class="card-title">Tambahkan Rak</h4>
-        <form class="forms-sample" action="/pengurus/rak/create" method="POST">
-          <div class="form-group">
-            <label for="inputRuangan">Pilih Ruangan</label>
-            <select class="form-control" id="inputRuangan" name="id_ruangan" required>
-              <option value="">Pilih Ruangan</option>
-              <% for (let i = 0; i < ruangan.length; i++) { %>
-                <option value="<%= ruangan[i].id %>"><%= ruangan[i].kode_ruangan %></option>
-              <% } %>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="inputRuangan">Kode Rak</label>
-            <input type="text" class="form-control" id="inputRuangan" name="kode_rak" placeholder="Inputkan Kode Rak" required>
-          </div>
-          <button type="submit" class="btn btn-primary mr-2">Submit</button>
-          <a href="/pengurus/rak" class="btn btn-light">Cancel</a>
-        </form>
-      </div>
+<div class="main-panel">
+    <div class="content-wrapper">
+        <div class="row">
+            <div class="col-12 grid-margin stretch-card">
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="card-title">Tambah Rak</h4>
+                  <form action="/pengurus/rak/create" method="POST" data-loading>
+                    <div class="form-group">
+                      <label for="id_ruangan">Ruangan</label>
+                      <select class="form-control" id="id_ruangan" name="id_ruangan" required>
+                        <option value="">Pilih Ruangan</option>
+                        <% if (Array.isArray(ruangan) && ruangan.length) { %>
+                          <% ruangan.forEach(function(item){ %>
+                            <option value="<%= item.id %>"><%= item.kode_ruangan %></option>
+                          <% }) %>
+                        <% } %>
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <label for="kode_rak">Kode Rak</label>
+                      <input type="text" class="form-control" id="kode_rak" name="kode_rak" required>
+                    </div>
+                    <div class="d-flex">
+                      <button type="submit" class="btn btn-primary mr-2">Simpan</button>
+                      <a href="/pengurus/rak" class="btn btn-light" data-loading>Kembali</a>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+        </div>
     </div>
-  </div>
+</div>
 
-<%- include('../../../../partial/__script.ejs') %>
+<%- include('../../../../partials1/script/__script.ejs') %>

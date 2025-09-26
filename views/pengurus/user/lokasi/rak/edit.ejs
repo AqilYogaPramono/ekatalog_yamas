@@ -1,30 +1,40 @@
-<%- include('../../../../partial/__messages.ejs') %>
-<%- include('../../../../partial/__head.ejs', { title: 'Edit Ruangan' }) %>
-<%- include('../../../../partial/__nav-side.ejs') %>
+<%- include('../../../../partials1/header/__header.ejs', { title: 'Edit Rak' }) %>
+<%- include('../../../../partials1/nav-side/__nav-sidePengurus.ejs') %>
+<%- include('../../../../partials1/messages/messagesDashboard.ejs') %>
 
-<div class="col-12 grid-margin stretch-card">
-    <div class="card">
-      <div class="card-body">
-        <h4 class="card-title">Edit Ruangan</h4>
-        <form class="forms-sample" action="/pengurus/rak/update/<%= rak[0].id %>" method="POST">
-          <div class="form-group">
-            <label for="inputlantai">Lantai</label>
-            <select class="form-control" id="inputlantai" name="id_ruangan" required>
-              <option value="">Pilih Ruangan</option>
-              <% ruangan.forEach(function(item) { %>
-                <option value="<%= item.id %>" <%= item.id === rak[0].id_ruangan ? 'selected' : '' %>><%= item.kode_ruangan %></option>
-              <% }) %>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="inputruangan">Kode Rak</label>
-            <input type="text" class="form-control" id="inputruangan" name="kode_rak" placeholder="Inputkan kode rak" value="<%= rak[0].kode_rak %>" required>
-          </div>
-          <button type="submit" class="btn btn-primary mr-2">Update</button>
-          <a href="/pengurus/rak" class="btn btn-light">Cancel</a>
-        </form>
-      </div>
+<div class="main-panel">
+    <div class="content-wrapper">
+        <div class="row">
+            <div class="col-12 grid-margin stretch-card">
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="card-title">Edit Rak</h4>
+                  <form action="/pengurus/rak/update/<%= rak.id %>" method="POST" data-loading>
+                    <div class="form-group">
+                      <label for="id_ruangan">Ruangan</label>
+                      <select class="form-control" id="id_ruangan" name="id_ruangan" required>
+                        <option value="">Pilih Ruangan</option>
+                        <% if (Array.isArray(ruangan) && ruangan.length) { %>
+                          <% ruangan.forEach(function(item){ %>
+                            <option value="<%= item.id %>" <%= rak.id_ruangan == item.id ? 'selected' : '' %>><%= item.kode_ruangan %></option>
+                          <% }) %>
+                        <% } %>
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <label for="kode_rak">Kode Rak</label>
+                      <input type="text" class="form-control" id="kode_rak" name="kode_rak" value="<%= rak.kode_rak %>" required>
+                    </div>
+                    <div class="d-flex">
+                      <button type="submit" class="btn btn-primary mr-2">Simpan</button>
+                      <a href="/pengurus/rak" class="btn btn-light" data-loading>Kembali</a>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+        </div>
     </div>
-  </div>
+</div>
 
-<%- include('../../../../partial/__script.ejs') %>
+<%- include('../../../../partials1/script/__script.ejs') %>
