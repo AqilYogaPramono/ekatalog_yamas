@@ -81,6 +81,7 @@
     .main-panel {
         margin-left: var(--sidebar-width, 260px);
         transition: margin-left 0.2s ease-in-out;
+        width: calc(100% - var(--sidebar-width, 260px));
     }
 
     body.sidebar-icon-only .sidebar {
@@ -90,6 +91,7 @@
 
     body.sidebar-icon-only .main-panel {
         margin-left: var(--sidebar-width-collapsed, 70px);
+        width: calc(100% - var(--sidebar-width-collapsed, 70px));
     }
 }
 
@@ -362,25 +364,4 @@ html body .sidebar .nav .nav-item.active > .nav-link,
         background: var(--sidebar-primary) !important;
         background-color: var(--sidebar-primary) !important;
     }
-}
-
-@media (min-width: 992px) {
-    .sidebar {
-        position: fixed;
-        top: 0;
-        left: 0;
-        bottom: 0;
-        height: 100vh;
-        overflow-y: auto;
-        width: var(--sidebar-width, 260px);
-        z-index: 1029;
-    }
-
-    .main-panel {
-        margin-left: var(--sidebar-width, 260px);
-        transition: margin-left 0.2s ease-in-out;
-    }
-
-    body.sidebar-icon-only .sidebar { width: var(--sidebar-width-collapsed, 70px); }
-    body.sidebar-icon-only .main-panel { margin-left: var(--sidebar-width-collapsed, 70px); }
 }
