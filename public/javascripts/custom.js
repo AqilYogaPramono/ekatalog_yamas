@@ -44,4 +44,39 @@
             $('#sidebar').removeClass('active');
         }
     });
+
+    function showLoading() {
+        var overlay = document.querySelector('.loading-overlay');
+        if (!overlay) {
+            overlay = document.createElement('div');
+            overlay.className = 'loading-overlay';
+            overlay.innerHTML = '<div class="loading-spinner"></div>';
+            document.body.appendChild(overlay);
+        }
+        overlay.classList.add('active');
+    }
+
+    function hideLoading() {
+        var overlay = document.querySelector('.loading-overlay');
+        if (overlay) overlay.classList.remove('active');
+    }
+
+    $(document).on('submit', 'form[data-loading], form', function() {
+        showLoading();
+    });
+
+    var pendingDeleteUrl = null;
+    $(document).on('click', '.btn-delete', function() {
+        pendingDeleteUrl = this.getAttribute('data-url');
+        $('#modalConfirmDelete').modal('show');
+    });
+
+    $(document).on('click', '#btnConfirmDelete', function() {
+        if (!pendingDeleteUrl) return;
+        $('#modalConfirmDelete').modal('hide');
+        showLoading();
+        fetch(pendingDeleteUrl, { method: 'POST' })
+            .then(function() { window.location.reload(); })
+            .catch(function() { hideLoading(); });
+    });
 })();
