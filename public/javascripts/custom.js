@@ -75,8 +75,42 @@
         if (!pendingDeleteUrl) return;
         $('#modalConfirmDelete').modal('hide');
         showLoading();
-        fetch(pendingDeleteUrl, { method: 'POST' })
-            .then(function() { window.location.reload(); })
-            .catch(function() { hideLoading(); });
+        var form = document.createElement('form');
+        form.method = 'POST';
+        form.action = pendingDeleteUrl;
+        document.body.appendChild(form);
+        form.submit();
     });
+})();
+
+(function() {
+    function dismissFlash(el) {
+        if (!el) return;
+        el.style.animation = 'flash-out 180ms ease-in forwards';
+        setTimeout(function(){
+            if (el && el.parentNode) el.parentNode.removeChild(el);
+        }, 200);
+    }
+
+    function setupFlash() {
+        var container = document.querySelector('.flash-container');
+        if (!container) return;
+
+        var flashes = container.querySelectorAll('.flash');
+        flashes.forEach(function(el){
+            var closeBtn = el.querySelector('.flash-close');
+            if (closeBtn) {
+                closeBtn.addEventListener('click', function(){ dismissFlash(el); });
+            }
+            if (el.classList.contains('flash-success')) {
+                setTimeout(function(){ dismissFlash(el); }, 6000);
+            }
+        });
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', setupFlash);
+    } else {
+        setupFlash();
+    }
 })();

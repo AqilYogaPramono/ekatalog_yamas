@@ -191,6 +191,84 @@
     .btn-actions { gap: .4rem; }
 }
 
+/* flash messages */
+.flash-container {
+    position: fixed;
+    top: calc(var(--navbar-height, 70px) + 12px);
+    right: 12px;
+    z-index: 2030;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: min(92vw, 520px);
+}
+
+.flash {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 14px;
+    border-radius: 10px;
+    box-shadow: 0 6px 24px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.08);
+    color: #1f2937;
+    background: #ffffff;
+    word-wrap: break-word;
+    overflow-wrap: anywhere;
+    max-width: 100%;
+    line-height: 1.45;
+    font-size: 0.95rem;
+    transform: translateX(12px);
+    opacity: 0;
+    animation: flash-in-right 260ms ease-out forwards;
+}
+
+.flash-success {
+    background: #dcfce7;
+    border: 1px solid rgba(22,163,74,0.25);
+    color: #14532d;
+}
+
+.flash-error {
+    background: #fee2e2;
+    border: 1px solid rgba(220,38,38,0.25);
+    color: #7f1d1d;
+}
+
+.flash-body {
+    flex: 1 1 auto;
+}
+
+.flash-close {
+    appearance: none;
+    border: 0;
+    background: transparent;
+    color: #374151;
+    font-size: 20px;
+    line-height: 1;
+    padding: 0 2px;
+    cursor: pointer;
+    margin-left: auto;
+}
+
+@keyframes flash-in-right {
+    from { transform: translateX(12px); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes flash-out {
+    from { transform: translateX(0); opacity: 1; }
+    to { transform: translateX(12px); opacity: 0; }
+}
+
+@media (max-width: 575.98px) {
+    .flash-container {
+        top: calc(var(--navbar-height, 64px) + 8px);
+        right: 10px;
+        left: 10px;
+        max-width: unset;
+    }
+}
+
 /* force center alignment for action column - desktop only */
 @media (min-width: 576px) {
     .table th.text-right,
