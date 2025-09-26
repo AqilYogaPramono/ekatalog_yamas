@@ -180,9 +180,43 @@
 }
 
 /* action buttons inline */
-.btn-actions { display: inline-flex; gap: .5rem; align-items: center; }
+.btn-actions { 
+    display: inline-flex; 
+    gap: .5rem; 
+    align-items: center; 
+}
 @media (max-width: 575.98px) {
     .btn-actions { gap: .4rem; }
+}
+
+/* force center alignment for action column - desktop only */
+@media (min-width: 576px) {
+    .table th.text-right,
+    .table td[data-label="Aksi"],
+    .table td.text-right[data-label="Aksi"] {
+        text-align: center !important;
+    }
+    .table td[data-label="Aksi"] .btn-actions,
+    .table td.text-right[data-label="Aksi"] .btn-actions {
+        justify-content: center !important;
+        width: 100%;
+        display: flex !important;
+    }
+    .table td[data-label="Aksi"],
+    .table td.text-right[data-label="Aksi"] {
+        text-align: center !important;
+    }
+}
+
+/* mobile view - keep buttons left aligned but fix stacked table */
+@media (max-width: 575.98px) {
+    .table-stacked td[data-label="Aksi"] {
+        justify-content: space-between !important;
+    }
+    .table-stacked td[data-label="Aksi"] .btn-actions {
+        justify-content: flex-end !important;
+        width: auto;
+    }
 }
 
 /* primary brand overrides without touching vendor template */
