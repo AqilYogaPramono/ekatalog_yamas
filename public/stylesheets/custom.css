@@ -387,6 +387,25 @@
 
 .sidebar .nav.sub-menu { background-color: var(--sidebar-primary) !important; }
 
+.sidebar .nav.sub-menu .nav-link {
+    color: rgba(255, 255, 255, 0.5) !important;
+    transition: color 0.2s ease;
+}
+
+.sidebar .nav.sub-menu .nav-link:hover {
+    color: rgba(255, 255, 255, 0.8) !important;
+}
+
+.sidebar .nav.sub-menu .nav-link.active {
+    color: #fff !important;
+    font-weight: 600;
+}
+
+.sidebar .nav.sub-menu .nav-item.active > .nav-link {
+    color: #fff !important;
+    font-weight: 600;
+}
+
 .sidebar .nav:not(.sub-menu) > .nav-item:hover > .nav-link,
 .sidebar .nav:not(.sub-menu) > .nav-item:hover[aria-expanded="true"],
 .sidebar-dark .sidebar .nav:not(.sub-menu) > .nav-item:hover > .nav-link {
