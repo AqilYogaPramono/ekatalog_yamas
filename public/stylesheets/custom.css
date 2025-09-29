@@ -45,7 +45,10 @@
 }
 
 /* collapse chevron/arrow color */
-.sidebar .nav .nav-item .menu-arrow,
+.sidebar .nav .nav-item .menu-arrow {
+    color: #6c757d !important;
+}
+
 .sidebar .nav .nav-item.active .menu-arrow {
     color: var(--sidebar-text) !important;
 }
