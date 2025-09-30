@@ -2,11 +2,11 @@ const express = require('express')
 const router = express.Router()
 //import model lantai 
 const modelLantai = require('../../../model/modelLantai')
-const {authPengurus} = require('../.././../middleware/auth')
-const modelPengurus = require('../../../model/modelPengurus')
+const {authPustakawan} = require('../.././../middleware/auth')
+const modelPengguna = require('../../../model/modelPengguna')
 
 //menampilakn semua data lantai
-router.get('/', authPengurus, async (req, res) => {
+router.get('/', authPustakawan, async (req, res) => {
     try {
         let data = await modelLantai.getAll()
         const userId = req.session.pengurusId
@@ -20,7 +20,7 @@ router.get('/', authPengurus, async (req, res) => {
 })
 
 //menampilkan halaman untuk menambahkan data lantai
-router.get('/buat', authPengurus, async (req, res) => {
+router.get('/buat', authPustakawan, async (req, res) => {
     const userId = req.session.pengurusId
 
     const  user = await modelPengurus.getPengurusById(userId)
@@ -28,7 +28,7 @@ router.get('/buat', authPengurus, async (req, res) => {
 })
 
 //menabahkan data lantai baru
-router.post('/create', authPengurus, async (req, res) => {
+router.post('/create', authPustakawan, async (req, res) => {
     try {
         let {kode_lantai} = req.body
         if (!kode_lantai) {
@@ -51,7 +51,7 @@ router.post('/create', authPengurus, async (req, res) => {
 })
 
 //menampilkan halaman untuk mengedit kode lantai
-router.get('/edit/:id', authPengurus, async(req, res) => {
+router.get('/edit/:id', authPustakawan, async(req, res) => {
     try {
         const {id} = req.params
         const data = await modelLantai.getById(id)
@@ -66,7 +66,7 @@ router.get('/edit/:id', authPengurus, async(req, res) => {
 })
 
 //memgupdate data lantai berdasarkan id
-router.post('/update/:id', authPengurus, async (req, res) => {
+router.post('/update/:id', authPustakawan, async (req, res) => {
     try {
         let {id} = req.params
         let {kode_lantai} = req.body
@@ -85,7 +85,7 @@ router.post('/update/:id', authPengurus, async (req, res) => {
 })
 
 //mengapus data lantai berdasarakn id
-router.post('/delete/:id', authPengurus, async (req, res) => {
+router.post('/delete/:id', authPustakawan, async (req, res) => {
     try {
         let {id} = req.params
         await modelLantai.delete(id)

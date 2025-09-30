@@ -1,13 +1,11 @@
 const express = require('express')
 const router = express.Router()
-const bcrypt = require('bcryptjs')
-const Modelpengurus = require('../../model/modelPengurus')
-const {authAdmin} = require('../../middleware/auth')
-const modelPengurus = require('../../model/modelPengurus')
+const {authManajer} = require('../../middleware/auth')
+const modelPengguna = require('../../model/modelPengguna')
 
-router.get('/', authAdmin, async (req, res) => {
+router.get('/', authManajer, async (req, res) => {
     try {
-        const userId = req.session.pengurusId
+        const userId = req.session.penggunaId
 
         const  user = await modelPengurus.getPengurusById(userId)
 
@@ -19,7 +17,7 @@ router.get('/', authAdmin, async (req, res) => {
     }
 })
 
-router.post('/edit/:id', authAdmin, async (req, res) => {
+router.post('/edit/:id', authManajer, async (req, res) => {
     try {
         const {id} = req.params
 
@@ -35,7 +33,7 @@ router.post('/edit/:id', authAdmin, async (req, res) => {
     }
 })
 
-router.post('/delete/:id', authAdmin, async(req, res) => {
+router.post('/delete/:id', authManajer, async(req, res) => {
     try{
         const {id} = req.params
         

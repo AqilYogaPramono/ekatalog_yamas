@@ -1,19 +1,19 @@
 const express = require('express')
 const router = express.Router()
 const bcrypt = require('bcryptjs')
-const modelPengurus = require('../../../model/modelPengurus')
-const {authPengurus} = require('../../../middleware/auth')
+const modelPengguna = require('../../../model/modelPengguna')
+const {authPustakawan} = require('../../../middleware/auth')
 
-router.get('/ubah-password', authPengurus, async (req, res) => {
-    const userId = req.session.pengurusId
+router.get('/ubah-password', authPustakawan, async (req, res) => {
+    const userId = req.session.pustakawanId
 
-    const  user = await modelPengurus.getPengurusById(userId)
+    const  user = await modelPengguna.getPenggunaById(userId)
     res.render('pengurus/user/pengurus/ubahPassword', { user })
 })
 
-router.post('/change-password', authPengurus, async (req, res) => {
+router.post('/change-password', authPustakawan, async (req, res) => {
     try {
-        const  idPengurus = req.session.pengurusId
+        const  idPustakawan = req.session.pustakawanId
 
         const pengrus = await modelPengurus.getPengurusById(idPengurus)
 

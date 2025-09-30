@@ -4,11 +4,11 @@ const router = express.Router()
 const modelRak = require('../../../model/modelRak')
 //import model ruangan untuk menampilkan data ruanga
 const modelRuangan = require('../../../model/modelRuangan')
-const {authPengurus} = require('../.././../middleware/auth')
-const modelPengurus = require('../../../model/modelPengurus')
+const {authPustakawan} = require('../.././../middleware/auth')
+const modelPengguna = require('../../../model/modelPengguna')
 
 //menampilakn semua data rak
-router.get('/', authPengurus, async(req, res) => {
+router.get('/', authPustakawan, async(req, res) => {
     try {
         let data = await modelRak.getAll()
 
@@ -23,7 +23,7 @@ router.get('/', authPengurus, async(req, res) => {
     }
 })
 
-router.get('/buat', authPengurus, async (req, res) => {
+router.get('/buat', authPustakawan, async (req, res) => {
     try {
         const ruangan = await modelRuangan.getAll()
 
@@ -39,7 +39,7 @@ router.get('/buat', authPengurus, async (req, res) => {
 })
 
 //menabahkan data rak baru
-router.post('/create', authPengurus, async(req, res) => {
+router.post('/create', authPustakawan, async(req, res) => {
     try {
         let {id_ruangan, kode_rak} = req.body
         let data = {id_ruangan, kode_rak}
@@ -56,7 +56,7 @@ router.post('/create', authPengurus, async(req, res) => {
     }
 })
 
-router.get('/edit/:id', authPengurus, async (req, res) => {
+router.get('/edit/:id', authPustakawan, async (req, res) => {
     try {
         const {id} = req.params
         const rak = await modelRak.getById(id)
@@ -72,7 +72,7 @@ router.get('/edit/:id', authPengurus, async (req, res) => {
 })
 
 //memgupdate data rak berdasarkan id
-router.post('/update/:id', authPengurus, async(req, res) => {
+router.post('/update/:id', authPustakawan, async(req, res) => {
     try {
         const {id} = req.params
         const {kode_rak, id_ruangan} = req.body
@@ -93,7 +93,7 @@ router.post('/update/:id', authPengurus, async(req, res) => {
 })
 
 //mengapus data rak berdasarakn id
-router.post('/delete/:id', authPengurus, async (req, res) => {
+router.post('/delete/:id', authPustakawan, async (req, res) => {
     try {
         const {id} = req.params
         await modelRak.delete(id)

@@ -4,11 +4,11 @@ const router = express.Router()
 const modelRuangan = require('../../../model/modelRuangan')
 //import model lantai untuk menampilkan data lantai
 const modelLantai = require('../../../model/modelLantai')
-const {authPengurus} = require('../.././../middleware/auth')
-const modelPengurus = require('../../../model/modelPengurus')
+const {authPustakawan} = require('../.././../middleware/auth')
+const modelPengguna = require('../../../model/modelPengguna')
 
 //menampilakn semua data ruangan
-router.get('/', authPengurus, async(req, res) => {
+router.get('/', authPustakawan, async(req, res) => {
     try {
         const data = await modelRuangan.getAll()
         const userId = req.session.pengurusId
@@ -22,7 +22,7 @@ router.get('/', authPengurus, async(req, res) => {
 })
 
 //menampilkan halaman untuk menambahkan data ruangan
-router.get('/buat', authPengurus, async (req, res) => {
+router.get('/buat', authPustakawan, async (req, res) => {
     try {
         const data = await modelLantai.getAll()
         const userId = req.session.pengurusId
@@ -36,7 +36,7 @@ router.get('/buat', authPengurus, async (req, res) => {
 })
 
 //menabahkan data ruangan baru
-router.post('/create', authPengurus, async(req, res) => {
+router.post('/create', authPustakawan, async(req, res) => {
     try {
         const {id_lantai, kode_ruangan} = req.body
         if (!id_lantai) {
@@ -63,7 +63,7 @@ router.post('/create', authPengurus, async(req, res) => {
     }
 })
 
-router.get('/edit/:id', authPengurus, async (req, res) => {
+router.get('/edit/:id', authPustakawan, async (req, res) => {
     try {
         const {id} = req.params
         const data = await modelRuangan.getById(id)
@@ -79,7 +79,7 @@ router.get('/edit/:id', authPengurus, async (req, res) => {
 })
 
 //memgupdate data ruangan berdasarkan id
-router.post('/update/:id', authPengurus, async(req, res) => {
+router.post('/update/:id', authPustakawan, async(req, res) => {
     try {
         const {id} = req.params
         const {kode_ruangan, id_lantai} = req.body
@@ -102,7 +102,7 @@ router.post('/update/:id', authPengurus, async(req, res) => {
 })
 
 //mengapus data ruangan berdasarakn id
-router.post('/delete/:id', authPengurus, async (req, res) => {
+router.post('/delete/:id', authPustakawan, async (req, res) => {
     try {
         const {id} = req.params
         await modelRuangan.delete(id)
