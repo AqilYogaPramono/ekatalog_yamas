@@ -3,8 +3,8 @@ const router = express.Router()
 const modelMajalah = require('../../model/modelMajalah')
 const path = require('path')
 const fs = require('fs')
-const {authAdmin} = require('../../middleware/auth')
-const modelPengurus = require('../../model/modelPengurus')
+const {authManajer} = require('../../middleware/auth')
+const modelPengguna = require('../../model/modelPengguna')
 
 const deleteOldPhoto = (oldPhoto) => {
     if (oldPhoto) {
@@ -13,7 +13,7 @@ const deleteOldPhoto = (oldPhoto) => {
     }
 }
 
-router.get('/', authAdmin, async (req, res) => {
+router.get('/', authManajer, async (req, res) => {
     try {
         const userId = req.session.pengurusId
 
@@ -29,7 +29,7 @@ router.get('/', authAdmin, async (req, res) => {
     }
 })
 
-router.post('/edit/:id', authAdmin, async (req, res) => {
+router.post('/edit/:id', authManajer, async (req, res) => {
     try {
         const {id} = req.params
         
@@ -47,7 +47,7 @@ router.post('/edit/:id', authAdmin, async (req, res) => {
     }
 })
 
-router.post('/delete/:id', authAdmin, async (req, res) => {
+router.post('/delete/:id', authManajer, async (req, res) => {
     try {
         const { id } = req.params
         

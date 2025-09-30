@@ -7,8 +7,8 @@ const xlsx = require('xlsx')
 // Import model buku
 const modelBuku = require('../../../model/modelBuku')
 const modelRak = require('../../../model/modelRak')
-const {authPengurus} = require('../.././../middleware/auth')
-const modelPengurus = require('../../../model/modelPengurus')
+const {authPustakawan} = require('../.././../middleware/auth')
+const modelPengguna = require('../../../model/modelPengguna')
 const { convertImageFile } = require('../../../middleware/convertImage')
 
 //konfigurasi multer untuk upload gambar
@@ -70,7 +70,7 @@ const deleteOldPhoto = (oldPhoto) => {
     }
 }
 
-router.get('/', authPengurus, async (req, res) => {
+router.get('/', authPustakawan, async (req, res) => {
     try {
         const data = await modelBuku.getAll()
 
@@ -85,7 +85,7 @@ router.get('/', authPengurus, async (req, res) => {
     }
 })
 
-router.get('/buat', authPengurus, async (req, res) => {
+router.get('/buat', authPustakawan, async (req, res) => {
     try {
         const rak = await modelRak.getAll()
 
@@ -100,7 +100,7 @@ router.get('/buat', authPengurus, async (req, res) => {
     }
 })
 
-router.post('/create', authPengurus, upload.single('foto_cover'), async (req, res) => {
+router.post('/create', authPustakawan, upload.single('foto_cover'), async (req, res) => {
     try {
 
         const {judul, isbn_issn, no_klasifikasi, bahasa, jumlah_halaman, tahun_terbit, sinopsis, tempat_terbit, penerbit, kategori, pengarang, id_rak} = req.body
@@ -160,7 +160,7 @@ router.post('/create', authPengurus, upload.single('foto_cover'), async (req, re
     }
 })
 
-router.post('/create-batch-buku', authPengurus, uploadBatch.array('files'), async (req, res) => {
+router.post('/create-batch-buku', authPustakawan, uploadBatch.array('files'), async (req, res) => {
     try {
         const files = req.files || []
 
@@ -310,7 +310,7 @@ router.post('/create-batch-buku', authPengurus, uploadBatch.array('files'), asyn
     }
 })
 
-router.get('/edit/:id', authPengurus, async (req, res) => {
+router.get('/edit/:id', authPustakawan, async (req, res) => {
     try {
         const {id} = req.params
         const rak = await modelRak.getAll()
@@ -326,7 +326,7 @@ router.get('/edit/:id', authPengurus, async (req, res) => {
     }
 })
 
-router.post('/update/:id', authPengurus, upload.single('foto_cover'), async (req, res) => {
+router.post('/update/:id', authPustakawan, upload.single('foto_cover'), async (req, res) => {
     try {
         const {id} = req.params
 
@@ -389,7 +389,7 @@ router.post('/update/:id', authPengurus, upload.single('foto_cover'), async (req
     }
 })
 
-router.post('/delete/:id', authPengurus, async (req, res) => {
+router.post('/delete/:id', authPustakawan, async (req, res) => {
     try {
         const {id} = req.params
 

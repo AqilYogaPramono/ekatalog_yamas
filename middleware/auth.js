@@ -1,26 +1,28 @@
 //midleware to check peran
-const modelPengurus = require('../model/modelPengurus')
+const modelPengguna = require('../model/modelPengguna')
 
-const authPengurus = async (req, res, next) => {
+const authPustakawan = async (req, res, next) => {
     try {
-        const pengurusId = req.session.pengurusId
-        const checkLevel = await modelPengurus.getPengurusById(pengurusId)
-        if(checkLevel.peran == "Pengurus") return next()
+        const penggunaId = req.session.penggunaId
+        const checkLevel = await modelPengguna.getPenggunaById(penggunaId)
+        if(checkLevel.peran == "Pustakawan") return next()
     } catch(err) {
-        req.flash('error', 'Terjadi kesalahan saat login')
+        console.log(err)
+        req.flash('error', 'Anda tidak memiliki akses ke halaman ini')
         res.redirect('/login')
     }
 }
 
-const authAdmin = async (req, res, next) => {
+const authManajer = async (req, res, next) => {
     try {
-        const pengurusId = req.session.pengurusId
-        const checkLevel = await modelPengurus.getPengurusById(pengurusId)
-        if(checkLevel.peran == "Admin") return next()
+        const penggunaId = req.session.penggunaId
+        const checkLevel = await modelPengguna.getPenggunaById(penggunaId)
+        if(checkLevel.peran == "Manajer") return next()
     } catch(err) {
-        req.flash('error', 'Terjadi kelasalahan saat login')
+        console.log(err)
+        req.flash('error', 'Anda tidak memiliki akses ke halaman ini')
         res.redirect('/login')
     }
 }
 
-module.exports = {authPengurus, authAdmin}
+module.exports = {authPustakawan, authManajer}

@@ -6,8 +6,8 @@ const fs = require('fs')
 const xlsx = require('xlsx')
 const modelMajalah = require('../../../model/modelMajalah')
 const modelRak = require('../../../model/modelRak')
-const modelPengurus = require('../../../model/modelPengurus')
-const {authPengurus} = require('../.././../middleware/auth')
+const modelPengguna = require('../../../model/modelPengguna')
+const {authPustakawan} = require('../.././../middleware/auth')
 const { convertImageFile } = require('../../../middleware/convertImage')
 
 //konfigurasi multer untuk upload gambar
@@ -70,7 +70,7 @@ const deleteOldPhoto = (oldPhoto) => {
 }
 
 // Get all majalah
-router.get('/', authPengurus, async (req, res) => {
+router.get('/', authPustakawan, async (req, res) => {
     try {
         const data = await modelMajalah.getAll()
         const userId = req.session.pengurusId
@@ -84,7 +84,7 @@ router.get('/', authPengurus, async (req, res) => {
 })
 
 //
-router.get('/buat', authPengurus, async (req, res) => {
+router.get('/buat', authPustakawan, async (req, res) => {
     try {
         const rak = await modelRak.getAll()
         const userId = req.session.pengurusId
@@ -98,7 +98,7 @@ router.get('/buat', authPengurus, async (req, res) => {
 })
 
 // Create new majalah
-router.post('/create', authPengurus, upload.single('foto_cover'), async (req, res) => {
+router.post('/create', authPustakawan, upload.single('foto_cover'), async (req, res) => {
     try {
         const {judul, edisi, no_klasifikasi, bahasa, tahun_terbit, sinopsis, tempat_terbit, penerbit, id_rak } = req.body
 
@@ -150,7 +150,7 @@ router.post('/create', authPengurus, upload.single('foto_cover'), async (req, re
 })
 
 
-router.post('/create-batch-majalah', authPengurus, uploadBatch.array('files'), async (req, res) => {
+router.post('/create-batch-majalah', authPustakawan, uploadBatch.array('files'), async (req, res) => {
     try {
         const files = req.files || []
 
@@ -290,7 +290,7 @@ router.post('/create-batch-majalah', authPengurus, uploadBatch.array('files'), a
     }
 })
 
-router.get('/edit/:id', authPengurus, async (req, res) => {
+router.get('/edit/:id', authPustakawan, async (req, res) => {
     try {
         const {id} = req.params
 
@@ -308,7 +308,7 @@ router.get('/edit/:id', authPengurus, async (req, res) => {
 })
 
 // Update majalah
-router.post('/update/:id', authPengurus, upload.single('foto_cover'), async (req, res) => {
+router.post('/update/:id', authPustakawan, upload.single('foto_cover'), async (req, res) => {
     try {
         const { id } = req.params
 
@@ -364,7 +364,7 @@ router.post('/update/:id', authPengurus, upload.single('foto_cover'), async (req
 })
 
 // Delete majalah
-router.post('/delete/:id', authPengurus, async (req, res) => {
+router.post('/delete/:id', authPustakawan, async (req, res) => {
     try {
         const { id } = req.params
         
