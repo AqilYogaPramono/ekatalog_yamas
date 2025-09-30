@@ -7,35 +7,27 @@ require('dotenv').config()
 var session = require('express-session')
 var flash = require('express-flash')
 
-//digunakan untuk router auth
+//routes auth
 const authRouter = require('./routes/auth')
 
-//digunakan untuk router admin
-//folder admin
-const dashboardAdminRouter = require('./routes/admin/dashboard')
-const pengurusRouter = require('./routes/admin/pengurus')
-const bukuAdminRouter = require('./routes/admin/buku')
-const majalahAdminRouter = require('./routes/admin/majalah')
+//routes manajer
+const dashboardManajerRouter = require('./routes/manajer/dashboard')
+const pustakawanRouter = require('./routes/manajer/pustakawan')
+const bukuManajerRouter = require('./routes/manajer/buku')
+const majalahManajerRouter = require('./routes/manajer/majalah')
 
-//digunakan untuk router pengguna
-//folder pengguna
+//routes pengguna
 const penggunaRouter = require('./routes/pengguna/pengguna')
 
-//digunakan untuk router pengurus
-//folder dashboard
-const dashboardPengurusRouter = require('./routes/pengurus/dashboard')
-//folder ubah password
-const changePasswordRouter = require('./routes/pengurus/pengurus/pengurus')
+//routes pustakawan
+const dashboardPustakawanRouter = require('./routes/pustakawan/dashboard')
+const changePasswordRouter = require('./routes/pustakawan/pustakawan/pustakawan')
+const bukuRouter = require('./routes/pustakawan/buku/buku')
+const majalahRouter = require('./routes/pustakawan/majalah/majalah')
+const lantaiRouter = require('./routes/pustakawan/lokasi/lantai')
+const ruanganRouter = require('./routes/pustakawan/lokasi/ruangan')
+const rakRouter = require('./routes/pustakawan/lokasi/rak')
 
-//folder buku
-const bukuRouter = require('./routes/pengurus/buku/buku')
-//folder majalah
-const majalahRouter = require('./routes/pengurus/majalah/majalah')
-
-//folder lokasi
-const lantaiRouter = require('./routes/pengurus/lokasi/lantai')
-const ruanganRouter = require('./routes/pengurus/lokasi/ruangan')
-const rakRouter = require('./routes/pengurus/lokasi/rak')
 var app = express();
 
 // view engine setup
@@ -64,34 +56,26 @@ app.use(session({
 //middleware untuk mengirim pesan
 app.use(flash())
 
-//digunakan untuk router auth
+//routes auth
 app.use('/', authRouter)
 
-//digunakan untuk router admin
-//folder admin
-app.use('/admin/dashboard', dashboardAdminRouter)
-app.use('/admin/pengurus', pengurusRouter)
-app.use('/admin/buku', bukuAdminRouter)
-app.use('/admin/majalah', majalahAdminRouter)
+//routes manajer
+app.use('/manajer/dashboard', dashboardManajerRouter)
+app.use('/manajer/pustakawan', pustakawanRouter)
+app.use('/manajer/buku', bukuManajerRouter)
+app.use('/manajer/majalah', majalahManajerRouter)
 
-//digunakan untuk router pengguna
-//folder pengguna
+//routes pengguna
 app.use('/', penggunaRouter)
 
 //folder dashboard
-app.use('/pengurus/dashboard', dashboardPengurusRouter)
-//folder ubah password
-app.use('/pengurus', changePasswordRouter)
-
-//folder buku
-app.use('/pengurus/buku', bukuRouter)
-//folder majalah
-app.use('/pengurus/majalah', majalahRouter)
-
-//folder lokasi
-app.use('/pengurus/lantai', lantaiRouter)
-app.use('/pengurus/ruangan', ruanganRouter)
-app.use('/pengurus/rak', rakRouter)
+app.use('/pustakawan/dashboard', dashboardPustakawanRouter)
+app.use('/pustakawan', changePasswordRouter)
+app.use('/pustakawan/buku', bukuRouter)
+app.use('/pustakawan/majalah', majalahRouter)
+app.use('/pustakawan/lantai', lantaiRouter)
+app.use('/pustakawan/ruangan', ruanganRouter)
+app.use('/pustakawan/rak', rakRouter)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
