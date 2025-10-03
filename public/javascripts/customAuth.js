@@ -18,24 +18,25 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         })
     })
-})
 
-(function(){
-    function dismissFlash(el){
-        if(!el) return
-        el.style.animation = 'flash-out 180ms ease-in forwards'
-        setTimeout(function(){ if(el && el.parentNode) el.parentNode.removeChild(el) }, 200)
-    }
-    function setupAuthFlash(){
-        var container = document.querySelector('.flash-container-auth')
-        if(!container) return
+    var container = document.querySelector('.flash-container-auth')
+    if (container) {
         var flashes = container.querySelectorAll('.flash')
-        flashes.forEach(function(el){
-            var timeout = el.classList.contains('flash-success') ? 6000 : 12000
-            setTimeout(function(){ dismissFlash(el) }, timeout)
+        flashes.forEach(function (el) {
+            var timeout = el.classList.contains('flash-success') ? 4000 : 8000
+            function removeEl() {
+                el.style.animation = 'flash-out 180ms ease-in forwards'
+                setTimeout(function () { if (el && el.parentNode) el.parentNode.removeChild(el) }, 200)
+            }
+            setTimeout(removeEl, timeout)
+            el.addEventListener('click', removeEl)
+        })
+        container.addEventListener('click', function(e){
+            var el = e.target.closest('.flash')
+            if (!el) return
+            el.style.animation = 'flash-out 180ms ease-in forwards'
+            setTimeout(function () { if (el && el.parentNode) el.parentNode.removeChild(el) }, 200)
         })
     }
-    if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', setupAuthFlash); else setupAuthFlash()
-})()
-
+})
 
