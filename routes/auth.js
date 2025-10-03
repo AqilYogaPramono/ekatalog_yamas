@@ -26,6 +26,12 @@ router.post('/register-pustakawan', async (req, res) => {
             return res.redirect('/dyIZXvc0ER2acma')
         }
 
+        if (await modelPengguna.checkNPManajer(NP)) {
+            req.flash('error', 'Nomer Pegawai sudah terdaftar')
+            req.flash('data', data)
+            return res.redirect('/vdq7vwhBN6TA1THh')
+        }   
+
         if (await modelPengguna.checkNPPustakawan(NP)) {
             req.flash('error', 'Nomer Pegawai sudah terdaftar')
             req.flash('data', data)
@@ -109,6 +115,12 @@ router.post('/register-manajer', async (req, res) => {
             req.flash('error', 'Nomer Pegawai sudah terdaftar')
             req.flash('data', data)
             return res.redirect('/vdq7vwhBN6TA1THh')
+        }
+
+        if (await modelPengguna.checkNPPustakawan(NP)) {
+            req.flash('error', 'Nomer Pegawai sudah terdaftar')
+            req.flash('data', data)
+            return res.redirect('/dyIZXvc0ER2acma')
         }
 
         if (!kata_sandi) {
