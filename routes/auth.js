@@ -210,6 +210,7 @@ router.post('/log', async(req, res) => {
         if(pengguna.peran == "Pustakawan") return res.redirect('/pustakawan/dashboard')
         if(pengguna.peran == "Manajer") return res.redirect('/manajer/dashboard')
     } catch(err) {
+        console.log(err)
         req.flash('error', err.message)
         req.flash('data', data)
         res.redirect('/login')
@@ -221,6 +222,7 @@ router.get('/logout', async(req, res) => {
         if (err)  {
             req.flash('error', 'Gagal Logout')
         }
+        console.log(err)
         res.redirect('/')
     }) 
 })
