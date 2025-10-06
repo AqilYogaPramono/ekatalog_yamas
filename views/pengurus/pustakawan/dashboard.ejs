@@ -1,76 +1,123 @@
-<%- include('../../partial/__messages.ejs') %>
-<%- include('../../partial/__head.ejs', { title: 'Dashboard Pengurus' }) %>
-<%- include('../../partial/__nav-side.ejs') %>
+<%- include('../../partials1/header/__headerDashboard.ejs', { title: 'Dashboard Pustakawan' }) %>
+<%- include('../../partials1/nav-side/__nav-sidePengurus.ejs') %>
+<%- include('../../partials1/messages/messagesDashboard.ejs') %>
 
-<div class="container">
-    <h1 class="mt-4 mb-4">Dashboard Pengurus</h1>
+<div class="main-panel">
+    <div class="content-wrapper">
+        <div class="row">
+            <div class="col-12 col-sm-6 col-lg-6 grid-margin stretch-card">
+                <div class="stat-card card w-100">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div>
+                                <div class="stat-label">Total Buku</div>
+                                <div class="stat-number" data-count="<%= totalBuku[0].total_buku %>"><%= totalBuku[0].total_buku %></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-    <div class="row mb-5">
-        <div class="col-md-6">
-            <div class="card text-white bg-primary mb-3">
-                <div class="card-body">
-                    <h5 class="card-title">Total Buku</h5>
-                    <p class="card-text fs-4"><%= totalBuku[0].total_buku %> Buku</p>
+            <div class="col-12 col-sm-6 col-lg-6 grid-margin stretch-card">
+                <div class="stat-card card w-100">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div>
+                                <div class="stat-label">Total Majalah</div>
+                                <div class="stat-number" data-count="<%= totalMajalah[0].total_majalah %>"><%= totalMajalah[0].total_majalah %></div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-6">
-            <div class="card text-white bg-success mb-3">
-                <div class="card-body">
-                    <h5 class="card-title">Total Majalah</h5>
-                    <p class="card-text fs-4"><%= totalMajalah[0].total_majalah %> Majalah</p>
+
+        <div class="row">
+            <div class="col-12 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h4 class="card-title mb-0">Buku Terbaru</h4>
+                            <a href="/pustakawan/buku" class="btn btn-primary btn-sm">
+                                <i class="mdi mdi-eye"></i> Lihat Semua
+                            </a>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Judul</th>
+                                        <th>ISBN/ISSN</th>
+                                        <th>No. Klasifikasi</th>
+                                        <th>Lokasi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% if (newBuku && newBuku.length > 0) { %>
+                                        <% for (let i = 0; i < newBuku.length; i++) { %>
+                                            <tr>
+                                                <td><%= newBuku[i].judul %></td>
+                                                <td><%= newBuku[i].isbn_issn %></td>
+                                                <td><%= newBuku[i].no_klasifikasi %></td>
+                                                <td><%= newBuku[i].lokasi_buku %></td>
+                                            </tr>
+                                        <% } %>
+                                    <% } else { %>
+                                        <tr>
+                                            <td colspan="4" class="text-center">Tidak ada data</td>
+                                        </tr>
+                                    <% } %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <h3>Buku Terbaru</h3>
-    <div class="table-responsive mb-5">
-        <table class="table table-bordered table-striped">
-            <thead>
-                <tr>
-                    <th>Judul</th>
-                    <th>ISBN/ISSN</th>
-                    <th>No Klasifikasi</th>
-                    <th>Lokasi</th>
-                </tr>
-            </thead>
-            <tbody>
-                <% newBuku.forEach(buku => { %>
-                    <tr>
-                        <td><%= buku.judul %></td>
-                        <td><%= buku.isbn_issn %></td>
-                        <td><%= buku.no_klasifikasi %></td>
-                        <td><%= buku.lokasi_buku %></td>
-                    </tr>
-                <% }) %>
-            </tbody>
-        </table>
-    </div>
-
-    <h3>Majalah Terbaru</h3>
-    <div class="table-responsive mb-5">
-        <table class="table table-bordered table-striped">
-            <thead>
-                <tr>
-                    <th>Judul</th>
-                    <th>Edisi</th>
-                    <th>No Klasifikasi</th>
-                    <th>Lokasi</th>
-                </tr>
-            </thead>
-            <tbody>
-                <% newMajalah.forEach(majalah => { %>
-                    <tr>
-                        <td><%= majalah.judul %></td>
-                        <td><%= majalah.edisi %></td>
-                        <td><%= majalah.no_klasifikasi %></td>
-                        <td><%= majalah.lokasi_majalah %></td>
-                    </tr>
-                <% }) %>
-            </tbody>
-        </table>
+        <div class="row">
+            <div class="col-12 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h4 class="card-title mb-0">Majalah Terbaru</h4>
+                            <a href="/pustakawan/majalah" class="btn btn-primary btn-sm">
+                                <i class="mdi mdi-eye"></i> Lihat Semua
+                            </a>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Judul</th>
+                                        <th>Edisi</th>
+                                        <th>No. Klasifikasi</th>
+                                        <th>Lokasi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% if (newMajalah && newMajalah.length > 0) { %>
+                                        <% for (let i = 0; i < newMajalah.length; i++) { %>
+                                            <tr>
+                                                <td><%= newMajalah[i].judul %></td>
+                                                <td><%= newMajalah[i].edisi %></td>
+                                                <td><%= newMajalah[i].no_klasifikasi %></td>
+                                                <td><%= newMajalah[i].lokasi_majalah %></td>
+                                            </tr>
+                                        <% } %>
+                                    <% } else { %>
+                                        <tr>
+                                            <td colspan="4" class="text-center">Tidak ada data</td>
+                                        </tr>
+                                    <% } %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
-<%- include('../../partial/__script.ejs') %>
+<%- include('../../partials1/script/__scriptDashboard.ejs') %>

@@ -71,7 +71,7 @@ class ModelPengguna {
     //Hitung pengguna dengan status akun "Proses" 
     static async getPustakawanProses() {
         try {
-            const [rows] = await connection.query('SELECT COUNT(id) AS pengguna_proses FROM pengguna WHERE status_akun = "Proses" AND peran = "Pustakawan"')
+            const [rows] = await connection.query('SELECT COUNT(id) AS pustakawan_proses FROM pengguna WHERE status_akun = "Proses" AND peran = "Pustakawan"')
             return rows[0]
         } catch (err) {
             throw err
