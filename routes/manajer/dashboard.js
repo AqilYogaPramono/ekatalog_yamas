@@ -18,7 +18,7 @@ router.get('/', authManajer, async (req, res) => {
         const newBukuHapus = await modelBuku.getNewBukuHapus()
         const newMajalahHapus = await modelMajalah.getNewMajalahHapus()
 
-        res.render('pustakawan/manajer/dashboard', { pustakawanProses, pustakawanAktif, totalBukuHapus, totalMajalahHapus, newBukuHapus, newMajalahHapus, user })
+        res.render('pengurus/manajer/dashboard', { pustakawanProses, pustakawanAktif, totalBukuHapus, totalMajalahHapus, newBukuHapus, newMajalahHapus, user })
     } catch(err) {
         console.log(err)
         req.flash('error', err.message)
