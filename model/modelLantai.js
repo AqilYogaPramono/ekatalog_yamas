@@ -61,6 +61,16 @@ class modelLantai {
             throw err
         }
     }
+
+    // memeriksa apakah lantai sudah digunakan
+    static async checkLantaiUsed(id) {
+        try {
+            const [rows] = await connection.query(`SELECT * FROM ruangan WHERE id_lantai = ?`, [id])
+            return rows.length > 0
+        } catch (err) {
+            throw err
+        }
+    }
 }
 
 module.exports = modelLantai

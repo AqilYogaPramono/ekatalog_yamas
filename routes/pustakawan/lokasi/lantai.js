@@ -11,9 +11,10 @@ router.get('/', authPustakawan, async (req, res) => {
         let data = await modelLantai.getAll()
         const userId = req.session.pengurusId
 
-        const  user = await modelPengurus.getPengurusById(userId)
-        res.render('pengurus/user/lokasi/lantai/index', {data, user})
+        const  user = await modelPengguna.getPenggunaById(userId)
+        res.render('pengurus/pustakawan/lokasi/lantai/index', {data, user})
     } catch(err) {
+        console.log(err)
         req.flash("error", err.message)
         return res.redirect('/pengurus/lantai')
     }
@@ -23,8 +24,11 @@ router.get('/', authPustakawan, async (req, res) => {
 router.get('/buat', authPustakawan, async (req, res) => {
     const userId = req.session.pengurusId
 
-    const  user = await modelPengurus.getPengurusById(userId)
-    res.render('pengurus/user/lokasi/lantai/buat', { user })
+    const  user = await modelPengguna.getPenggunaById(userId)
+    res.render('pengurus/pustakawan/lokasi/lantai/buat', { 
+        user,
+        data: req.flash('data')[0]
+    })
 })
 
 //menabahkan data lantai baru
@@ -33,20 +37,24 @@ router.post('/create', authPustakawan, async (req, res) => {
         let {kode_lantai} = req.body
         if (!kode_lantai) {
             req.flash("error", "Kode lantai tidak boleh kosong")
-            return res.redirect('/pengurus/lantai/buat')
+            req.flash('data', req.body)
+            return res.redirect('/pustakawan/lantai/buat')
         }
         let data = {kode_lantai}
         const checkLantai = await modelLantai.checkLantai(data)
         if (checkLantai) {
             req.flash("error", "Lantai Sudah dibuat")
-            return res.redirect('/pengurus/lantai/buat')
+            req.flash('data', req.body)
+            return res.redirect('/pustakawan/lantai/buat')
         }
         await modelLantai.store(data)
         req.flash('success', 'Data Berhasil Ditambahkan')
-        res.redirect('/pengurus/lantai')
+        res.redirect('/pustakawan/lantai')
     } catch(err) {
+        console.log(err)
         req.flash("error", err.message)
-        return res.redirect('/pengurus/lantai')
+        req.flash('data', req.body)
+        return res.redirect('/pustakawan/lantai')
     }
 })
 
@@ -57,11 +65,13 @@ router.get('/edit/:id', authPustakawan, async(req, res) => {
         const data = await modelLantai.getById(id)
         const userId = req.session.pengurusId
 
-        const  user = await modelPengurus.getPengurusById(userId)
-        res.render('pengurus/user/lokasi/lantai/edit', {data, user})
+        const  user = await modelPengguna.getPenggunaById(userId)
+        res.render('pengurus/pustakawan/lokasi/lantai/edit', {data, user})
     } catch(err) {
+        console.log(err)
         req.flash("error", err.message)
-        return res.redirect('/pengurus/lantai')
+        req.flash('data', req.body)
+        return res.redirect('/pustakawan/lantai')
     }
 })
 
@@ -70,17 +80,28 @@ router.post('/update/:id', authPustakawan, async (req, res) => {
     try {
         let {id} = req.params
         let {kode_lantai} = req.body
+        let data = {kode_lantai}
         if (!kode_lantai) {
             req.flash("error", "Kode lantai tidak boleh kosong")
-            return res.redirect(`/pengurus/lantai/edit/${id}`)
+            req.flash('data', req.body)
+            return res.redirect(`/pustakawan/lantai/edit/${id}`)
         }
-        let data = {kode_lantai}
+
+        const checkLantai = await modelLantai.checkLantai(data, id)
+        if (checkLantai) {
+            req.flash("error", "Lantai Sudah dibuat")
+            req.flash('data', req.body)
+            return res.redirect(`/pustakawan/lantai/edit/${id}`)
+        }
+
         await modelLantai.update(data, id)
         req.flash('success', 'Data Berhasil Diedit')
-        res.redirect('/pengurus/lantai')
+        res.redirect('/pustakawan/lantai')
     } catch (err) {
+        console.log(err)
         req.flash("error", err.message)
-        return res.redirect('/pengurus/lantai')
+        req.flash('data', req.body)
+        return res.redirect('/pustakawan/lantai')
     }
 })
 
@@ -88,12 +109,21 @@ router.post('/update/:id', authPustakawan, async (req, res) => {
 router.post('/delete/:id', authPustakawan, async (req, res) => {
     try {
         let {id} = req.params
+        const checkLantai = await modelLantai.checkLantaiUsed(id)
+        if (checkLantai) {
+            req.flash("error", "Lantai masih digunakan oleh ruangan lain")
+            req.flash('data', req.body)
+            return res.redirect('/pustakawan/lantai')
+        }
+
         await modelLantai.delete(id)
         req.flash('success', 'Data Berhasil Dihapus')
-        res.redirect('/pengurus/lantai')
+        res.redirect('/pustakawan/lantai')
     } catch(err) {
+        console.log(err)
         req.flash("error", err.message)
-        return res.redirect('/pengurus/lantai')
+        req.flash('data', req.body)
+        return res.redirect('/pustakawan/lantai')
     }
 })
 
