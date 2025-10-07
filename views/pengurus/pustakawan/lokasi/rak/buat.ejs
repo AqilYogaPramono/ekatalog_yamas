@@ -1,4 +1,4 @@
-<%- include('../../../../partials1/header/__header.ejs', { title: 'Tambah Rak' }) %>
+<%- include('../../../../partials1/header/__headerDashboard.ejs', { title: 'Tambah Rak' }) %>
 <%- include('../../../../partials1/nav-side/__nav-sidePengurus.ejs') %>
 <%- include('../../../../partials1/messages/messagesDashboard.ejs') %>
 
@@ -9,25 +9,25 @@
               <div class="card">
                 <div class="card-body">
                   <h4 class="card-title">Tambah Rak</h4>
-                  <form action="/pengurus/rak/create" method="POST" data-loading>
+                  <form action="/pustakawan/rak/create" method="POST" data-loading>
                     <div class="form-group">
                       <label for="id_ruangan">Ruangan</label>
                       <select class="form-control" id="id_ruangan" name="id_ruangan" required>
                         <option value="">Pilih Ruangan</option>
                         <% if (Array.isArray(ruangan) && ruangan.length) { %>
                           <% ruangan.forEach(function(item){ %>
-                            <option value="<%= item.id %>"><%= item.kode_ruangan %></option>
+                            <option value="<%= item.id %>" <%= (data && data.id_ruangan == item.id) ? 'selected' : '' %>><%= item.kode_ruangan %></option>
                           <% }) %>
                         <% } %>
                       </select>
                     </div>
                     <div class="form-group">
                       <label for="kode_rak">Kode Rak</label>
-                      <input type="text" class="form-control" id="kode_rak" name="kode_rak" placeholder="Masukkan kode rak, contoh: 'RK001'" required>
+                      <input type="text" class="form-control" id="kode_rak" name="kode_rak" placeholder="Masukkan kode rak, contoh: 'RK001'" value="<%= (data && data.kode_rak) ? data.kode_rak : '' %>" required>
                     </div>
                     <div class="d-flex">
                       <button type="submit" class="btn btn-primary mr-2">Simpan</button>
-                      <a href="/pengurus/rak" class="btn btn-light" data-loading>Kembali</a>
+                      <a href="/pustakawan/rak" class="btn btn-light" data-loading>Kembali</a>
                     </div>
                   </form>
                 </div>
@@ -37,4 +37,4 @@
     </div>
 </div>
 
-<%- include('../../../../partials1/script/__script.ejs') %>
+<%- include('../../../../partials1/script/__scriptDashboard.ejs') %>

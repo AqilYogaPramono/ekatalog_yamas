@@ -1,4 +1,4 @@
-<%- include('../../../../partials1/header/__header.ejs', { title: 'Daftar Rak' }) %>
+<%- include('../../../../partials1/header/__headerDashboard.ejs', { title: 'Daftar Rak' }) %>
 <%- include('../../../../partials1/nav-side/__nav-sidePengurus.ejs') %>
 <%- include('../../../../partials1/messages/messagesDashboard.ejs') %>
 
@@ -10,7 +10,7 @@
                 <div class="card-body">
                   <div class="d-flex justify-content-between align-items-center mb-3">
                     <h4 class="card-title mb-0">Data Rak</h4>
-                    <a href="/pengurus/rak/buat" class="btn btn-primary btn-sm" data-loading>Tambah Rak</a>
+                    <a href="/pustakawan/rak/buat" class="btn btn-primary btn-sm" data-loading>Tambah Rak</a>
                   </div>
                   <div>
                     <table class="table table-hover table-stacked">
@@ -31,8 +31,8 @@
                               <td data-label="Kode Rak"><%= item.kode_rak %></td>
                               <td class="text-center" data-label="Aksi">
                                 <div class="btn-actions">
-                                  <a href="/pengurus/rak/edit/<%= item.id %>" class="btn btn-sm btn-outline-info" data-loading>Edit</a>
-                                  <button type="button" class="btn btn-sm btn-outline-danger btn-delete" data-url="/pengurus/rak/delete/<%= item.id %>">Hapus</button>
+                                  <a href="/pustakawan/rak/edit/<%= item.id %>" class="btn btn-sm btn-outline-info" data-loading>Edit</a>
+                                  <button type="button" class="btn btn-sm btn-outline-danger btn-delete" data-url="/pustakawan/rak/delete/<%= item.id %>">Hapus</button>
                                 </div>
                               </td>
                             </tr>
@@ -72,4 +72,4 @@
   </div>
 </div>
 
-<%- include('../../../../partials1/script/__script.ejs') %>
+<%- include('../../../../partials1/script/__scriptDashboard.ejs') %>
