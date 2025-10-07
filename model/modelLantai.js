@@ -55,7 +55,7 @@ class modelLantai {
     // memeriksa apakah kode_lantai sudah ada
     static async checkLantai(data) {
         try {
-            const [rows] = await connection.query(`SELECT * FROM lantai WHERE kode_lantai = ?`, [data.kode_lantai])
+            const [rows] = await connection.query(`SELECT kode_lanai FROM lantai WHERE kode_lantai = ?`, [data.kode_lantai])
             return rows.length > 0
         } catch (err) {
             throw err
@@ -65,7 +65,7 @@ class modelLantai {
     // memeriksa apakah lantai sudah digunakan
     static async checkLantaiUsed(id) {
         try {
-            const [rows] = await connection.query(`SELECT * FROM ruangan WHERE id_lantai = ?`, [id])
+            const [rows] = await connection.query(`SELECT id FROM ruangan WHERE id_lantai = ?`, [id])
             return rows.length > 0
         } catch (err) {
             throw err
