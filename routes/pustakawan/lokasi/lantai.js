@@ -87,8 +87,7 @@ router.post('/update/:id', authPustakawan, async (req, res) => {
             return res.redirect(`/pustakawan/lantai/edit/${id}`)
         }
 
-        const checkLantai = await modelLantai.checkLantai(data, id)
-        if (checkLantai) {
+        if (await modelLantai.checkLantai(data, id)) {
             req.flash("error", "Lantai Sudah dibuat")
             req.flash('data', req.body)
             return res.redirect(`/pustakawan/lantai/edit/${id}`)
@@ -109,8 +108,7 @@ router.post('/update/:id', authPustakawan, async (req, res) => {
 router.post('/delete/:id', authPustakawan, async (req, res) => {
     try {
         let {id} = req.params
-        const checkLantai = await modelLantai.checkLantaiUsed(id)
-        if (checkLantai) {
+        if (await modelLantai.checkLantaiUsed(id)) {
             req.flash("error", "Lantai masih digunakan oleh ruangan lain")
             req.flash('data', req.body)
             return res.redirect('/pustakawan/lantai')
