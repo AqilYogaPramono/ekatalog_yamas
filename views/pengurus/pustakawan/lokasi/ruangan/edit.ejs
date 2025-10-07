@@ -1,4 +1,4 @@
-<%- include('../../../../partials1/header/__header.ejs', { title: 'Edit Ruangan' }) %>
+<%- include('../../../../partials1/header/__headerDashboard.ejs', { title: 'Edit Ruangan' }) %>
 <%- include('../../../../partials1/nav-side/__nav-sidePengurus.ejs') %>
 <%- include('../../../../partials1/messages/messagesDashboard.ejs') %>
 
@@ -9,7 +9,7 @@
               <div class="card">
                 <div class="card-body">
                   <h4 class="card-title">Edit Ruangan</h4>
-                  <form action="/pengurus/ruangan/update/<%= data.id %>" method="POST" data-loading>
+                  <form action="/pustakawan/ruangan/update/<%= data.id %>" method="POST" data-loading>
                     <div class="form-group">
                       <label for="id_lantai">Lantai</label>
                       <select class="form-control" id="id_lantai" name="id_lantai" required>
@@ -27,7 +27,7 @@
                     </div>
                     <div class="d-flex">
                       <button type="submit" class="btn btn-primary mr-2">Simpan</button>
-                      <a href="/pengurus/ruangan" class="btn btn-light" data-loading>Kembali</a>
+                      <a href="/pustakawan/ruangan" class="btn btn-light" data-loading>Kembali</a>
                     </div>
                   </form>
                 </div>
@@ -37,4 +37,4 @@
     </div>
 </div>
 
-<%- include('../../../../partials1/script/__script.ejs') %>
+<%- include('../../../../partials1/script/__scriptDashboard.ejs') %>

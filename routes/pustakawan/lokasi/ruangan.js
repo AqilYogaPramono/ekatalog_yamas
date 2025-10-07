@@ -13,25 +13,31 @@ router.get('/', authPustakawan, async(req, res) => {
         const data = await modelRuangan.getAll()
         const userId = req.session.pengurusId
 
-        const  user = await modelPengurus.getPengurusById(userId)
-        res.render('pengurus/user/lokasi/ruangan/index', {data, user})
+        const  user = await modelPengguna.getPenggunaById(userId)
+        res.render('pengurus/pustakawan/lokasi/ruangan/index', {data, user})
     } catch(err) {
+        console.log(err)
         req.flash('error', err.message)
-        res.redirect('/pengurus/dashboard')
+        res.redirect('/pustakawan/dashboard')
     }
 })
 
 //menampilkan halaman untuk menambahkan data ruangan
 router.get('/buat', authPustakawan, async (req, res) => {
     try {
-        const data = await modelLantai.getAll()
+        const lantai = await modelLantai.getAll()
         const userId = req.session.pengurusId
 
-        const  user = await modelPengurus.getPengurusById(userId)
-        res.render('pengurus/user/lokasi/ruangan/buat', { data, user })
+        const  user = await modelPengguna.getPenggunaById(userId)
+        res.render('pengurus/pustakawan/lokasi/ruangan/buat', { 
+            lantai, 
+            user,
+            data: req.flash('data')[0]
+        })
     } catch(err) {
+        console.log(err)
         req.flash('error', err.message)
-        res.redirect('/pengurus/ruangan')
+        res.redirect('/pustakawan/ruangan')
     }
 })
 
@@ -41,25 +47,32 @@ router.post('/create', authPustakawan, async(req, res) => {
         const {id_lantai, kode_ruangan} = req.body
         if (!id_lantai) {
             req.flash('error', 'Kode lantai tidak boleh kosong')
-            return res.redirect('/pengurus/ruangan/buat')
+            req.flash('data', req.body)
+            return res.redirect('/pustakawan/ruangan/buat')
         }
+
         if (!kode_ruangan) {
             req.flash('error', 'Kode ruangan tidak boleh kosong')
-            return res.redirect('/pengurus/ruangan/buat')
+            req.flash('data', req.body)
+            return res.redirect('/pustakawan/ruangan/buat')
         }
+
         const data = {id_lantai, kode_ruangan}
-        const checkRuangan = await modelRuangan.checkKodeRuangan(data)
-        if (checkRuangan) {
+
+        if (await modelRuangan.checkKodeRuangan(data)) {
             req.flash('error', 'Kode ruangan tidak boleh sama')
-            return res.redirect('/pengurus/ruangan/buat')
+            req.flash('data', req.body)
+            return res.redirect('/pustakawan/ruangan/buat')
         }
+
         await modelRuangan.store(data)
+        
         req.flash('success', 'Data ruangan berhasil ditambahkan')
-        res.redirect('/pengurus/ruangan')
+        res.redirect('/pustakawan/ruangan')
     } catch(err) {
         console.log(err)
         req.flash('error', err.message)
-        res.redirect('/pengurus/ruangan')
+        res.redirect('/pustakawan/ruangan')
     }
 })
 
@@ -70,11 +83,12 @@ router.get('/edit/:id', authPustakawan, async (req, res) => {
         const lantai = await modelLantai.getAll()
         const userId = req.session.pengurusId
 
-        const  user = await modelPengurus.getPengurusById(userId)
-        res.render('pengurus/user/lokasi/ruangan/edit', {data, lantai, user})
+        const  user = await modelPengguna.getPenggunaById(userId)
+        res.render('pengurus/pustakawan/lokasi/ruangan/edit', {data, lantai, user})
     } catch(err) {
+        console.log(err)
         req.flash('error', "Data ruangan tidak ditemukan")
-        res.redirect('/pengurus/ruangan')
+        res.redirect('/pustakawan/ruangan')
     }
 })
 
@@ -83,21 +97,31 @@ router.post('/update/:id', authPustakawan, async(req, res) => {
     try {
         const {id} = req.params
         const {kode_ruangan, id_lantai} = req.body
+
         if (!id_lantai) {
             req.flash('error', 'Kode lantai tidak boleh kosong')
-            return res.redirect('/pengurus/ruangan/buat')
+            return res.redirect(`/pustakawan/ruangan/edit/${id}`)
         }
+
         if (!kode_ruangan) {
             req.flash('error', 'Kode ruangan tidak boleh kosong')
-            return res.redirect('/pengurus/ruangan/buat')
+            return res.redirect(`/pustakawan/ruangan/edit/${id}`)
         }
         const data = {kode_ruangan, id_lantai}
+
+        if (await modelRuangan.checkRuangan(data)) {
+            req.flash('error', 'Kode ruangan tidak boleh sama')
+            return res.redirect(`/pustakawan/ruangan/edit/${id}`)
+        }
+
         await modelRuangan.update(data, id)
+        
         req.flash('success', 'Data berhasil diupdate')
-        res.redirect('/pengurus/ruangan')
+        res.redirect('/pustakawan/ruangan')
     } catch(err) {
+        console.log(err)
         req.flash('error', err.message)
-        res.redirect('/pengurus/ruangan')
+        res.redirect('/pustakawan/ruangan')
     }
 })
 
@@ -105,12 +129,20 @@ router.post('/update/:id', authPustakawan, async(req, res) => {
 router.post('/delete/:id', authPustakawan, async (req, res) => {
     try {
         const {id} = req.params
+        
+        if (await modelRuangan.checkRakUsed(id)) {
+            req.flash("error", "Ruangan masih digunakan oleh rak lain")
+            req.flash('data', req.body)
+            return res.redirect('/pustakawan/ruangan')
+        }
+        
         await modelRuangan.delete(id)
         req.flash('success', 'Data ruangan berhasil dihapus')
-        res.redirect('/pengurus/ruangan')
+        res.redirect('/pustakawan/ruangan')
     } catch(err) {
+        console.log(err)
         req.flash('error', err.message)
-        res.redirect('/pengurus/ruangan')
+        res.redirect('/pustakawan/ruangan')
     }
 })
 

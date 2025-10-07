@@ -61,6 +61,27 @@ class ModelRuangan {
             throw err
         }
     }
+
+
+    // memeriksa apakah rak sudah digunakan
+    static async checkRakUsed(id) {
+        try {
+            const [rows] = await connection.query(`SELECT id FROM rak WHERE id_ruangan = ?`, [id])
+            return rows.length > 0
+        } catch (err) {
+            throw err
+        }
+    }
+
+    // memeriksa apakah kode_lantai sudah ada
+    static async checkRuangan(data) {
+        try {
+            const [rows] = await connection.query(`SELECT kode_ruangan FROM ruangan WHERE kode_ruangan = ?`, [data.kode_ruangan])
+            return rows.length > 0
+        } catch (err) {
+            throw err
+        }
+    }
 }
 
 module.exports = ModelRuangan
