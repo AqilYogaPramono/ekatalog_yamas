@@ -84,6 +84,31 @@
 })();
 
 (function() {
+    function setupPasswordToggle() {
+        $(document).on('click', '.password-toggle-btn', function() {
+            var $btn = $(this);
+            var targetId = $btn.data('target');
+            var $input = $('#' + targetId);
+            var $icon = $btn.find('i');
+
+            if ($input.attr('type') === 'password') {
+                $input.attr('type', 'text');
+                $icon.removeClass('mdi-eye-off').addClass('mdi-eye');
+            } else {
+                $input.attr('type', 'password');
+                $icon.removeClass('mdi-eye').addClass('mdi-eye-off');
+            }
+        });
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', setupPasswordToggle);
+    } else {
+        setupPasswordToggle();
+    }
+})();
+
+(function() {
     function dismissFlash(el) {
         if (!el) return;
         el.style.animation = 'flash-out 180ms ease-in forwards';
