@@ -5,7 +5,7 @@ const modelPengguna = require('../../../model/modelPengguna')
 const {authPustakawan} = require('../../../middleware/auth')
 
 router.get('/ubah-kata-sandi', authPustakawan, async (req, res) => {
-    const userId = req.session.pustakawanId
+    const userId = req.session.penggunaId
 
     const  user = await modelPengguna.getPenggunaById(userId)
     res.render('pengurus/pustakawan/pustakawan/ubahKataSandi', { 
@@ -16,7 +16,7 @@ router.get('/ubah-kata-sandi', authPustakawan, async (req, res) => {
 
 router.post('/change-password', authPustakawan, async (req, res) => {
     try {
-        const  idPustakawan = req.session.pustakawanId
+        const  idPustakawan = req.session.penggunaId
 
         const pengguna = await modelPengguna.getPenggunaById(idPustakawan)
 
