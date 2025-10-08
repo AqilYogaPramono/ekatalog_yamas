@@ -5,15 +5,15 @@
 <div class="main-panel">
     <div class="content-wrapper">
         <div class="row">
-            <div class="col-lg-12 grid-margin stretch-card">
+            <div class="col-12 grid-margin stretch-card">
               <div class="card">
                 <div class="card-body">
                   <h4 class="card-title">Ubah Kata Sandi</h4>
                   <p class="card-description">Masukkan kata sandi lama dan kata sandi baru</p>
                   <form action="/pustakawan/change-password" method="POST" data-loading>
                     <div class="row">
-                      <div class="col-md-12">
-                        <div class="form-group">
+                      <div class="col-12">
+                        <div class="form-group mb-3">
                           <label for="kata_sandi">Kata Sandi Lama</label>
                           <div class="password-input-wrapper">
                             <input type="password" class="form-control" id="kata_sandi" name="kata_sandi" placeholder="Masukkan kata sandi lama" value="<%= (data && data.kata_sandi) ? data.kata_sandi : '' %>" required>
@@ -23,8 +23,8 @@
                           </div>
                         </div>
                       </div>
-                      <div class="col-md-12">
-                        <div class="form-group">
+                      <div class="col-12">
+                        <div class="form-group mb-3">
                           <label for="kata_sandi_baru">Kata Sandi Baru</label>
                           <div class="password-input-wrapper">
                             <input type="password" class="form-control" id="kata_sandi_baru" name="kata_sandi_baru" placeholder="Masukkan kata sandi baru" value="<%= (data && data.kata_sandi_baru) ? data.kata_sandi_baru : '' %>" required>
@@ -34,8 +34,8 @@
                           </div>
                         </div>
                       </div>
-                      <div class="col-md-12">
-                        <div class="form-group">
+                      <div class="col-12">
+                        <div class="form-group mb-2">
                           <label for="konfirmasi_kata_sandi_baru">Konfirmasi Kata Sandi Baru</label>
                           <div class="password-input-wrapper">
                             <input type="password" class="form-control" id="konfirmasi_kata_sandi_baru" name="konfirmasi_kata_sandi_baru" placeholder="Konfirmasi kata sandi baru" value="<%= (data && data.konfirmasi_kata_sandi_baru) ? data.konfirmasi_kata_sandi_baru : '' %>" required>
