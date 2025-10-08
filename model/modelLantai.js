@@ -55,7 +55,7 @@ class modelLantai {
     // memeriksa apakah kode_lantai sudah ada
     static async checkLantai(data) {
         try {
-            const [rows] = await connection.query(`SELECT kode_lanai FROM lantai WHERE kode_lantai = ?`, [data.kode_lantai])
+            const [rows] = await connection.query(`SELECT kode_lantai FROM lantai WHERE kode_lantai = ?`, [data.kode_lantai])
             return rows.length > 0
         } catch (err) {
             throw err
