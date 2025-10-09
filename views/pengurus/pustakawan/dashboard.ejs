@@ -42,10 +42,11 @@
                                 <i class="mdi mdi-eye"></i> Lihat Semua
                             </a>
                         </div>
-                        <div class="table-responsive">
-                            <table class="table table-hover">
+                        <div>
+                            <table class="table table-hover table-stacked">
                                 <thead>
                                     <tr>
+                                        <th>No</th>
                                         <th>Judul</th>
                                         <th>ISBN/ISSN</th>
                                         <th>No. Klasifikasi</th>
@@ -56,15 +57,16 @@
                                     <% if (newBuku && newBuku.length > 0) { %>
                                         <% for (let i = 0; i < newBuku.length; i++) { %>
                                             <tr>
-                                                <td><%= newBuku[i].judul %></td>
-                                                <td><%= newBuku[i].isbn_issn %></td>
-                                                <td><%= newBuku[i].no_klasifikasi %></td>
-                                                <td><%= newBuku[i].lokasi_buku %></td>
+                                                <td data-label="No"><%= i + 1 %></td>
+                                                <td data-label="Judul"><%= newBuku[i].judul %></td>
+                                                <td data-label="ISBN/ISSN"><%= newBuku[i].isbn_issn %></td>
+                                                <td data-label="No. Klasifikasi"><%= newBuku[i].no_klasifikasi %></td>
+                                                <td data-label="Lokasi"><%= newBuku[i].lokasi_buku %></td>
                                             </tr>
                                         <% } %>
                                     <% } else { %>
                                         <tr>
-                                            <td colspan="4" class="text-center">Tidak ada data</td>
+                                            <td colspan="5" class="text-center">Tidak ada data</td>
                                         </tr>
                                     <% } %>
                                 </tbody>
@@ -85,10 +87,11 @@
                                 <i class="mdi mdi-eye"></i> Lihat Semua
                             </a>
                         </div>
-                        <div class="table-responsive">
-                            <table class="table table-hover">
+                        <div>
+                            <table class="table table-hover table-stacked">
                                 <thead>
                                     <tr>
+                                        <th>No</th>
                                         <th>Judul</th>
                                         <th>Edisi</th>
                                         <th>No. Klasifikasi</th>
@@ -99,15 +102,16 @@
                                     <% if (newMajalah && newMajalah.length > 0) { %>
                                         <% for (let i = 0; i < newMajalah.length; i++) { %>
                                             <tr>
-                                                <td><%= newMajalah[i].judul %></td>
-                                                <td><%= newMajalah[i].edisi %></td>
-                                                <td><%= newMajalah[i].no_klasifikasi %></td>
-                                                <td><%= newMajalah[i].lokasi_majalah %></td>
+                                                <td data-label="No"><%= i + 1 %></td>
+                                                <td data-label="Judul"><%= newMajalah[i].judul %></td>
+                                                <td data-label="Edisi"><%= newMajalah[i].edisi %></td>
+                                                <td data-label="No. Klasifikasi"><%= newMajalah[i].no_klasifikasi %></td>
+                                                <td data-label="Lokasi"><%= newMajalah[i].lokasi_majalah %></td>
                                             </tr>
                                         <% } %>
                                     <% } else { %>
                                         <tr>
-                                            <td colspan="4" class="text-center">Tidak ada data</td>
+                                            <td colspan="5" class="text-center">Tidak ada data</td>
                                         </tr>
                                     <% } %>
                                 </tbody>
