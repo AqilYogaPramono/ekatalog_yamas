@@ -1,0 +1,129 @@
+<%- include('../../../partials1/header/__headerDashboard.ejs', { title: 'Edit Buku' }) %>
+<%- include('../../../partials1/nav-side/__nav-sidePengurus.ejs') %>
+<%- include('../../../partials1/messages/messagesDashboard.ejs') %>
+
+<div class="main-panel">
+    <div class="content-wrapper">
+        <div class="row">
+            <div class="col-12 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Edit Buku</h4>
+                        <form action="/pustakawan/buku/update/<%= buku.id %>" method="POST" enctype="multipart/form-data" data-loading>
+                            <div class="form-group">
+                                    <label for="judul">Judul</label>
+                                <input type="text" class="form-control" id="judul" name="judul" placeholder="Masukkan judul buku" value="<%= buku.judul %>" required>
+                                </div>
+
+                            <div class="form-group">
+                                    <label for="isbn_issn">ISBN/ISSN</label>
+                                <input type="text" class="form-control" id="isbn_issn" name="isbn_issn" placeholder="Contoh: 978-123-456-789" value="<%= buku.isbn_issn %>" required>
+                            </div>
+
+                            <div class="form-group">
+                                    <label for="no_klasifikasi">No Klasifikasi</label>
+                                <input type="text" class="form-control" id="no_klasifikasi" name="no_klasifikasi" placeholder="Contoh: 001.234" value="<%= buku.no_klasifikasi %>" required>
+                                </div>
+
+                            <div class="form-group">
+                                    <label for="bahasa">Bahasa</label>
+                                <input type="text" class="form-control" id="bahasa" name="bahasa" placeholder="Contoh: Indonesia" value="<%= buku.bahasa || '' %>">
+                                </div>
+
+                            <div class="form-group">
+                                    <label for="jumlah_halaman">Total Halaman</label>
+                                <input type="number" class="form-control" id="jumlah_halaman" name="jumlah_halaman" placeholder="Contoh: 250" value="<%= buku.jumlah_halaman || '' %>">
+                            </div>
+
+                            <div class="form-group">
+                                    <label for="tahun_terbit">Tahun Terbit</label>
+                                <select class="form-control" id="tahun_terbit" name="tahun_terbit">
+                                    <option value="">Pilih Tahun</option>
+                                    <% for (let year = 2100; year >= 1800; year--) { %>
+                                        <option value="<%= year %>" <%= (buku.tahun_terbit == year) ? 'selected' : '' %>><%= year %></option>
+                                    <% } %>
+                                </select>
+                                </div>
+
+                            <div class="form-group">
+                                    <label for="tempat_terbit">Tempat Terbit</label>
+                                <input type="text" class="form-control" id="tempat_terbit" name="tempat_terbit" placeholder="Contoh: Jakarta" value="<%= buku.tempat_terbit || '' %>">
+                                </div>
+
+                            <div class="form-group">
+                                    <label for="penerbit">Penerbit</label>
+                                <input type="text" class="form-control" id="penerbit" name="penerbit" placeholder="Contoh: Gramedia Pustaka Utama" value="<%= buku.penerbit || '' %>">
+                            </div>
+
+                            <div class="form-group">
+                                    <label for="kategori">Kategori</label>
+                                <input type="text" class="form-control" id="kategori" name="kategori" placeholder="Contoh: Fiksi, Non-Fiksi, Teknologi" value="<%= buku.kategori || '' %>">
+                                </div>
+
+                            <div class="form-group">
+                                    <label for="pengarang">Pengarang</label>
+                                <input type="text" class="form-control" id="pengarang" name="pengarang" placeholder="Contoh: Ahmad Tohari" value="<%= buku.pengarang || '' %>">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="sinopsis">Sinopsis</label>
+                                <textarea class="form-control" id="sinopsis" name="sinopsis" rows="4" placeholder="Masukkan ringkasan atau sinopsis buku..."><%= buku.sinopsis || '' %></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                    <label for="id_rak">Rak</label>
+                                    <select class="form-control" id="id_rak" name="id_rak" required>
+                                        <option value="">Pilih Rak</option>
+                                        <% if (Array.isArray(rak) && rak.length) { %>
+                                            <% rak.forEach(function(item){ %>
+                                                <option value="<%= item.id %>" <%= (buku.id_rak == item.id) ? 'selected' : '' %>><%= item.kode_rak %> - <%= item.kode_ruangan %> - <%= item.kode_lantai %></option>
+                                            <% }) %>
+                                        <% } %>
+                                    </select>
+                                </div>
+
+                            <div class="form-group">
+                                    <label for="ketersediaan">Ketersediaan</label>
+                                    <select class="form-control" id="ketersediaan" name="ketersediaan">
+                                        <option value="Tersedia" <%= (buku.ketersediaan === 'Tersedia') ? 'selected' : '' %>>Tersedia</option>
+                                        <option value="Dipinjam" <%= (buku.ketersediaan === 'Dipinjam') ? 'selected' : '' %>>Dipinjam</option>
+                                    </select>
+                            </div>
+
+                            <div class="form-group">
+                                    <label for="foto_cover">Ganti Foto Cover</label>
+                                <input type="file" class="form-control" id="foto_cover" name="foto_cover" accept="image/*" data-preview="previewEdit">
+                                <div class="mt-2">
+                                    <img id="previewEdit" src="<%= buku.foto_cover ? ('/images/buku/' + buku.foto_cover) : '/images/no-image.png' %>" data-src="<%= buku.foto_cover ? ('/images/buku/' + buku.foto_cover) : '/images/no-image.png' %>" alt="cover" style="height:300px;border-radius:8px;object-fit:cover;cursor:zoom-in;" class="img-click-preview">
+                                </div>
+                            </div>
+
+                            <div class="d-flex">
+                                <button type="submit" class="btn btn-primary mr-2">Simpan</button>
+                                <a href="/pustakawan/buku" class="btn btn-light" data-loading>Kembali</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade modal-below-navbar modal-top" id="globalImagePreviewModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Pratinjau Gambar</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body p-0">
+                <img id="globalImagePreviewEl" src="" alt="preview" style="width:100%;height:auto;display:block;">
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('../../../partials1/script/__scriptDashboard.ejs') %>

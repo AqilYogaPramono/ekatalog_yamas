@@ -112,7 +112,7 @@ class ModelMajalah {
 
     static async getNewMajalahHapus() {
         try {
-            const [rows] = await connection.query(`SELECT m.judul, m.edisi, m.no_klasifikasi, CONCAT(r.kode_rak, ' - ', ru.kode_ruangan, ' - ', l.kode_lantai) AS lokasi_majalah FROM majalah m LEFT JOIN rak r ON m.id_rak = r.id LEFT JOIN ruangan ru ON r.id_ruangan = ru.id LEFT JOIN lantai l ON ru.id_lantai = l.id WHERE m.status_data = 'Hapus' ORDER BY m.dibuat_pada DESC LIMIT 5`)
+            const [rows] = await connection.query(`SELECT m.judul, m.edisi, m.no_klasifikasi, CONCAT(r.kode_rak, ' - ', ru.kode_ruangan, ' - ', l.kode_lantai) AS lokasi_majalah FROM majalah m LEFT JOIN rak r ON m.id_rak = r.id LEFT JOIN ruangan ru ON r.id_ruangan = ru.id LEFT JOIN lantai l ON ru.id_lantai = l.id WHERE m.status_data = 'Hapus' ORDER BY m.dihapus_pada DESC LIMIT 5`)
             return rows
         } catch (err) {
             throw err

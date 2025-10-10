@@ -83,6 +83,27 @@
     });
 })();
 
+(function(){
+    function showImagePreview(src){
+        var modal = document.getElementById('globalImagePreviewModal');
+        if (!modal) return;
+        var img = modal.querySelector('#globalImagePreviewEl');
+        if (img) img.src = src;
+        $('#globalImagePreviewModal').modal('show');
+    }
+
+    $(document).on('click', '.img-click-preview, #previewTambah, #previewEdit, #detailCover', function(){
+        var src = this.getAttribute('data-src') || this.getAttribute('src');
+        if (!src) return;
+        showImagePreview(src);
+    });
+
+    window.addEventListener('preview-image', function(e){
+        if (!e || !e.detail || !e.detail.src) return;
+        showImagePreview(e.detail.src);
+    });
+})();
+
 (function() {
     function setupPasswordToggle() {
         $(document).on('click', '.password-toggle-btn', function() {
@@ -137,5 +158,57 @@
         document.addEventListener('DOMContentLoaded', setupFlash);
     } else {
         setupFlash();
+    }
+})();
+
+(function() {
+    function setupImagePreview() {
+        $(document).on('change', 'input[type="file"][accept*="image"]', function(e) {
+            const files = e.target.files;
+            const previewId = this.getAttribute('data-preview') || 'previewTambah';
+            const preview = document.getElementById(previewId);
+            const previewContainer = document.getElementById(previewId + 'Container');
+            
+            if (files.length > 0) {
+                if (files.length === 1 && !this.hasAttribute('multiple')) {
+                    // Single file preview
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        if (preview) {
+                            preview.src = e.target.result;
+                            preview.style.display = 'block';
+                        }
+                    };
+                    reader.readAsDataURL(files[0]);
+                } else {
+                    // Multiple files preview
+                    if (previewContainer) {
+                        previewContainer.innerHTML = '';
+                        preview.style.display = 'block';
+                        
+                        Array.from(files).forEach((file, index) => {
+                            if (file.type.startsWith('image/')) {
+                                const reader = new FileReader();
+                                reader.onload = function(e) {
+                                    const img = document.createElement('img');
+                                    img.src = e.target.result;
+                                    img.className = 'img-click-preview';
+                                    img.style.cssText = 'height:60px;width:auto;border-radius:6px;object-fit:cover;cursor:zoom-in;margin:2px;';
+                                    img.alt = 'preview ' + (index + 1);
+                                    previewContainer.appendChild(img);
+                                };
+                                reader.readAsDataURL(file);
+                            }
+                        });
+                    }
+                }
+            }
+        });
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', setupImagePreview);
+    } else {
+        setupImagePreview();
     }
 })();
