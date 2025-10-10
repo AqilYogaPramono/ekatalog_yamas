@@ -1,0 +1,114 @@
+<%- include('../../../partials1/header/__headerDashboard.ejs', { title: 'Edit Majalah' }) %>
+<%- include('../../../partials1/nav-side/__nav-sidePengurus.ejs') %>
+<%- include('../../../partials1/messages/messagesDashboard.ejs') %>
+
+<div class="main-panel">
+    <div class="content-wrapper">
+        <div class="row">
+            <div class="col-12 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Edit Majalah</h4>
+                        <form action="/pustakawan/majalah/update/<%= majalah.id %>" method="POST" enctype="multipart/form-data" data-loading>
+                            <div class="form-group">
+                                    <label for="judul">Judul</label>
+                                <input type="text" class="form-control" id="judul" name="judul" placeholder="Masukkan judul majalah" value="<%= majalah.judul %>" required>
+                                </div>
+
+                            <div class="form-group">
+                                    <label for="edisi">Edisi</label>
+                                <input type="text" class="form-control" id="edisi" name="edisi" placeholder="Contoh: Edisi Januari 2025" value="<%= majalah.edisi %>" required>
+                            </div>
+
+                            <div class="form-group">
+                                    <label for="no_klasifikasi">No Klasifikasi</label>
+                                <input type="text" class="form-control" id="no_klasifikasi" name="no_klasifikasi" placeholder="Contoh: 001.234" value="<%= majalah.no_klasifikasi %>" required>
+                                </div>
+
+                            <div class="form-group">
+                                    <label for="bahasa">Bahasa</label>
+                                <input type="text" class="form-control" id="bahasa" name="bahasa" placeholder="Contoh: Indonesia" value="<%= majalah.bahasa || '' %>">
+                                </div>
+
+                            <div class="form-group">
+                                    <label for="jumlah_halaman">Total Halaman</label>
+                                <input type="text" class="form-control" id="tempat_terbit" name="tempat_terbit" placeholder="Contoh: Jakarta" value="<%= majalah.tempat_terbit || '' %>">
+                            </div>
+
+                            <div class="form-group">
+                                    <label for="tahun_terbit">Tahun Terbit</label>
+                                <select class="form-control" id="tahun_terbit" name="tahun_terbit">
+                                    <option value="">Pilih Tahun</option>
+                                    <% for (let year = 2100; year >= 1800; year--) { %>
+                                        <option value="<%= year %>" <%= (majalah.tahun_terbit == year) ? 'selected' : '' %>><%= year %></option>
+                                    <% } %>
+                                </select>
+                                </div>
+
+                            <div class="form-group">
+                                    <label for="penerbit">Penerbit</label>
+                                <input type="text" class="form-control" id="penerbit" name="penerbit" placeholder="Contoh: Nama Penerbit" value="<%= majalah.penerbit || '' %>">
+                                </div>
+
+                            <div class="form-group">
+                                    <label for="sinopsis">Sinopsis</label>
+                                <textarea class="form-control" id="sinopsis" name="sinopsis" rows="4" placeholder="Masukkan ringkasan atau sinopsis majalah..."><%= majalah.sinopsis || '' %></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="id_rak">Rak</label>
+                                <select class="form-control" id="id_rak" name="id_rak" required>
+                                    <option value="">Pilih Rak</option>
+                                    <% if (Array.isArray(rak) && rak.length) { %>
+                                        <% rak.forEach(function(item){ %>
+                                            <option value="<%= item.id %>" <%= (majalah.id_rak == item.id) ? 'selected' : '' %>><%= item.kode_rak %> - <%= item.kode_ruangan %> - <%= item.kode_lantai %></option>
+                                        <% }) %>
+                                    <% } %>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                    <label for="ketersediaan">Ketersediaan</label>
+                                    <select class="form-control" id="ketersediaan" name="ketersediaan">
+                                        <option value="Tersedia" <%= (majalah.ketersediaan === 'Tersedia') ? 'selected' : '' %>>Tersedia</option>
+                                        <option value="Dipinjam" <%= (majalah.ketersediaan === 'Dipinjam') ? 'selected' : '' %>>Dipinjam</option>
+                                    </select>
+                            </div>
+
+                            <div class="form-group">
+                                    <label for="foto_cover">Ganti Foto Cover</label>
+                                <input type="file" class="form-control" id="foto_cover" name="foto_cover" accept="image/*" data-preview="previewEdit">
+                                <div class="mt-2">
+                                    <img id="previewEdit" src="<%= majalah.foto_cover ? ('/images/majalah/' + majalah.foto_cover) : '/images/no-image.png' %>" data-src="<%= majalah.foto_cover ? ('/images/majalah/' + majalah.foto_cover) : '/images/no-image.png' %>" alt="cover" style="height:300px;border-radius:8px;object-fit:cover;cursor:zoom-in;" class="img-click-preview">
+                                </div>
+                            </div>
+
+                            <div class="d-flex">
+                                <button type="submit" class="btn btn-primary mr-2">Simpan</button>
+                                <a href="/pustakawan/majalah" class="btn btn-light" data-loading>Kembali</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade modal-below-navbar modal-top" id="globalImagePreviewModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Pratinjau Gambar</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body p-0">
+                <img id="globalImagePreviewEl" src="" alt="preview" style="width:100%;height:auto;display:block;">
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('../../../partials1/script/__scriptDashboard.ejs') %>
