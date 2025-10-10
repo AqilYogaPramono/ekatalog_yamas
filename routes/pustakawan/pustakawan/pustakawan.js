@@ -78,11 +78,11 @@ router.post('/change-password', authPustakawan, async (req, res) => {
         req.flash('success', 'Kata sandi berhasil diubah')
 
         await modelPengguna.updatePassword(data, idPustakawan)
-        res.redirect('/logout')
+        res.redirect('/pustakawan/dashboard')
     } catch (err) {
         console.log(err)
         req.flash('error', err.message)
-        res.redirect('/pustakawan/dashboard')
+        res.redirect('/pustakawan/ubah-kata-sandi')
     }
 })
 
