@@ -63,15 +63,16 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-center mb-3">
-                            <h4 class="card-title mb-0">Buku Terbaru yang Dihapus</h4>
+                            <h4 class="card-title mb-0">Buku Terbaru</h4>
                             <a href="/manajer/buku" class="btn btn-primary btn-sm">
                                 <i class="mdi mdi-eye"></i> Lihat Semua
                             </a>
                         </div>
-                        <div class="table-responsive">
-                            <table class="table table-hover">
+                        <div>
+                            <table class="table table-hover table-stacked">
                                 <thead>
                                     <tr>
+                                        <th>No</th>
                                         <th>Judul</th>
                                         <th>No. Klasifikasi</th>
                                         <th>Lokasi</th>
@@ -81,14 +82,15 @@
                                     <% if (newBukuHapus && newBukuHapus.length > 0) { %>
                                         <% for (let i = 0; i < newBukuHapus.length; i++) { %>
                                             <tr>
-                                                <td><%= newBukuHapus[i].judul %></td>
-                                                <td><%= newBukuHapus[i].no_klasifikasi %></td>
-                                                <td><%= newBukuHapus[i].lokasi_buku %></td>
+                                                <td data-label="No"><%= i + 1 %></td>
+                                                <td data-label="Judul"><%= newBukuHapus[i].judul %></td>
+                                                <td data-label="No. Klasifikasi"><%= newBukuHapus[i].no_klasifikasi %></td>
+                                                <td data-label="Lokasi"><%= newBukuHapus[i].lokasi_buku %></td>
                                             </tr>
                                         <% } %>
                                     <% } else { %>
                                         <tr>
-                                            <td colspan="3" class="text-center">Tidak ada data</td>
+                                            <td colspan="4" class="text-center">Tidak ada data</td>
                                         </tr>
                                     <% } %>
                                 </tbody>
@@ -104,15 +106,16 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-center mb-3">
-                            <h4 class="card-title mb-0">Majalah Terbaru yang Dihapus</h4>
+                            <h4 class="card-title mb-0">Majalah Terbaru</h4>
                             <a href="/manajer/majalah" class="btn btn-primary btn-sm">
                                 <i class="mdi mdi-eye"></i> Lihat Semua
                             </a>
                         </div>
-                        <div class="table-responsive">
-                            <table class="table table-hover">
+                        <div>
+                            <table class="table table-hover table-stacked">
                                 <thead>
                                     <tr>
+                                        <th>No</th>
                                         <th>Judul</th>
                                         <th>Edisi</th>
                                         <th>No. Klasifikasi</th>
@@ -123,15 +126,16 @@
                                     <% if (newMajalahHapus && newMajalahHapus.length > 0) { %>
                                         <% for (let i = 0; i < newMajalahHapus.length; i++) { %>
                                             <tr>
-                                                <td><%= newMajalahHapus[i].judul %></td>
-                                                <td><%= newMajalahHapus[i].edisi %></td>
-                                                <td><%= newMajalahHapus[i].no_klasifikasi %></td>
-                                                <td><%= newMajalahHapus[i].lokasi_majalah %></td>
+                                                <td data-label="No"><%= i + 1 %></td>
+                                                <td data-label="Judul"><%= newMajalahHapus[i].judul %></td>
+                                                <td data-label="Edisi"><%= newMajalahHapus[i].edisi %></td>
+                                                <td data-label="No. Klasifikasi"><%= newMajalahHapus[i].no_klasifikasi %></td>
+                                                <td data-label="Lokasi"><%= newMajalahHapus[i].lokasi_majalah %></td>
                                             </tr>
                                         <% } %>
                                     <% } else { %>
                                         <tr>
-                                            <td colspan="4" class="text-center">Tidak ada data</td>
+                                            <td colspan="5" class="text-center">Tidak ada data</td>
                                         </tr>
                                     <% } %>
                                 </tbody>
