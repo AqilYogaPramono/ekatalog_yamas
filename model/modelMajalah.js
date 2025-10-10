@@ -128,9 +128,9 @@ class ModelMajalah {
         }
     }
 
-    static async getAllMajalahHapus() {
+    static async getMajalahHapus(limit, offset) {
         try {
-            const [rows] = await connection.query(`SELECT m.id, m.judul, m.foto_cover, m.edisi, m.no_klasifikasi, m.bahasa, m.tahun_terbit, m.sinopsis, m.tempat_terbit, m.penerbit, CONCAT(r.kode_rak, ' - ', ru.kode_ruangan, ' - ', l.kode_lantai) AS lokasi_majalah, m.ketersediaan, m.dihapus_pada, m.dihapus_oleh, m.status_data FROM majalah m LEFT JOIN rak r ON m.id_rak = r.id LEFT JOIN ruangan ru ON r.id_ruangan = ru.id LEFT JOIN lantai l ON ru.id_lantai = l.id WHERE m.status_data = 'Hapus'`)
+            const [rows] = await connection.query(`SELECT m.id, m.judul, m.foto_cover, m.edisi, m.no_klasifikasi, CONCAT(r.kode_rak, ' - ', ru.kode_ruangan, ' - ', l.kode_lantai) AS lokasi_majalah FROM majalah m LEFT JOIN rak r ON m.id_rak = r.id LEFT JOIN ruangan ru ON r.id_ruangan = ru.id LEFT JOIN lantai l ON ru.id_lantai = l.id WHERE m.status_data = 'Hapus' ORDER BY m.dihapus_pada DESC LIMIT ? OFFSET ?`, [limit, offset])
             return rows
         } catch (err) {
             throw err
@@ -150,6 +150,24 @@ class ModelMajalah {
         try {
             const [rows] = await connection.query(`SELECT m.id, m.judul, m.foto_cover, m.edisi, m.no_klasifikasi, CONCAT(r.kode_rak, ' - ', ru.kode_ruangan, ' - ', l.kode_lantai) AS lokasi_majalah FROM majalah m LEFT JOIN rak r ON m.id_rak = r.id LEFT JOIN ruangan ru ON r.id_ruangan = ru.id LEFT JOIN lantai l ON ru.id_lantai = l.id WHERE m.status_data = 'Tampil' AND m.judul LIKE CONCAT('%', ?, '%')`, [judul])
             return rows
+        } catch (err) {
+            throw err
+        }
+    }
+
+    static async searchJudulMajalahHapus(judul) {
+        try {
+            const [rows] = await connection.query(`SELECT m.id, m.judul, m.foto_cover, m.edisi, m.no_klasifikasi, CONCAT(r.kode_rak, ' - ', ru.kode_ruangan, ' - ', l.kode_lantai) AS lokasi_majalah FROM majalah m LEFT JOIN rak r ON m.id_rak = r.id LEFT JOIN ruangan ru ON r.id_ruangan = ru.id LEFT JOIN lantai l ON ru.id_lantai = l.id WHERE m.status_data = 'Hapus' AND m.judul LIKE CONCAT('%', ?, '%')`, [judul])
+            return rows
+        } catch (err) {
+            throw err
+        }
+    }
+
+    static async getByIdHapus(id) {
+        try {
+            const [rows] = await connection.query(`SELECT m.id, m.judul, m.foto_cover, m.edisi, m.no_klasifikasi, m.bahasa, m.tahun_terbit, m.sinopsis, m.tempat_terbit, m.penerbit, m.id_rak, r.kode_rak, ru.kode_ruangan, l.kode_lantai, m.ketersediaan, m.dihapus_pada, m.dihapus_oleh, m.status_data FROM majalah m LEFT JOIN rak r ON m.id_rak = r.id LEFT JOIN ruangan ru ON r.id_ruangan = ru.id LEFT JOIN lantai l ON ru.id_lantai = l.id WHERE m.status_data = 'Hapus' AND m.id = ?`,[id])
+            return rows[0]
         } catch (err) {
             throw err
         }
