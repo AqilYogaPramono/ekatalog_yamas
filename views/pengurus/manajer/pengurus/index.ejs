@@ -1,93 +1,119 @@
-<%- include('../../../partialsAdmin/__messages.ejs') %>
-<%- include('../../../partialsAdmin/__head.ejs', { title: 'Daftar Pengurus' }) %>
-<%- include('../../../partialsAdmin/__nav-side.ejs') %>
+<%- include('../../../partials1/header/__headerDashboard.ejs', { title: 'Daftar Pustakawan' }) %>
+<%- include('../../../partials1/nav-side/__nav-saideAdmin.ejs') %>
+<%- include('../../../partials1/messages/messagesDashboard.ejs') %>
 
-<div class="col-lg-12 grid-margin stretch-card">
-  <div class="card">
-    <div class="card-body">
-      <h4 class="card-title mb-4">Daftar Pengurus</h4>
-
-      <% if (data.length === 0) { %>
-        <p>Tidak ada data pengurus.</p>
-      <% } else { %>
-        <div class="list-group">
-          <% data.forEach((pengurus) => { %>
-            <div class="list-group-item mb-3 border rounded">
-              <div class="d-flex justify-content-between align-items-center">
-                <div>
-                  <strong><%= pengurus.nama %></strong><br>
-                  <small>Email: <%= pengurus.email %></small>
-                </div>
-                <div class="d-flex align-items-center gap-2">
-                  <!-- Tombol Update Status -->
-                  <button class="btn btn-sm btn-warning" data-toggle="modal" data-target="#modalUpdate<%= pengurus.id %>">
-                    <i class="mdi mdi-pencil"></i> Update Status
-                  </button>
-
-                  <!-- Tombol Delete -->
-                  <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#modalDelete<%= pengurus.id %>">
-                    <i class="mdi mdi-delete"></i> Hapus
-                  </button>
-                </div>
-              </div>
-
-              <!-- Modal Update Status -->
-              <div class="modal fade" id="modalUpdate<%= pengurus.id %>" tabindex="-1" role="dialog" aria-labelledby="modalUpdateLabel<%= pengurus.id %>" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                  <form action="/admin/pengurus/edit/<%= pengurus.id %>" method="POST">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <h5 class="modal-title">Update Status Akun</h5>
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                      </div>
-                      <div class="modal-body">
-                        <p>Update status akun untuk <strong><%= pengurus.nama %></strong>:</p>
-                        <select name="status_akun" class="form-control" required>
-                          <% 
-                            const statusOptions = ['Aktif', 'Non-Aktif', 'Proses']
-                            statusOptions.forEach(opt => {
-                              if (opt !== pengurus.status_akun) {
-                          %>
-                            <option value="<%= opt %>"><%= opt %></option>
-                          <%  } }) %>
-                        </select>
-                      </div>
-                      <div class="modal-footer">
-                        <button type="button" class="btn btn-light" data-dismiss="modal">Batal</button>
-                        <button type="submit" class="btn btn-warning">Update</button>
-                      </div>
+<div class="main-panel">
+    <div class="content-wrapper">
+        <div class="row">
+            <div class="col-lg-12 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center mb-3">
+                            <h4 class="card-title mb-2 mb-sm-0">Data Pustakawan</h4>
+                        </div>
+                        <div>
+                            <table class="table table-hover table-stacked">
+                                <thead>
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Nama</th>
+                                        <th>NP</th>
+                                        <th>Status</th>
+                                        <th style="width: 160px;" class="text-right">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% if (Array.isArray(data) && data.length) { %>
+                                        <% for (let i = 0; i < data.length; i++) { %>
+                                            <tr>
+                                                <td data-label="No"><%= i + 1 %></td>
+                                                <td data-label="Nama"><%= data[i].nama %></td>
+                                                <td data-label="NP"><%= data[i].NP %></td>
+                                                <td data-label="Status">
+                                                    <% if (data[i].status_akun === 'Aktif') { %>
+                                                        <span class="badge badge-status badge-status-active">Aktif</span>
+                                                    <% } else if (data[i].status_akun === 'Proses') { %>
+                                                        <span class="badge badge-status badge-status-process">Proses</span>
+                                                    <% } else { %>
+                                                        <span class="badge badge-status badge-status-nonactive">Non-Aktif</span>
+                                                    <% } %>
+                                                </td>
+                                                <td class="text-right" data-label="Aksi">
+                                                    <div class="btn-actions">
+                                                        <button type="button" class="btn btn-sm btn-outline-info" data-toggle="modal" data-target="#modalEdit<%= data[i].id %>">Edit</button>
+                                                        <% if (data[i].status_akun === 'Non-Aktif') { %>
+                                                            <button type="button" class="btn btn-sm btn-outline-danger btn-delete" data-url="/manajer/pustakawan/delete/<%= data[i].id %>">Hapus</button>
+                                                        <% } %>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        <% } %>
+                                    <% } else { %>
+                                        <tr>
+                                            <td colspan="5" class="text-center empty-state">Belum ada data</td>
+                                        </tr>
+                                    <% } %>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                  </form>
                 </div>
-              </div>
-
-              <!-- Modal Delete -->
-              <div class="modal fade" id="modalDelete<%= pengurus.id %>" tabindex="-1" role="dialog" aria-labelledby="modalDeleteLabel<%= pengurus.id %>" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                  <form action="/admin/pengurus/delete/<%= pengurus.id %>" method="POST">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <h5 class="modal-title">Hapus Pengurus</h5>
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                      </div>
-                      <div class="modal-body">
-                        Apakah Anda yakin ingin menghapus <strong><%= pengurus.nama %></strong>?
-                      </div>
-                      <div class="modal-footer">
-                        <button type="button" class="btn btn-light" data-dismiss="modal">Batal</button>
-                        <button type="submit" class="btn btn-danger">Hapus</button>
-                      </div>
-                    </div>
-                  </form>
-                </div>
-              </div>
-
             </div>
-          <% }) %>
         </div>
-      <% } %>
     </div>
-  </div>
 </div>
 
-<%- include('../../../partialsAdmin/__script.ejs') %>
+<% if (Array.isArray(data) && data.length) { %>
+    <% for (let i = 0; i < data.length; i++) { %>
+        <div class="modal fade modal-below-navbar" id="modalEdit<%= data[i].id %>" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Edit Status Pustakawan</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form action="/manajer/pustakawan/edit/<%= data[i].id %>" method="POST">
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="status_akun_<%= data[i].id %>">Status Akun</label>
+                                <select class="form-control" id="status_akun_<%= data[i].id %>" name="status_akun" required>
+                                    <option value="Aktif" <%= data[i].status_akun === 'Aktif' ? 'selected' : '' %>>Aktif</option>
+                                    <option value="Proses" <%= data[i].status_akun === 'Proses' ? 'selected' : '' %>>Proses</option>
+                                    <option value="Non-Aktif" <%= data[i].status_akun === 'Non-Aktif' ? 'selected' : '' %>>Non-Aktif</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-light" data-dismiss="modal">Batal</button>
+                            <button type="submit" class="btn btn-primary">Simpan</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    <% } %>
+<% } %>
+
+<div class="modal fade modal-below-navbar" id="modalConfirmDelete" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Konfirmasi Hapus</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Apakah Anda yakin ingin menghapus pustakawan ini?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-dismiss="modal">Batal</button>
+                <button type="button" class="btn btn-danger" id="btnConfirmDelete">Hapus</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('../../../partials1/script/__scriptDashboard.ejs') %>
