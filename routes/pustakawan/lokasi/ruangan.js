@@ -11,7 +11,7 @@ const modelPengguna = require('../../../model/modelPengguna')
 router.get('/', authPustakawan, async(req, res) => {
     try {
         const data = await modelRuangan.getAll()
-        const userId = req.session.pengurusId
+        const userId = req.session.penggunaId
 
         const  user = await modelPengguna.getPenggunaById(userId)
         res.render('pengurus/pustakawan/lokasi/ruangan/index', {data, user})
@@ -26,7 +26,7 @@ router.get('/', authPustakawan, async(req, res) => {
 router.get('/buat', authPustakawan, async (req, res) => {
     try {
         const lantai = await modelLantai.getAll()
-        const userId = req.session.pengurusId
+        const userId = req.session.penggunaId
 
         const  user = await modelPengguna.getPenggunaById(userId)
         res.render('pengurus/pustakawan/lokasi/ruangan/buat', { 
@@ -81,7 +81,7 @@ router.get('/edit/:id', authPustakawan, async (req, res) => {
         const {id} = req.params
         const data = await modelRuangan.getById(id)
         const lantai = await modelLantai.getAll()
-        const userId = req.session.pengurusId
+        const userId = req.session.penggunaId
 
         const  user = await modelPengguna.getPenggunaById(userId)
         res.render('pengurus/pustakawan/lokasi/ruangan/edit', {data, lantai, user})
