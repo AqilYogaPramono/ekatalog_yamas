@@ -7,13 +7,14 @@ router.get('/', authManajer, async (req, res) => {
     try {
         const userId = req.session.penggunaId
 
-        const  user = await modelPengurus.getPengurusById(userId)
+        const  user = await modelPengguna.getPenggunaById(userId)
 
-        const data = await Modelpengurus.getAccount()
-        res.render('pengurus/admin/pengurus/index', {data, user})
+        const data = await modelPengguna.getAccount()
+        res.render('pengurus/manajer/pengurus/index', {data, user})
     } catch(err) {
+        console.log(err)
         req.flash('error', err.msg)
-        res.redirect('/admin/dashboard')
+        res.redirect('/manajer/dashboard')
     }
 })
 
@@ -24,12 +25,13 @@ router.post('/edit/:id', authManajer, async (req, res) => {
         const {status_akun} = req.body
         const data = {status_akun}
         
-        req.flash('success', 'Pengrus Behasil Diupdate')
-        await Modelpengurus.updateStatusAccount(data, id)
-        res.redirect('/admin/pengurus')
+        await modelPengguna.updateStatusAccount(data, id)
+        req.flash('success', 'Pustakawan Berhasil Diupdate')
+        res.redirect('/manajer/pustakawan')
     } catch (err) {
+        console.log(err)
         req.flash('error', err.msg)
-        res.redirect('/admin/pengurus')
+        res.redirect('/manajer/pustakawan')
     }
 })
 
@@ -37,14 +39,14 @@ router.post('/delete/:id', authManajer, async(req, res) => {
     try{
         const {id} = req.params
         
-        await Modelpengurus.deleteAccount(id)
+        await modelPengguna.deleteAccount(id)
 
-        req.flash('success', 'Pengurus berhasil dihapus')
-        res.redirect('/admin/pengurus')
+        req.flash('success', 'Pustakawan berhasil dihapus')
+        res.redirect('/manajer/pustakawan')
     } catch(err) {
         console.log(err)
         req.flash('error', err.msg)
-        res.redirect('/admin/pengurus')
+        res.redirect('/manajer/pustakawan')
     }
 })
 

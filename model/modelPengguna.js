@@ -25,7 +25,7 @@ class ModelPengguna {
     //Ambil semua akun dengan role Pustakawan
     static async getAccount() {
         try {
-            const [rows] = await connection.query('SELECT id, nama, NP FROM pengguna WHERE peran = "Pustakawan"')
+            const [rows] = await connection.query('SELECT id, nama, NP, status_akun FROM pengguna WHERE peran = "Pustakawan"')
             return rows
         } catch (err) {
             throw err
