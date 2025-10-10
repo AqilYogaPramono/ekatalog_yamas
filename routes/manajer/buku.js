@@ -15,17 +15,55 @@ const deleteOldPhoto = (oldPhoto) => {
 
 router.get('/', authManajer, async (req, res) => {
     try {
-        const buku = await modelBuku.getAllBukuHapus()
+        const page = parseInt(req.query.page) || 1
+        const limit = 20
+        const offset = (page - 1) * limit
+
+        const buku = await modelBuku.getBukuHapus(limit, offset)
+        const totalBuku = buku.length
+        const totalHalaman = Math.ceil(totalBuku / limit)
 
         const userId = req.session.penggunaId
+        const  user = await modelPengguna.getPenggunaById(userId)
 
-        const  user = await modelPengurus.getPengurusById(userId)
-
-        res.render('pengurus/admin/buku/index', { buku, user })
+        res.render('pengurus/manajer/buku/index', { buku, user, page, totalHalaman })
     } catch (err) {
         console.log(err)
         req.flash('error', err.message)
-        res.redirect('/admin/dashboard')
+        res.redirect('/manajer/dashboard')
+    }
+})
+
+router.post('/search', authManajer, async (req, res) => {
+    try {
+        const {judul} = req.body
+
+        const userId = req.session.penggunaId
+        const  user = await modelPengguna.getPenggunaById(userId)
+
+        const buku = await modelBuku.searchJudulBukuHapus(judul)
+
+        res.render('pengurus/manajer/buku/index', {buku, user})
+    } catch (err) {
+        console.log(err)
+        req.flash('error', err.message)
+        res.redirect('/manajer/dashboard')
+    }
+})
+
+router.get('/:id', authManajer, async (req, res) => {
+    try {
+        const {id} = req.params
+        const userId = req.session.penggunaId
+        const  user = await modelPengguna.getPenggunaById(userId)
+
+        const buku = await modelBuku.getByIdHapus(id)
+
+        res.render('pengurus/manajer/buku/detail', { buku, user })
+    } catch (err) {
+        console.log(err)
+        req.flash('error', err.message)
+        res.redirect('/manajer/buku')
     }
 })
 
@@ -39,11 +77,11 @@ router.post('/edit/:id', authManajer, async (req, res) => {
         await modelBuku.updateStatusData(data, id)
 
         req.flash('success', 'Buku berhasil ditampilkan')
-        res.redirect('/admin/buku')
+        res.redirect('/manajer/buku')
     } catch(err) {
         console.log(err)
         req.flash('error', err.message)
-        res.redirect('/admin/buku')
+        res.redirect('/manajer/buku')
     }
 })
 
@@ -58,10 +96,10 @@ router.post('/delete/:id', authManajer, async (req, res) => {
         await modelBuku.hardDelete(id)
         
         req.flash('success', 'Buku berhasil dihapus')
-        res.redirect('/admin/buku')
+        res.redirect('/manajer/buku')
     } catch (err) {
         req.flash('error', err.message)
-        res.redirect('/admin/buku')
+        res.redirect('/manajer/buku')
     }
 })
 
