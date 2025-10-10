@@ -9,9 +9,10 @@ const modelPengguna = require('../../../model/modelPengguna')
 router.get('/', authPustakawan, async (req, res) => {
     try {
         let data = await modelLantai.getAll()
-        const userId = req.session.pengurusId
+        const userId = req.session.penggunaId
 
         const  user = await modelPengguna.getPenggunaById(userId)
+        console.log(userId, user)
         res.render('pengurus/pustakawan/lokasi/lantai/index', {data, user})
     } catch(err) {
         console.log(err)
@@ -22,7 +23,7 @@ router.get('/', authPustakawan, async (req, res) => {
 
 //menampilkan halaman untuk menambahkan data lantai
 router.get('/buat', authPustakawan, async (req, res) => {
-    const userId = req.session.pengurusId
+    const userId = req.session.penggunaId
 
     const  user = await modelPengguna.getPenggunaById(userId)
     res.render('pengurus/pustakawan/lokasi/lantai/buat', { 
@@ -63,7 +64,7 @@ router.get('/edit/:id', authPustakawan, async(req, res) => {
     try {
         const {id} = req.params
         const data = await modelLantai.getById(id)
-        const userId = req.session.pengurusId
+        const userId = req.session.penggunaId
 
         const  user = await modelPengguna.getPenggunaById(userId)
         res.render('pengurus/pustakawan/lokasi/lantai/edit', {data, user})

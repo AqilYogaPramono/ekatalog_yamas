@@ -12,7 +12,7 @@ router.get('/', authPustakawan, async(req, res) => {
     try {
         let data = await modelRak.getAll()
 
-        const userId = req.session.pengurusId
+        const userId = req.session.penggunaId
 
         const  user = await modelPengguna.getPenggunaById(userId)
 
@@ -28,7 +28,7 @@ router.get('/buat', authPustakawan, async (req, res) => {
     try {
         const ruangan = await modelRuangan.getAll()
 
-        const userId = req.session.pengurusId
+        const userId = req.session.penggunaId
 
         const  user = await modelPengguna.getPenggunaById(userId)
 
@@ -71,7 +71,7 @@ router.get('/edit/:id', authPustakawan, async (req, res) => {
         const {id} = req.params
         const rak = await modelRak.getById(id)
         const ruangan = await modelRuangan.getAll()
-        const userId = req.session.pengurusId
+        const userId = req.session.penggunaId
 
         const  user = await modelPengguna.getPenggunaById(userId)
 
