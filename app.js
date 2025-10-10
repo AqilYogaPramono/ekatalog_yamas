@@ -15,6 +15,7 @@ const dashboardManajerRouter = require('./routes/manajer/dashboard')
 const pustakawanRouter = require('./routes/manajer/pustakawan')
 const bukuManajerRouter = require('./routes/manajer/buku')
 const majalahManajerRouter = require('./routes/manajer/majalah')
+const manajerRouter = require('./routes/manajer/manajer')
 
 //routes pengguna
 const penggunaRouter = require('./routes/pengguna/pengguna')
@@ -64,6 +65,7 @@ app.use('/manajer/dashboard', dashboardManajerRouter)
 app.use('/manajer/pustakawan', pustakawanRouter)
 app.use('/manajer/buku', bukuManajerRouter)
 app.use('/manajer/majalah', majalahManajerRouter)
+app.use('/manajer', manajerRouter)
 
 //routes pengguna
 app.use('/', penggunaRouter)
