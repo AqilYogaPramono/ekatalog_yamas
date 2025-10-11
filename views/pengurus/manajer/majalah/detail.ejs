@@ -1,6 +1,6 @@
-<%- include('../../partials1/header/__headerDashboard.ejs', { title: 'Detail Buku Dihapus' }) %>
-<%- include('../../partials1/nav-side/__nav-sidePengurus.ejs') %>
-<%- include('../../partials1/messages/messagesDashboard.ejs') %>
+<%- include('../../../partials1/header/__headerDashboard.ejs', { title: 'Detail Majalah Dihapus' }) %>
+<%- include('../../../partials1/nav-side/__nav-sideManajer.ejs') %>
+<%- include('../../../partials1/messages/messagesDashboard.ejs') %>
 
 <div class="main-panel">
     <div class="content-wrapper">
@@ -13,59 +13,56 @@
                                 <div class="d-flex flex-column align-items-center">
                                     <div class="d-md-none mb-3 w-100">
                                         <div class="btn-actions-mobile d-flex gap-2 justify-content-center">
-                                            <a href="/admin/buku" class="btn btn-light btn-sm" data-loading>Kembali</a>
+                                            <a href="/manajer/majalah" class="btn btn-light btn-sm" data-loading>Kembali</a>
                                             <button type="button" class="btn btn-outline-success btn-sm" data-toggle="modal" data-target="#modalPulihkan">Tampilkan</button>
                                             <button type="button" class="btn btn-outline-danger btn-sm" data-toggle="modal" data-target="#modalConfirmDelete">Hapus</button>
                                         </div>
                                     </div>
-                                    <img id="detailCover" class="img-click-preview" data-src="<%= buku && buku.foto_cover ? ('/images/buku/' + buku.foto_cover) : '/images/no-image.png' %>" src="<%= buku && buku.foto_cover ? ('/images/buku/' + buku.foto_cover) : '/images/no-image.png' %>" alt="cover" style="width:100%; max-width:220px; border-radius:12px; object-fit:cover;cursor:zoom-in;box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
+                                    <img id="detailCover" class="img-click-preview" data-src="<%= majalah && majalah.foto_cover ? ('/images/majalah/' + majalah.foto_cover) : '/images/no-image.png' %>" src="<%= majalah && majalah.foto_cover ? ('/images/majalah/' + majalah.foto_cover) : '/images/no-image.png' %>" alt="cover" style="width:100%; max-width:220px; border-radius:12px; object-fit:cover;cursor:zoom-in;box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
                                 </div>
                             </div>
                             <div class="col-md-9">
                                 <div class="d-flex justify-content-between align-items-start mb-3">
-                                    <h4 class="card-title mb-0"><%= (buku && buku.judul) ? buku.judul : '-' %></h4>
+                                    <h4 class="card-title mb-0"><%= (majalah && majalah.judul) ? majalah.judul : '-' %></h4>
                                     <div class="btn-actions d-none d-md-flex">
-                                        <a href="/admin/buku" class="btn btn-light btn-sm" data-loading>Kembali</a>
+                                        <a href="/manajer/majalah" class="btn btn-light btn-sm" data-loading>Kembali</a>
                                         <button type="button" class="btn btn-outline-success btn-sm" data-toggle="modal" data-target="#modalPulihkan">Tampilkan</button>
                                         <button type="button" class="btn btn-outline-danger btn-sm" data-toggle="modal" data-target="#modalConfirmDelete">Hapus</button>
                                     </div>
                                 </div>
                                 <div class="detail-info">
                                     <div class="info-item">
-                                        <span class="info-label">ISBN/ISSN: <%= (buku && buku.isbn_issn) ? buku.isbn_issn : 'Tidak Tersedia' %></span>
+                                        <span class="info-label">Edisi: <%= (majalah && majalah.edisi) ? majalah.edisi : '-' %></span>
                                     </div>
                                     <div class="info-item">
-                                        <span class="info-label">Nomor Klasifikasi: <%= (buku && buku.no_klasifikasi) ? buku.no_klasifikasi : '-' %></span>
+                                        <span class="info-label">Nomor Klasifikasi: <%= (majalah && majalah.no_klasifikasi) ? majalah.no_klasifikasi : '-' %></span>
                                     </div>
                                     <div class="info-item">
-                                        <span class="info-label">Bahasa: <%= (buku && buku.bahasa) ? buku.bahasa : '-' %></span>
+                                        <span class="info-label">Bahasa: <%= (majalah && majalah.bahasa) ? majalah.bahasa : '-' %></span>
                                     </div>
                                     <div class="info-item">
-                                        <span class="info-label">Tahun Terbit: <%= (buku && buku.tahun_terbit) ? buku.tahun_terbit : '-' %></span>
+                                        <span class="info-label">Tahun Terbit: <%= (majalah && majalah.tahun_terbit) ? majalah.tahun_terbit : '-' %></span>
                                     </div>
                                     <div class="info-item">
-                                        <span class="info-label">Total Halaman: <%= (buku && buku.jumlah_halaman) ? buku.jumlah_halaman : '-' %></span>
+                                        <span class="info-label">Sinopsis: <%= (majalah && majalah.sinopsis) ? majalah.sinopsis : '-' %></span>
                                     </div>
                                     <div class="info-item">
-                                        <span class="info-label">Sinopsis: <%= (buku && buku.sinopsis) ? buku.sinopsis : '-' %></span>
+                                        <span class="info-label">Ketersediaan: <%= (majalah && majalah.ketersediaan) ? majalah.ketersediaan : '-' %></span>
                                     </div>
                                     <div class="info-item">
-                                        <span class="info-label">Ketersediaan: <%= (buku && buku.ketersediaan) ? buku.ketersediaan : '-' %></span>
+                                        <span class="info-label">Kode Lantai: <%= (majalah && majalah.kode_lantai) ? majalah.kode_lantai : '-' %></span>
                                     </div>
                                     <div class="info-item">
-                                        <span class="info-label">Kode Lantai: <%= (buku && buku.kode_lantai) ? buku.kode_lantai : '-' %></span>
+                                        <span class="info-label">Kode Ruangan: <%= (majalah && majalah.kode_ruangan) ? majalah.kode_ruangan : '-' %></span>
                                     </div>
                                     <div class="info-item">
-                                        <span class="info-label">Kode Ruangan: <%= (buku && buku.kode_ruangan) ? buku.kode_ruangan : '-' %></span>
+                                        <span class="info-label">Kode Rak: <%= (majalah && majalah.kode_rak) ? majalah.kode_rak : '-' %></span>
                                     </div>
                                     <div class="info-item">
-                                        <span class="info-label">Kode Rak: <%= (buku && buku.kode_rak) ? buku.kode_rak : '-' %></span>
+                                        <span class="info-label">Dihapus Pada: <%= (majalah && majalah.dihapus_pada) ? new Date(majalah.dihapus_pada).toLocaleString('id-ID') : '-' %></span>
                                     </div>
                                     <div class="info-item">
-                                        <span class="info-label">Dihapus Pada: <%= (buku && buku.dihapus_pada) ? new Date(buku.dihapus_pada).toLocaleString('id-ID') : '-' %></span>
-                                    </div>
-                                    <div class="info-item">
-                                        <span class="info-label">Dihapus Oleh: <%= (buku && buku.dihapus_oleh) ? buku.dihapus_oleh : '-' %></span>
+                                        <span class="info-label">Dihapus Oleh: <%= (majalah && majalah.dihapus_oleh) ? majalah.dihapus_oleh : '-' %></span>
                                     </div>
                                 </div>
                             </div>
@@ -81,17 +78,17 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Tampilkan Buku</h5>
+                <h5 class="modal-title">Tampilkan Majalah</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                Ubah status data buku menjadi "Tampil"?
+                Ubah status data majalah menjadi "Tampil"?
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-light" data-dismiss="modal">Batal</button>
-                <form action="/admin/buku/edit/<%= buku && buku.id %>" method="POST" data-loading>
+                <form action="/manajer/majalah/edit/<%= majalah && majalah.id %>" method="POST" data-loading>
                     <input type="hidden" name="status_data" value="Tampil">
                     <button type="submit" class="btn btn-success">Tampilkan</button>
                 </form>
@@ -110,11 +107,11 @@
                 </button>
             </div>
             <div class="modal-body">
-                Apakah Anda yakin ingin menghapus buku "<%= (buku && buku.judul) ? buku.judul : 'ini' %>" secara permanen?
+                Apakah Anda yakin ingin menghapus majalah "<%= (majalah && majalah.judul) ? majalah.judul : 'ini' %>" secara permanen?
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-light" data-dismiss="modal">Batal</button>
-                <form action="/admin/buku/delete/<%= buku && buku.id %>" method="POST" data-loading>
+                <form action="/manajer/majalah/delete/<%= majalah && majalah.id %>" method="POST" data-loading>
                     <button type="submit" class="btn btn-danger">Hapus</button>
                 </form>
             </div>
@@ -138,6 +135,6 @@
     </div>
 </div>
 
-<%- include('../../partials1/script/__scriptDashboard.ejs') %>
+<%- include('../../../partials1/script/__scriptDashboard.ejs') %>
 
 

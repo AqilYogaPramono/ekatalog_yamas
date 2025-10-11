@@ -1,159 +1,112 @@
-<%- include('../../partials1/header/__header.ejs', { title: 'Daftar Majalah Dihapus' }) %>
-<%- include('../../partials1/nav-side/__nav-saideAdmin.ejs') %>
+<%- include('../../../partials1/header/__headerDashboard.ejs', { title: 'Data Majalah Dihapus' }) %>
+<%- include('../../../partials1/nav-side/__nav-sideManajer.ejs') %>
+<%- include('../../../partials1/messages/messagesDashboard.ejs') %>
 
-<!-- Loading Spinner -->
-<div id="loadingSpinner" style="display: none;">
-  <div class="spinner"></div>
-  <p>Uploading dan memproses file... Mohon tunggu.</p>
-</div>
+<div class="main-panel">
+    <div class="content-wrapper">
+        <div class="row">
+            <div class="col-lg-12 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-3">
+                            <h4 class="card-title mb-3 mb-md-0">Data Majalah yang Dihapus</h4>
+                        </div>
 
-<style>
-  #loadingSpinner {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background: rgba(255, 255, 255, 0.85);
-    z-index: 9999;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    font-family: sans-serif;
-  }
+                        <form action="/manajer/majalah/search" method="POST" class="mb-3" data-loading>
+                            <div class="input-group">
+                                <input type="text" class="form-control" name="judul" placeholder="Cari judul majalah..." value="<%= (typeof keyword !== 'undefined' && keyword) ? keyword : '' %>">
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-primary" type="submit">Cari</button>
+                                </div>
+                            </div>
+                        </form>
 
-  .spinner {
-    width: 48px;
-    height: 48px;
-    border: 5px solid #f3f3f3;
-    border-top: 5px solid #3498db;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-    margin-bottom: 15px;
-  }
+                        <div class="table-responsive">
+                            <table class="table table-hover table-stacked">
+                                <thead>
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Cover</th>
+                                        <th>Judul</th>
+                                        <th>Edisi</th>
+                                        <th>No Klasifikasi</th>
+                                        <th>Lokasi</th>
+                                        <th style="width: 200px;" class="text-right">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% if (Array.isArray(majalah) && majalah.length) { %>
+                                        <% for (let i = 0; i < majalah.length; i++) { const item = majalah[i]; %>
+                                            <tr>
+                                                <td data-label="No"><%= i + 1 %></td>
+                                                <td data-label="Cover">
+                                                    <img class="img-click-preview" data-src="<%= item.foto_cover ? ('/images/majalah/' + item.foto_cover) : '/images/no-image.png' %>" src="<%= item.foto_cover ? ('/images/majalah/' + item.foto_cover) : '/images/no-image.png' %>" alt="cover" style="height:85px;width:auto;border-radius:6px;object-fit:cover;cursor:zoom-in;">
+                                                </td>
+                                                <td data-label="Judul"><%= item.judul %></td>
+                                                <td data-label="Edisi"><%= item.edisi || '-' %></td>
+                                                <td data-label="No Klasifikasi"><%= item.no_klasifikasi || '-' %></td>
+                                                <td data-label="Lokasi"><%= item.lokasi_majalah || '-' %></td>
+                                                <td class="text-right" data-label="Aksi">
+                                                    <div class="btn-actions">
+                                                        <a href="/manajer/majalah/<%= item.id %>" class="btn btn-sm btn-outline-primary" data-loading>Detail</a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        <% } %>
+                                    <% } else { %>
+                                        <tr>
+                                            <td colspan="7" class="text-center">Belum ada data</td>
+                                        </tr>
+                                    <% } %>
+                                </tbody>
+                            </table>
+                        </div>
 
-  @keyframes spin {
-    0% { transform: rotate(0); }
-    100% { transform: rotate(360deg); }
-  }
-</style>
-
-<div class="col-lg-12 grid-margin stretch-card">
-  <div class="card">
-    <div class="card-body">
-
-      <h4 class="card-title mb-4">Daftar Majalah Dihapus</h4>
-
-      <% if (majalah.length === 0) { %>
-        <p>Tidak ada data majalah.</p>
-      <% } else { %>
-        <div class="list-group">
-          <% majalah.forEach((item) => { %>
-            <div class="list-group-item mb-3 border rounded">
-              <div class="d-flex justify-content-between align-items-center">
-                <div>
-                  <strong><%= item.judul %></strong><br>
-                  <small>Edisi: <%= item.edisi || '-' %> | Bahasa: <%= item.bahasa || '-' %></small>
-                </div>
-                <div class="d-flex align-items-center gap-2">
-                  <button class="btn btn-sm btn-outline-secondary" type="button" data-toggle="collapse" data-target="#collapse<%= item.id %>">
-                    Detail <i class="mdi mdi-chevron-down"></i>
-                  </button>
-
-                  <!-- Tampilkan (Edit Status) Modal Trigger -->
-                  <button class="btn btn-sm btn-success" data-toggle="modal" data-target="#modalTampilkan<%= item.id %>">
-                    <i class="mdi mdi-eye"></i> Tampilkan
-                  </button>
-
-                  <!-- Delete Modal Trigger -->
-                  <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#modalDelete<%= item.id %>">
-                    <i class="mdi mdi-delete"></i> Hapus
-                  </button>
-                </div>
-              </div>
-
-              <!-- Detail Collapse -->
-              <div class="collapse mt-3" id="collapse<%= item.id %>">
-                <div class="border-top pt-3">
-                  <div class="mb-3">
-                    <img src="/images/majalah/<%= item.foto_cover %>" alt="Cover" style="width: 120px; height: auto; object-fit: cover;">
-                  </div>
-                  <p><strong>No Klasifikasi:</strong> <%= item.no_klasifikasi || '-' %></p>
-                  <p><strong>Tahun Terbit:</strong> <%= item.tahun_terbit || '-' %></p>
-                  <p><strong>Tempat Terbit:</strong> <%= item.tempat_terbit || '-' %></p>
-                  <p><strong>Penerbit:</strong> <%= item.penerbit || '-' %></p>
-                  <p><strong>Lokasi:</strong> <%= item.lokasi_majalah || '-' %></p>
-                  <p><strong>Ketersediaan:</strong> <%= item.ketersediaan %></p>
-                  <p><strong>Sinopsis:</strong> <%= item.sinopsis || '-' %></p>
-                  <p><strong>Dihapus Oleh:</strong> <%= item.dihapus_oleh %></p>
-                  <p><strong>Dihapus Pada:</strong> 
-                    <% if (item.dihapus_pada) { %>
-                      <%= new Date(item.dihapus_pada).toLocaleString() %>
-                    <% } else { %> - <% } %>
-                  </p>
-                </div>
-              </div>
-
-              <!-- Modal: Tampilkan -->
-              <div class="modal fade" id="modalTampilkan<%= item.id %>" tabindex="-1" role="dialog" aria-labelledby="modalTampilkanLabel<%= item.id %>" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                  <form action="/admin/majalah/edit/<%= item.id %>" method="POST">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <h5 class="modal-title" id="modalTampilkanLabel<%= item.id %>">Tampilkan Majalah</h5>
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                      </div>
-                      <div class="modal-body">
-                        Apakah Anda yakin ingin menampilkan kembali majalah "<%= item.judul %>"?
-                        <input type="hidden" name="status_data" value="Tampil">
-                      </div>
-                      <div class="modal-footer text-right">
-                        <button type="button" class="btn btn-light" data-dismiss="modal">Batal</button>
-                        <button type="submit" class="btn btn-success">Tampilkan</button>
-                      </div>
+                        <div class="d-flex justify-content-between align-items-center mt-3">
+                            <div class="text-muted small">Halaman <%= (typeof page !== 'undefined' && page) ? page : 1 %> dari <%= (typeof totalHalaman !== 'undefined' && totalHalaman) ? totalHalaman : 1 %></div>
+                            <nav>
+                                <ul class="pagination mb-0">
+                                    <% const currentPage = (typeof page !== 'undefined' && page) ? page : 1; %>
+                                    <% const totalPages = (typeof totalHalaman !== 'undefined' && totalHalaman) ? totalHalaman : 1; %>
+                                    <li class="page-item <%= currentPage <= 1 ? 'disabled' : '' %>">
+                                        <a class="page-link" href="?page=<%= currentPage - 1 %>" data-loading aria-label="Sebelumnya">
+                                            <span aria-hidden="true">&laquo;</span>
+                                        </a>
+                                    </li>
+                                    <% for (let p = 1; p <= totalPages; p++) { %>
+                                        <li class="page-item <%= p === currentPage ? 'active' : '' %>"><a class="page-link" href="?page=<%= p %>" data-loading><%= p %></a></li>
+                                    <% } %>
+                                    <li class="page-item <%= currentPage >= totalPages ? 'disabled' : '' %>">
+                                        <a class="page-link" href="?page=<%= currentPage + 1 %>" data-loading aria-label="Berikutnya">
+                                            <span aria-hidden="true">&raquo;</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
                     </div>
-                  </form>
                 </div>
-              </div>
-
-              <!-- Modal: Delete -->
-              <div class="modal fade" id="modalDelete<%= item.id %>" tabindex="-1" role="dialog" aria-labelledby="modalDeleteLabel<%= item.id %>" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                  <form action="/admin/majalah/delete/<%= item.id %>" method="POST">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <h5 class="modal-title" id="modalDeleteLabel<%= item.id %>">Konfirmasi Hapus</h5>
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                      </div>
-                      <div class="modal-body">
-                        Apakah Anda yakin ingin menghapus majalah "<%= item.judul %>" secara permanen?
-                      </div>
-                      <div class="modal-footer text-right">
-                        <button type="button" class="btn btn-light" data-dismiss="modal">Batal</button>
-                        <button type="submit" class="btn btn-danger">Hapus</button>
-                      </div>
-                    </div>
-                  </form>
-                </div>
-              </div>
-
             </div>
-          <% }) %>
         </div>
-      <% } %>
-
     </div>
-  </div>
 </div>
 
-<%- include('../../../partialsAdmin/__script.ejs') %>
+<div class="modal fade modal-below-navbar modal-top" id="globalImagePreviewModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Pratinjau Gambar</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body p-0">
+                <img id="globalImagePreviewEl" src="" alt="preview" style="width:100%;height:auto;display:block;">
+            </div>
+        </div>
+    </div>
+</div>
 
-<script>
-  const uploadForm = document.getElementById('formUploadBatch')
-  const spinner = document.getElementById('loadingSpinner')
+<%- include('../../../partials1/script/__scriptDashboard.ejs') %>
 
-  if (uploadForm) {
-    uploadForm.addEventListener('submit', function () {
-      spinner.style.display = 'flex'
-    })
-  }
-</script>
+
