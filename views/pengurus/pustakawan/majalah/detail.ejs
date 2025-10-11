@@ -1,447 +1,120 @@
-<!DOCTYPE html>
-<html lang="id">
+<%- include('../../../partials1/header/__headerDashboard.ejs', { title: 'Detail Majalah' }) %>
+<%- include('../../../partials1/nav-side/__nav-sidePengurus.ejs') %>
+<%- include('../../../partials1/messages/messagesDashboard.ejs') %>
 
-<head>
-    <%- include('../../../partials/__head.ejs', { title: 'Detail Majalah' }) %>
-    <style>
-        :root {
-            --primary-font: 'Poppins', sans-serif;
-            --bg-color: #f8f9fa;
-            --card-bg: white;
-            --text-primary: #333;
-            --text-secondary: #6c757d;
-            --highlight-color: #495057;
-            --btn-edit: #ffc107;
-            --btn-edit-hover: #e0a800;
-            --btn-delete: #dc3545;
-            --btn-delete-hover: #c82333;
-            --shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-        }
-
-        body {
-            font-family: var(--primary-font);
-            background-color: var(--bg-color);
-        }
-
-        .container-fluid {
-            background-color: white;
-        }
-
-        .container-main {
-            max-width: 900px;
-            margin: 2rem auto;
-            padding: 0 15px;
-        }
-
-        .card {
-            background-color: var(--card-bg);
-            border-radius: 12px;
-            box-shadow: var(--shadow);
-            padding: 2.5rem;
-        }
-
-        .magazine-header {
-            display: flex;
-            align-items: flex-start;
-            gap: 2rem;
-            margin-bottom: 2rem;
-        }
-
-        .magazine-cover {
-            flex-shrink: 0;
-            width: 200px;
-            height: 300px;
-            object-fit: cover;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .magazine-info {
-            flex-grow: 1;
-        }
-
-        .magazine-title {
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--text-primary);
-            margin: 0;
-            line-height: 1.2;
-        }
-
-        .magazine-edition {
-            font-size: 1.2rem;
-            font-weight: 500;
-            color: var(--text-secondary);
-            margin-top: 5px;
-            margin-bottom: 1.5rem;
-        }
-
-        .magazine-metadata {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .metadata-item {
-            font-size: 0.95rem;
-            line-height: 1.5;
-        }
-
-        .metadata-label {
-            font-weight: 600;
-            color: var(--highlight-color);
-            display: block;
-        }
-
-        .metadata-value {
-            color: var(--text-secondary);
-        }
-
-        .sinopsis {
-            margin-top: 2rem;
-        }
-
-        .sinopsis-title {
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: var(--text-primary);
-            margin-bottom: 0.5rem;
-        }
-
-        .sinopsis-text {
-            font-size: 0.95rem;
-            color: var(--text-secondary);
-            line-height: 1.6;
-        }
-
-        .button-group {
-            display: flex;
-            justify-content: flex-end;
-            gap: 10px;
-            margin-top: 2rem;
-        }
-
-        .btn-edit,
-        .btn-delete {
-            padding: 10px 20px;
-            border-radius: 8px;
-            font-weight: 600;
-            border: none;
-            cursor: pointer;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: background-color 0.2s ease, transform 0.2s ease;
-        }
-
-        .btn-edit {
-            background-color: var(--btn-edit);
-            color: white;
-        }
-
-        .btn-edit:hover {
-            background-color: var(--btn-edit-hover);
-            transform: translateY(-2px);
-        }
-
-        .btn-delete {
-            background-color: var(--btn-delete);
-            color: white;
-        }
-
-        .btn-delete:hover {
-            background-color: var(--btn-delete-hover);
-            transform: translateY(-2px);
-        }
-
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0, 0, 0, 0.4);
-            animation: fadeIn 0.3s;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .modal-content {
-            background-color: #fff;
-            margin: auto;
-            padding: 30px;
-            border-radius: 12px;
-            width: 90%;
-            max-width: 400px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            text-align: center;
-            animation: slideIn 0.4s;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .modal-icon {
-            font-size: 3rem;
-        }
-
-        .modal-content h3 {
-            margin: 0;
-            color: #333;
-            font-weight: 600;
-        }
-
-        .modal-content p {
-            margin: 0;
-            color: #6c757d;
-        }
-
-        .modal-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            width: 100%;
-        }
-
-        .modal-confirm-btn,
-        .modal-cancel-btn {
-            padding: 10px 20px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            flex: 1;
-            border: none;
-        }
-
-        .modal-confirm-btn {
-            background-color: var(--btn-delete);
-            color: white;
-        }
-
-        .modal-confirm-btn:hover {
-            background-color: var(--btn-delete-hover);
-        }
-        
-        .modal-cancel-btn {
-            background-color: #6c757d;
-            color: white;
-        }
-
-        .modal-cancel-btn:hover {
-            background-color: #5a6268;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-
-            to {
-                opacity: 1;
-            }
-        }
-
-        @keyframes slideIn {
-            from {
-                transform: translateY(-50px);
-                opacity: 0;
-            }
-
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-        
-        @media (max-width: 768px) {
-            .magazine-header {
-                flex-direction: column;
-                align-items: center;
-                text-align: center;
-            }
-
-            .magazine-cover {
-                width: 150px;
-                height: 225px;
-            }
-
-            .magazine-title {
-                font-size: 1.5rem;
-            }
-
-            .magazine-edition {
-                font-size: 1rem;
-            }
-
-            .magazine-metadata {
-                grid-template-columns: 1fr;
-            }
-
-            .button-group {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .btn-edit,
-            .btn-delete {
-                width: 100%;
-                justify-content: center;
-            }
-        }
-    </style>
-</head>
-
-<body>
-    <div class="container-scroller">
-        <div class="container-fluid page-body-wrapper flex ">
-            <%- include('../../../partials/__nav.ejs') %>
-            <main class="container-main">
+<div class="main-panel">
+    <div class="content-wrapper">
+        <div class="row">
+            <div class="col-12 grid-margin stretch-card">
                 <div class="card">
-                    <header class="magazine-header">
-                        <img src="<%= majalah.cover_image_url || 'https://via.placeholder.com/200x300.png?text=No+Cover' %>" alt="Sampul Majalah" class="magazine-cover">
-                        <div class="magazine-info">
-                            <h1 class="magazine-title">
-                                <%= majalah.judul || 'Judul Tidak Tersedia' %>
-                            </h1>
-                            <p class="magazine-edition">
-                                <%= majalah.edisi || 'Edisi Tidak Tersedia' %>
-                            </p>
-                            <dl class="magazine-metadata">
-                                <div class="metadata-item">
-                                    <dt class="metadata-label">No. Klasifikasi:</dt>
-                                    <dd class="metadata-value">
-                                        <%= majalah.no_klasifikasi || '-' %>
-                                    </dd>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-3 mb-3 mb-md-0">
+                                <div class="d-flex flex-column align-items-center">
+                                    <div class="d-md-none mb-3 w-100">
+                                        <div class="btn-actions-mobile d-flex gap-2 justify-content-center">
+                                            <a href="/pustakawan/majalah" class="btn btn-light btn-sm" data-loading>Kembali</a>
+                                            <a href="/pustakawan/majalah/edit/<%= majalah && majalah.id %>" class="btn btn-outline-info btn-sm" data-loading>Edit</a>
+                                            <button type="button" class="btn btn-outline-danger btn-sm btn-delete" data-url="/pustakawan/majalah/delete/<%= majalah && majalah.id %>">Hapus</button>
+                                        </div>
+                                    </div>
+                                    <img id="detailCover" class="img-click-preview" data-src="<%= majalah && majalah.foto_cover ? ('/images/majalah/' + majalah.foto_cover) : '/images/no-image.png' %>" src="<%= majalah && majalah.foto_cover ? ('/images/majalah/' + majalah.foto_cover) : '/images/no-image.png' %>" alt="cover" style="width:100%; max-width:220px; border-radius:12px; object-fit:cover;cursor:zoom-in;box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
                                 </div>
-                                <div class="metadata-item">
-                                    <dt class="metadata-label">Bahasa:</dt>
-                                    <dd class="metadata-value">
-                                        <%= majalah.bahasa || '-' %>
-                                    </dd>
+                            </div>
+                            <div class="col-md-9">
+                                <div class="d-flex justify-content-between align-items-start mb-3">
+                                    <h4 class="card-title mb-0"><%= (majalah && majalah.judul) ? majalah.judul : '-' %></h4>
+                                    <div class="btn-actions d-none d-md-flex">
+                                        <a href="/pustakawan/majalah" class="btn btn-light btn-sm" data-loading>Kembali</a>
+                                        <a href="/pustakawan/majalah/edit/<%= majalah && majalah.id %>" class="btn btn-outline-info btn-sm" data-loading>Edit</a>
+                                        <button type="button" class="btn btn-outline-danger btn-sm btn-delete" data-url="/pustakawan/majalah/delete/<%= majalah && majalah.id %>">Hapus</button>
+                                    </div>
                                 </div>
-                                <div class="metadata-item">
-                                    <dt class="metadata-label">Penerbit:</dt>
-                                    <dd class="metadata-value">
-                                        <%= majalah.penerbit || '-' %>
-                                    </dd>
+                                <div class="detail-info">
+                                    <div class="info-item">
+                                        <span class="info-label">Edisi: <%= (majalah && majalah.edisi) ? majalah.edisi : '-' %></span>
+                                    </div>
+                                    <div class="info-item">
+                                        <span class="info-label">Nomor Klasifikasi: <%= (majalah && majalah.no_klasifikasi) ? majalah.no_klasifikasi : '-' %></span>
+                                    </div>
+                                    <div class="info-item">
+                                        <span class="info-label">Bahasa: <%= (majalah && majalah.bahasa) ? majalah.bahasa : '-' %></span>
+                                    </div>
+                                    <div class="info-item">
+                                        <span class="info-label">Tahun Terbit: <%= (majalah && majalah.tahun_terbit) ? majalah.tahun_terbit : '-' %></span>
+                                    </div>
+                                    <div class="info-item">
+                                        <span class="info-label">Sinopsis: <%= (majalah && majalah.sinopsis) ? majalah.sinopsis : '-' %></span>
+                                    </div>
+                                    <div class="info-item">
+                                        <span class="info-label">Ketersediaan: <%= (majalah && majalah.ketersediaan) ? majalah.ketersediaan : '-' %></span>
+                                    </div>
+                                    <div class="info-item">
+                                        <span class="info-label">Kode Lantai: <%= (majalah && majalah.kode_lantai) ? majalah.kode_lantai : '-' %></span>
+                                    </div>
+                                    <div class="info-item">
+                                        <span class="info-label">Kode Ruangan: <%= (majalah && majalah.kode_ruangan) ? majalah.kode_ruangan : '-' %></span>
+                                    </div>
+                                    <div class="info-item">
+                                        <span class="info-label">Kode Rak: <%= (majalah && majalah.kode_rak) ? majalah.kode_rak : '-' %></span>
+                                    </div>
+                                    <div class="info-item">
+                                        <span class="info-label">Dibuat Pada: <%= (majalah && majalah.dibuat_pada) ? new Date(majalah.dibuat_pada).toLocaleString('id-ID') : 'Tidak Tersedia' %></span>
+                                    </div>
+                                    <div class="info-item">
+                                        <span class="info-label">Diubah Pada: <%= (majalah && majalah.diubah_pada) ? new Date(majalah.diubah_pada).toLocaleString('id-ID') : 'Belum Pernah Diubah' %></span>
+                                    </div>
+                                    <div class="info-item">
+                                        <span class="info-label">Dibuat Oleh: <%= (majalah && majalah.dibuat_oleh) ? majalah.dibuat_oleh : 'Tidak Diketahui' %></span>
+                                    </div>
+                                    <div class="info-item">
+                                        <span class="info-label">Diubah Oleh: <%= (majalah && majalah.diubah_oleh) ? majalah.diubah_oleh : 'Belum Pernah Diubah' %></span>
+                                    </div>
+                                    
                                 </div>
-                                <div class="metadata-item">
-                                    <dt class="metadata-label">Tahun Terbit:</dt>
-                                    <dd class="metadata-value">
-                                        <%= majalah.tahun_terbit || '-' %>
-                                    </dd>
-                                </div>
-                                <div class="metadata-item">
-                                    <dt class="metadata-label">Tempat Terbit:</dt>
-                                    <dd class="metadata-value">
-                                        <%= majalah.tempat_terbit || '-' %>
-                                    </dd>
-                                </div>
-                                <div class="metadata-item">
-                                    <dt class="metadata-label">Ketersediaan:</dt>
-                                    <dd class="metadata-value">
-                                        <%= majalah.ketersediaan || '-' %>
-                                    </dd>
-                                </div>
-                                <div class="metadata-item">
-                                    <dt class="metadata-label">Lokasi:</dt>
-                                    <dd class="metadata-value">
-                                        <%= (majalah.lokasi && majalah.lokasi.lantai) ? `Lantai: ${majalah.lokasi.lantai}, Ruangan: ${majalah.lokasi.ruangan}, Rak: ${majalah.lokasi.rak}` : 'Tidak Tersedia' %>
-                                    </dd>
-                                </div>
-                                <div class="metadata-item">
-                                    <dt class="metadata-label">Dibuat Pada:</dt>
-                                    <dd class="metadata-value">
-                                        <%= majalah.createdAt ? new Date(majalah.createdAt).toLocaleString('id-ID', { dateStyle: 'long', timeStyle: 'short' }) : 'Tidak Tersedia' %>
-                                    </dd>
-                                </div>
-                                <div class="metadata-item">
-                                    <dt class="metadata-label">Dibuat Oleh:</dt>
-                                    <dd class="metadata-value">
-                                        <%= majalah.createdBy || 'Tidak Diketahui' %>
-                                    </dd>
-                                </div>
-                                <div class="metadata-item">
-                                    <dt class="metadata-label">Diedit Pada:</dt>
-                                    <dd class="metadata-value">
-                                        <%= (majalah.updatedAt && majalah.updatedAt.toString() !== majalah.createdAt.toString()) ? new Date(majalah.updatedAt).toLocaleString('id-ID', { dateStyle: 'long', timeStyle: 'short' }) : 'Belum Pernah Diubah' %>
-                                    </dd>
-                                </div>
-                                <div class="metadata-item">
-                                    <dt class="metadata-label">Diedit Oleh:</dt>
-                                    <dd class="metadata-value">
-                                        <%= majalah.editedBy || 'Belum Pernah Diedit' %>
-                                    </dd>
-                                </div>
-                            </dl>
+                            </div>
                         </div>
-                    </header>
-
-                    <section class="sinopsis">
-                        <h5 class="sinopsis-title">Sinopsis</h5>
-                        <p class="sinopsis-text">
-                            <%= majalah.sinopsis || 'Sinopsis tidak tersedia.' %>
-                        </p>
-                    </section>
-
-                    <div class="button-group">
-                        <a href="/majalah/edit/<%= majalah.id %>" class="btn-edit">
-                            <i class="bi bi-pencil-fill"></i> Edit
-                        </a>
-                        <button class="btn-delete" id="deleteBtn">
-                            <i class="bi bi-trash-fill"></i> Hapus
-                        </button>
                     </div>
                 </div>
-            </main>
-        </div>
-    </div>
-        <div id="deleteConfirmationModal" class="modal">
-        <div class="modal-content">
-            <i class="bi bi-exclamation-triangle-fill modal-icon" style="color: #ffc107;"></i>
-            <h3>Konfirmasi Hapus</h3>
-            <p>Apakah Anda yakin ingin menghapus majalah ini?</p>
-            <div class="modal-buttons">
-                <button type="button" class="modal-confirm-btn" id="yesDeleteBtn">Ya, Hapus</button>
-                <button type="button" class="modal-cancel-btn" id="noDeleteBtn">Batal</button>
             </div>
         </div>
     </div>
+</div>
 
-    <%- include('../../../partials/__foot.ejs') %>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const deleteBtn = document.getElementById('deleteBtn');
-            const deleteConfirmationModal = document.getElementById('deleteConfirmationModal');
-            const yesDeleteBtn = document.getElementById('yesDeleteBtn');
-            const noDeleteBtn = document.getElementById('noDeleteBtn');
-            
-            const majalahId = "<%= majalah.id %>";
+<div class="modal fade modal-below-navbar modal-top" id="globalImagePreviewModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Pratinjau Gambar</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body p-0">
+                <img id="globalImagePreviewEl" src="" alt="preview" style="width:100%;height:auto;display:block;">
+            </div>
+        </div>
+    </div>
+</div>
 
-            deleteBtn.addEventListener('click', () => {
-                deleteConfirmationModal.style.display = 'flex';
-            });
+<div class="modal fade modal-below-navbar" id="modalConfirmDelete" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Konfirmasi Hapus</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Apakah Anda yakin ingin menghapus majalah "<%= (majalah && majalah.judul) ? majalah.judul : 'ini' %>"?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-dismiss="modal">Batal</button>
+                <button type="button" class="btn btn-danger" id="btnConfirmDelete">Hapus</button>
+            </div>
+        </div>
+    </div>
+</div>
 
-            yesDeleteBtn.addEventListener('click', () => {
-                window.location.href = `/majalah/delete/${majalahId}`;
-            });
-
-            noDeleteBtn.addEventListener('click', () => {
-                deleteConfirmationModal.style.display = 'none';
-            });
-
-            window.addEventListener('click', function(event) {
-                if (event.target === deleteConfirmationModal) {
-                    deleteConfirmationModal.style.display = 'none';
-                }
-            });
-        });
-    </script>
-</body>
-
-</html>
+<%- include('../../../partials1/script/__scriptDashboard.ejs') %>

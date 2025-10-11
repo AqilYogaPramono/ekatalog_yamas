@@ -10,9 +10,9 @@ class ModelMajalah {
         }
     }
 
-    static async getAll() {
+    static async getMajalah(limit, offset) {
         try {
-            const [rows] = await connection.query(`SELECT m.id, m.judul, m.foto_cover, m.edisi, m.no_klasifikasi, m.bahasa, m.tahun_terbit, m.sinopsis, m.tempat_terbit, m.penerbit, CONCAT(r.kode_rak, ' - ', ru.kode_ruangan, ' - ', l.kode_lantai) AS lokasi_majalah, m.ketersediaan, m.dibuat_pada, m.diubah_pada, m.dibuat_oleh, m.diubah_oleh, m.status_data FROM majalah m LEFT JOIN rak r ON m.id_rak = r.id LEFT JOIN ruangan ru ON r.id_ruangan = ru.id LEFT JOIN lantai l ON ru.id_lantai = l.id WHERE m.status_data = 'Tampil'`)
+            const [rows] = await connection.query(`SELECT m.id, m.judul, m.foto_cover, m.edisi, m.no_klasifikasi, CONCAT(r.kode_rak, ' - ', ru.kode_ruangan, ' - ', l.kode_lantai) AS lokasi_majalah FROM majalah m LEFT JOIN rak r ON m.id_rak = r.id LEFT JOIN ruangan ru ON r.id_ruangan = ru.id LEFT JOIN lantai l ON ru.id_lantai = l.id WHERE m.status_data = 'Tampil' ORDER BY m.dibuat_pada DESC LIMIT ? OFFSET ?`, [limit, offset])
             return rows
         } catch (err) {
             throw err
@@ -21,7 +21,7 @@ class ModelMajalah {
 
     static async getById(id) {
         try {
-            const [rows] = await connection.query(`SELECT id, judul, foto_cover, edisi, no_klasifikasi, bahasa, tahun_terbit, sinopsis, tempat_terbit, penerbit, id_rak, ketersediaan FROM majalah WHERE id = ?`,[id])
+            const [rows] = await connection.query(`SELECT m.id, m.judul, m.foto_cover, m.edisi, m.no_klasifikasi, m.bahasa, m.tahun_terbit, m.sinopsis, m.tempat_terbit, m.penerbit, m.id_rak, r.kode_rak, ru.kode_ruangan, l.kode_lantai, m.ketersediaan, m.dibuat_pada, m.diubah_pada, m.dibuat_oleh, m.diubah_oleh, m.status_data FROM majalah m LEFT JOIN rak r ON m.id_rak = r.id LEFT JOIN ruangan ru ON r.id_ruangan = ru.id LEFT JOIN lantai l ON ru.id_lantai = l.id WHERE m.status_data = 'Tampil' AND m.id = ?`,[id])
             return rows[0]
         } catch (err) {
             throw err
@@ -141,6 +141,15 @@ class ModelMajalah {
         try {
             const [results] = await connection.query(`UPDATE majalah SET ? WHERE id = ?`, [data, id])
             return results
+        } catch (err) {
+            throw err
+        }
+    }
+
+    static async searchJudulMajalah(judul) {
+        try {
+            const [rows] = await connection.query(`SELECT m.id, m.judul, m.foto_cover, m.edisi, m.no_klasifikasi, CONCAT(r.kode_rak, ' - ', ru.kode_ruangan, ' - ', l.kode_lantai) AS lokasi_majalah FROM majalah m LEFT JOIN rak r ON m.id_rak = r.id LEFT JOIN ruangan ru ON r.id_ruangan = ru.id LEFT JOIN lantai l ON ru.id_lantai = l.id WHERE m.status_data = 'Tampil' AND m.judul LIKE CONCAT('%', ?, '%')`, [judul])
+            return rows
         } catch (err) {
             throw err
         }

@@ -1,541 +1,148 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <%- include('../../../partials/__head.ejs', { title: 'Daftar Majalah' }) %>
-    <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #f8f9fa;
-        }
+<%- include('../../../partials1/header/__headerDashboard.ejs', { title: 'Data Majalah' }) %>
+<%- include('../../../partials1/nav-side/__nav-sidePengurus.ejs') %>
+<%- include('../../../partials1/messages/messagesDashboard.ejs') %>
 
-        .main-panel {
-                background-color: white;
-        }
-
-        .container-custom {
-            max-width: 1200px;
-            margin: 2rem auto;
-            padding: 0 1rem;
-        }
-
-        .header-controls {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
-            flex-wrap: wrap;
-            gap: 1.5rem;
-        }
-
-        .header-buttons {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 2rem;
-            flex-wrap: wrap;
-            margin-top: 5%;
-            margin-left: auto;
-        }
-
-        .btn-add,
-        .btn-import,
-        .btn-template {
-            padding: 10px 20px;
-            border-radius: 8px;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            text-decoration: none;
-            transition: background-color 0.2s ease, transform 0.2s ease;
-            text-align: center;
-            justify-content: center;
-            flex-grow: 1;
-            white-space: nowrap;
-        }
-
-        .btn-add {
-            background-color: #0F8EC8;
-            color: white;
-            border: 1px solid #0F8EC8;
-        }
-
-        .btn-add:hover {
-            background-color: #0c75a4;
-            transform: translateY(-2px);
-        }
-
-        .btn-import {
-            background-color: white;
-            color: #0F8EC8;
-            border: 1px solid #0F8EC8;
-        }
-
-        .btn-import:hover {
-            background-color: #f1f7fc;
-            transform: translateY(-2px);
-        }
-
-        .btn-template {
-            background-color: #6c757d;
-            color: white;
-            border: 1px solid #6c757d;
-        }
-
-        .btn-template:hover {
-            background-color: #5a6268;
-            transform: translateY(-2px);
-        }
-
-        .search-and-entries {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            flex-wrap: wrap;
-            flex-grow: 1;
-            justify-content: flex-end;
-        }
-
-        #entriesPerPage {
-            border-radius: 6px;
-            border: 1px solid #e9ecef;
-            padding: 8px 12px;
-            font-size: 0.9rem;
-        }
-
-        #searchInput {
-            border-radius: 6px;
-            border: 1px solid #e9ecef;
-            padding: 8px 12px;
-            width: 200px;
-            font-size: 0.9rem;
-            transition: width 0.3s ease;
-        }
-
-        .magazine-list-header {
-            font-size: 1.75rem;
-            font-weight: 600;
-            color: #0F8EC8;
-            border-bottom: 2px solid #e9ecef;
-            padding-bottom: 1rem;
-            margin-bottom: 2rem;
-        }
-
-        .magazine-card {
-            background-color: #ffffff;
-            border-radius: 12px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-            padding: 20px;
-            margin-bottom: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: all 0.3s ease;
-            border-left: 5px solid #0F8EC8;
-        }
-
-        .magazine-card:hover {
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
-            transform: translateY(-2px);
-        }
-
-        .magazine-info {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .magazine-number {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: #0F8EC8;
-            padding-right: 20px;
-            border-right: 1px solid #e9ecef;
-        }
-
-        .magazine-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: #333333;
-            margin: 0;
-        }
-
-        .magazine-author {
-            font-size: 0.9rem;
-            color: #6c757d;
-            margin: 0;
-        }
-
-        .magazine-details-link {
-            background-color: transparent;
-            border: none;
-            color: #0F8EC8;
-            font-weight: 600;
-            padding: 8px 12px;
-            cursor: pointer;
-            border-radius: 8px;
-            transition: background-color 0.2s ease, transform 0.2s ease;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .magazine-details-link:hover {
-            background-color: #f1f7fc;
-            transform: translateY(-2px);
-        }
-
-        .data-table-pagination {
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            margin-top: 1rem;
-            gap: 15px;
-            flex-wrap: wrap;
-        }
-
-        .pagination-info {
-            font-size: 0.9rem;
-            color: #6c757d;
-        }
-
-        .pagination {
-            display: flex;
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .page-item .page-link {
-            border: 1px solid #dee2e6;
-            color: #0F8EC8;
-            margin: 0 2px;
-            border-radius: 4px;
-            transition: background-color 0.2s ease, color 0.2s ease;
-        }
-
-        .page-item.active .page-link {
-            background-color: #0F8EC8;
-            color: white;
-            border-color: #0F8EC8;
-        }
-
-        #noInitialDataMessage,
-        #noResultsMessage {
-            text-align: center;
-            color: #6c757d;
-            margin-top: 2rem;
-            padding: 1rem;
-            background-color: #ffffff;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-        }
-
-        .magazine-card {
-            display: none;
-        }
-
-        @media (max-width: 425px) {
-            .header-controls {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 1rem;
-            }
-
-            .header-buttons {
-                flex-direction: column;
-                width: 100%;
-            }
-
-            .btn-add,
-            .btn-import,
-            .btn-template {
-                width: 100%;
-                justify-content: center;
-                padding: 15px;
-                font-size: 1rem;
-            }
-
-            .search-and-entries {
-                flex-direction: column;
-                align-items: stretch;
-                width: 100%;
-                gap: 10px;
-            }
-
-            #searchInput {
-                width: 100%;
-            }
-
-            .magazine-card {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 15px;
-                text-align: left;
-            }
-
-            .magazine-info {
-                gap: 15px;
-                width: 100%;
-                border-right: none;
-                padding-right: 0;
-            }
-
-            .magazine-number {
-                border-right: none;
-                padding-right: 0;
-            }
-            
-            .magazine-title {
-                font-size: 1.2rem;
-            }
-        }
-    </style>
-</head>
-
-<body class="page-majalah-index">
-    <div class="container-scroller">
-        <div class="container-fluid page-body-wrapper full-page-wrapper">
-            <%- include('../../../partials/__nav.ejs', { currentPath: '/majalah' }) %>
-            <div class="main-panel">
-                <div class="container-custom">
-                    <div class="header-controls">
-                        <div class="header-buttons">
-                            <a href="/majalah/create" class="btn-add">
-                                <i class="bi bi-plus-lg"></i> Tambah Majalah
-                            </a>
-                            <a href="#" class="btn-import" id="importExcelBtn">
-                                <i class="bi bi-file-earmark-arrow-up"></i> Import Majalah Via Excel
-                            </a>
-                            <a href="#" class="btn-template">
-                                <i class="bi bi-file-earmark-arrow-down"></i> Download Template
-                            </a>
+<div class="main-panel">
+    <div class="content-wrapper">
+        <div class="row">
+            <div class="col-lg-12 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-3">
+                            <h4 class="card-title mb-3 mb-md-0">Data Majalah</h4>
+                            <div class="d-flex gap-2">
+                                <a href="/templateExcel/Majalah.xlsx" class="btn btn-outline-primary btn-sm mr-2" download>Template Excel</a>
+                                <button type="button" class="btn btn-primary btn-sm mr-2" data-toggle="modal" data-target="#modalUploadBatch" data-loading>Tambah Batch</button>
+                                <a href="/pustakawan/majalah/buat" class="btn btn-primary btn-sm" data-loading>Tambah Majalah</a>
+                            </div>
                         </div>
-                        <div class="search-and-entries">
-                            <label>
-                                <span class="d-none d-md-inline">Show </span>
-                                <select id="entriesPerPage" class="form-control d-inline-block w-auto mx-1">
-                                    <option value="5">5</option>
-                                    <option value="10">10</option>
-                                    <option value="25">25</option>
-                                    <option value="50">50</option>
-                                </select>
-                                <span class="d-none d-md-inline"> entries</span>
-                            </label>
-                            <input type="text" id="searchInput" class="form-control d-inline-block w-auto ms-3" placeholder="Search...">
-                        </div>
-                    </div>
 
-                    <h4 class="magazine-list-header">Daftar Majalah</h4>
-
-                    <div id="magazineList">
-                        <% if (majalah.length > 0) { %>
-                            <% majalah.forEach(function(item, index) { %>
-                                <div class="magazine-card magazine-item">
-                                    <div class="magazine-info">
-                                        <span class="magazine-number"><%= index + 1 %>.</span>
-                                        <div>
-                                            <p class="magazine-title"><%= item.judul %></p>
-                                            <p class="magazine-author"><%= item.edisi %></p>
-                                        </div>
-                                    </div>
-                                    <div class="magazine-details">
-                                        <a href="/majalah/detail/<%= item.id_majalah %>" class="magazine-details-link">
-                                            Detail <i class="bi bi-arrow-right"></i>
-                                        </a>
-                                    </div>
+                        <form action="/pustakawan/majalah/search" method="POST" class="mb-3" data-loading>
+                            <div class="input-group">
+                                <input type="text" class="form-control" name="judul" placeholder="Cari judul majalah..." value="<%= (typeof keyword !== 'undefined' && keyword) ? keyword : '' %>">
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-primary" type="submit">Cari</button>
                                 </div>
-                            <% }); %>
-                        <% } else { %>
-                            <div id="noInitialDataMessage">Tidak ada majalah yang terdaftar.</div>
-                        <% } %>
-                    </div>
+                            </div>
+                        </form>
 
-                    <div id="noResultsMessage" style="display:none;">Tidak ada hasil yang ditemukan.</div>
+                        <div class="table-responsive">
+                            <table class="table table-hover table-stacked">
+                                <thead>
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Cover</th>
+                                        <th>Judul</th>
+                                        <th>Edisi</th>
+                                        <th>No Klasifikasi</th>
+                                        <th>Lokasi</th>
+                                        <th style="width: 200px;" class="text-right">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% if (Array.isArray(majalah) && majalah.length) { %>
+                                        <% for (let i = 0; i < majalah.length; i++) { const item = majalah[i]; %>
+                                            <tr>
+                                                <td data-label="No"><%= i + 1 %></td>
+                                                <td data-label="Cover">
+                                                    <img class="img-click-preview" data-src="<%= item.foto_cover ? ('/images/majalah/' + item.foto_cover) : '/images/no-image.png' %>" src="<%= item.foto_cover ? ('/images/majalah/' + item.foto_cover) : '/images/no-image.png' %>" alt="cover" style="height:85px;width:auto;border-radius:6px;object-fit:cover;cursor:zoom-in;">
+                                                </td>
+                                                <td data-label="Judul"><%= item.judul %></td>
+                                                <td data-label="Edisi"><%= item.edisi || '-' %></td>
+                                                <td data-label="No Klasifikasi"><%= item.no_klasifikasi || '-' %></td>
+                                                <td data-label="Lokasi"><%= item.lokasi_majalah || '-' %></td>
+                                                <td class="text-right" data-label="Aksi">
+                                                    <div class="btn-actions">
+                                                        <a href="/pustakawan/majalah/<%= item.id %>" class="btn btn-sm btn-outline-primary" data-loading>Detail</a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        <% } %>
+                                    <% } else { %>
+                                        <tr>
+                                            <td colspan="7" class="text-center">Belum ada data</td>
+                                        </tr>
+                                    <% } %>
+                                </tbody>
+                            </table>
+                        </div>
 
-                    <div class="data-table-pagination">
-                        <span class="pagination-info me-3">Showing <span id="paginationStart">0</span> to <span id="paginationEnd">0</span> of <span id="totalEntries">0</span> entries</span>
-                        <ul class="pagination">
-                            <li class="page-item" id="prevPage">
-                                <a class="page-link" href="#" aria-label="Previous">
-                                    <span aria-hidden="true">&laquo;</span>
-                                </a>
-                            </li>
-                            <li class="page-item" id="nextPage">
-                                <a class="page-link" href="#" aria-label="Next">
-                                    <span aria-hidden="true">&raquo;</span>
-                                </a>
-                            </li>
-                        </ul>
+                        <div class="d-flex justify-content-between align-items-center mt-3">
+                            <div class="text-muted small">Halaman <%= (typeof page !== 'undefined' && page) ? page : 1 %> dari <%= (typeof totalHalaman !== 'undefined' && totalHalaman) ? totalHalaman : 1 %></div>
+                            <nav>
+                                <ul class="pagination mb-0">
+                                    <% const currentPage = (typeof page !== 'undefined' && page) ? page : 1; %>
+                                    <% const totalPages = (typeof totalHalaman !== 'undefined' && totalHalaman) ? totalHalaman : 1; %>
+                                    <li class="page-item <%= currentPage <= 1 ? 'disabled' : '' %>">
+                                        <a class="page-link" href="?page=<%= currentPage - 1 %>" data-loading aria-label="Sebelumnya">
+                                            <span aria-hidden="true">&laquo;</span>
+                                        </a>
+                                    </li>
+                                    <% for (let p = 1; p <= totalPages; p++) { %>
+                                        <li class="page-item <%= p === currentPage ? 'active' : '' %>"><a class="page-link" href="?page=<%= p %>" data-loading><%= p %></a></li>
+                                    <% } %>
+                                    <li class="page-item <%= currentPage >= totalPages ? 'disabled' : '' %>">
+                                        <a class="page-link" href="?page=<%= currentPage + 1 %>" data-loading aria-label="Berikutnya">
+                                            <span aria-hidden="true">&raquo;</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-    <input type="file" id="excelUpload" accept=".xlsx, .xls" style="display: none;">
+<div class="modal fade modal-below-navbar" id="modalUploadBatch" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Upload Batch Buku</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                    <form id="formUploadBatch" action="/pustakawan/majalah/create-batch-majalah" method="POST" enctype="multipart/form-data" data-loading>
+                    <div class="form-group">
+                        <label>File Excel</label>
+                        <input type="file" name="files" class="form-control" accept=".xlsx,.xls" required>
+                        <small class="form-text text-muted">Pilih template Excel berisi data buku.</small>
+                    </div>
+                    <div class="form-group">
+                        <label>Folder Gambar Cover</label>
+                        <input type="file" name="files" class="form-control" accept="image/*" multiple data-preview="previewBatch" required>
+                        <small class="form-text text-muted">Unggah seluruh gambar cover yang dirujuk pada Excel.</small>
+                        <div class="mt-2" id="previewBatch" style="display: none;">
+                            <div class="d-flex flex-wrap gap-2" id="previewBatchContainer"></div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" form="formUploadBatch" class="btn btn-primary">Upload</button>
+            </div>
+        </div>
+    </div>
+</div>
 
-    <%- include('../../../partials/__foot.ejs') %>
-    <script src="../../vendors/js/vendor.bundle.base.js"></script>
-    <script src="../../vendors/typeahead.js/typeahead.bundle.min.js"></script>
-    <script src="../../vendors/select2/select2.min.js"></script>
-    <script src="../../js/off-canvas.js"></script>
-    <script src="../../js/hoverable-collapse.js"></script>
-    <script src="../../js/template.js"></script>
-    <script src="../../js/settings.js"></script>
-    <script src="../../js/todolist.js"></script>
-    <script src="../../js/file-upload.js"></script>
-    <script src="../../js/typeahead.js"></script>
-    <script src="../../js/select2.js"></script>
+<div class="modal fade modal-below-navbar modal-top" id="globalImagePreviewModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Pratinjau Gambar</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body p-0">
+                <img id="globalImagePreviewEl" src="" alt="preview" style="width:100%;height:auto;display:block;">
+            </div>
+        </div>
+    </div>
+</div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const importExcelBtn = document.getElementById('importExcelBtn');
-            const excelUploadInput = document.getElementById('excelUpload');
-            
-            if (importExcelBtn) {
-                importExcelBtn.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    excelUploadInput.click();
-                });
-            }
-
-            if (excelUploadInput) {
-                excelUploadInput.addEventListener('change', function () {
-                    if (this.files && this.files[0]) {
-                        const file = this.files[0];
-                        alert(`File Excel siap diunggah: ${file.name}`);
-                    }
-                });
-            }
-
-            const magazineList = document.getElementById('magazineList');
-            const magazineItems = Array.from(magazineList.querySelectorAll('.magazine-item'));
-            const searchInput = document.getElementById('searchInput');
-            const entriesPerPageSelect = document.getElementById('entriesPerPage');
-            const noInitialDataMessage = document.getElementById('noInitialDataMessage');
-            const noResultsMessage = document.getElementById('noResultsMessage');
-            const paginationControls = document.querySelector('.data-table-pagination');
-            const paginationNumbersContainer = document.querySelector('.pagination');
-            const prevPageBtn = document.getElementById('prevPage');
-            const nextPageBtn = document.getElementById('nextPage');
-            const paginationStartSpan = document.getElementById('paginationStart');
-            const paginationEndSpan = document.getElementById('paginationEnd');
-            const totalEntriesSpan = document.getElementById('totalEntries');
-
-            let currentPage = 1;
-            let itemsPerPage = parseInt(entriesPerPageSelect.value);
-            let filteredItems = [];
-
-            function displayItems() {
-                const searchTerm = searchInput.value.toLowerCase();
-                filteredItems = magazineItems.filter(item => {
-                    const title = item.querySelector('.magazine-title').textContent.toLowerCase();
-                    const author = item.querySelector('.magazine-author').textContent.toLowerCase();
-                    return title.includes(searchTerm) || author.includes(searchTerm);
-                });
-
-                const totalPages = Math.ceil(filteredItems.length / itemsPerPage);
-                currentPage = Math.min(currentPage, totalPages || 1);
-                
-                magazineItems.forEach(item => item.style.display = 'none');
-
-                if (magazineItems.length === 0 && searchTerm === '') {
-                    noInitialDataMessage.style.display = 'block';
-                    paginationControls.style.display = 'none';
-                    noResultsMessage.style.display = 'none';
-                } else if (filteredItems.length === 0) {
-                    noInitialDataMessage.style.display = 'none';
-                    noResultsMessage.style.display = 'block';
-                    paginationControls.style.display = 'none';
-                } else {
-                    noInitialDataMessage.style.display = 'none';
-                    noResultsMessage.style.display = 'none';
-                    paginationControls.style.display = 'flex';
-                    
-                    const startIdx = (currentPage - 1) * itemsPerPage;
-                    const endIdx = startIdx + itemsPerPage;
-
-                    for (let i = startIdx; i < endIdx && i < filteredItems.length; i++) {
-                        filteredItems[i].style.display = 'flex';
-                    }
-                }
-                
-                updatePaginationControls(totalPages);
-                updatePaginationInfo();
-            }
-
-            function updatePaginationControls(totalPages) {
-                paginationNumbersContainer.querySelectorAll('.page-item:not(#prevPage):not(#nextPage)').forEach(el => el.remove());
-                
-                if (totalPages > 1) {
-                    for (let i = 1; i <= totalPages; i++) {
-                        const pageItem = document.createElement('li');
-                        pageItem.classList.add('page-item');
-                        if (i === currentPage) {
-                            pageItem.classList.add('active');
-                        }
-                        const pageLink = document.createElement('a');
-                        pageLink.classList.add('page-link');
-                        pageLink.href = '#';
-                        pageLink.textContent = i;
-                        pageLink.addEventListener('click', (e) => {
-                            e.preventDefault();
-                            if (i !== currentPage) {
-                                currentPage = i;
-                                displayItems();
-                            }
-                        });
-                        pageItem.appendChild(pageLink);
-                        paginationNumbersContainer.insertBefore(pageItem, nextPageBtn);
-                    }
-                }
-
-                prevPageBtn.classList.toggle('disabled', currentPage === 1 || totalPages <= 1);
-                nextPageBtn.classList.toggle('disabled', currentPage === totalPages || totalPages <= 1);
-            }
-
-            function updatePaginationInfo() {
-                const totalFiltered = filteredItems.length;
-                let start = 0;
-                let end = 0;
-
-                if (totalFiltered > 0) {
-                    start = (currentPage - 1) * itemsPerPage + 1;
-                    end = Math.min(start + itemsPerPage - 1, totalFiltered);
-                }
-                
-                paginationStartSpan.textContent = start;
-                paginationEndSpan.textContent = end;
-                totalEntriesSpan.textContent = totalFiltered;
-            }
-
-            searchInput.addEventListener('keyup', displayItems);
-            entriesPerPageSelect.addEventListener('change', function () {
-                itemsPerPage = parseInt(this.value);
-                currentPage = 1;
-                displayItems();
-            });
-
-            prevPageBtn.addEventListener('click', function (e) {
-                e.preventDefault();
-                if (currentPage > 1) {
-                    currentPage--;
-                    displayItems();
-                }
-            });
-
-            nextPageBtn.addEventListener('click', function (e) {
-                e.preventDefault();
-                const totalPages = Math.ceil(filteredItems.length / itemsPerPage);
-                if (currentPage < totalPages) {
-                    currentPage++;
-                    displayItems();
-                }
-            });
-            
-            displayItems();
-        });
-    </script>
-</body>
-</html>
+<%- include('../../../partials1/script/__scriptDashboard.ejs') %>
