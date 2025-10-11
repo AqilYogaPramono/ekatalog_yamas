@@ -1,6 +1,6 @@
-<%- include('../../../partials1/header/__headerDashboard.ejs', { title: 'Data Buku Dihapus' }) %>
-<%- include('../../../partials1/nav-side/__nav-sideManajer.ejs') %>
-<%- include('../../../partials1/messages/messagesDashboard.ejs') %>
+<%- include('../../partials1/header/__headerDashboard.ejs', { title: 'Data Buku Dihapus' }) %>
+<%- include('../../partials1/nav-side/__nav-sideAdmin.ejs') %>
+<%- include('../../partials1/messages/messagesDashboard.ejs') %>
 
 <div class="main-panel">
     <div class="content-wrapper">
@@ -12,7 +12,7 @@
                             <h4 class="card-title mb-3 mb-md-0">Data Buku yang Dihapus</h4>
                         </div>
 
-                        <form action="/manajer/buku/search" method="POST" class="mb-3" data-loading>
+                        <form action="/admin/buku/search" method="POST" class="mb-3" data-loading>
                             <div class="input-group">
                                 <input type="text" class="form-control" name="judul" placeholder="Cari judul buku..." value="<%= (typeof keyword !== 'undefined' && keyword) ? keyword : '' %>">
                                 <div class="input-group-append">
@@ -48,7 +48,7 @@
                                                 <td data-label="Lokasi"><%= item.lokasi_buku || '-' %></td>
                                                 <td class="text-right" data-label="Aksi">
                                                     <div class="btn-actions">
-                                                        <a href="/manajer/buku/<%= item.id %>" class="btn btn-sm btn-outline-primary" data-loading>Detail</a>
+                                                        <a href="/admin/buku/<%= item.id %>" class="btn btn-sm btn-outline-primary" data-loading>Detail</a>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -107,6 +107,6 @@
     </div>
 </div>
 
-<%- include('../../../partials1/script/__scriptDashboard.ejs') %>
+<%- include('../../partials1/script/__scriptDashboard.ejs') %>
 
 

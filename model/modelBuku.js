@@ -144,9 +144,9 @@ class modelBuku {
         }
     }
 
-    static async getAllBukuHapus() {
+    static async getBukuHapus(limit, offset) {
         try {
-            const [rows] = await connection.query(`SELECT b.id, b.judul, b.foto_cover, b.isbn_issn, b.no_klasifikasi, b.bahasa, b.jumlah_halaman, b.tahun_terbit, b.sinopsis, b.tempat_terbit, b.penerbit, b.kategori, b.pengarang, CONCAT(r.kode_rak, ' - ', ru.kode_ruangan, ' - ', l.kode_lantai) AS lokasi_buku, b.ketersediaan, b.dihapus_pada, b.dihapus_oleh, b.status_data FROM buku b LEFT JOIN rak r ON b.id_rak = r.id LEFT JOIN ruangan ru ON r.id_ruangan = ru.id LEFT JOIN lantai l ON ru.id_lantai = l.id WHERE b.status_data = 'Hapus'`)
+            const [rows] = await connection.query(`SELECT b.id, b.judul, b.foto_cover, b.isbn_issn, b.no_klasifikasi, CONCAT(r.kode_rak, ' - ', ru.kode_ruangan, ' - ', l.kode_lantai) AS lokasi_buku FROM buku b LEFT JOIN rak r ON b.id_rak = r.id LEFT JOIN ruangan ru ON r.id_ruangan = ru.id LEFT JOIN lantai l ON ru.id_lantai = l.id WHERE b.status_data = 'Hapus' ORDER BY b.dihapus_pada DESC LIMIT ? OFFSET ?`, [limit, offset])
             return rows
         } catch (err) {
             throw err
@@ -164,7 +164,7 @@ class modelBuku {
 
     static async getByIdHapus(id) {
         try {
-            const [rows] = await connection.query(`SELECT b.id, b.judul, b.foto_cover, b.isbn_issn, b.no_klasifikasi, b.bahasa, b.jumlah_halaman, b.tahun_terbit, b.sinopsis, b.tempat_terbit, b.penerbit, b.kategori, b.pengarang, id_rak, b.ketersediaan, b.dibuat_pada, b.diubah_pada, b.dibuat_oleh, b.diubah_oleh, b.status_data FROM buku b LEFT JOIN rak r ON b.id_rak = r.id LEFT JOIN ruangan ru ON r.id_ruangan = ru.id LEFT JOIN lantai l ON ru.id_lantai = l.id WHERE b.status_data = 'Hapus' AND b.id = ?`, [id])
+            const [rows] = await connection.query(`SELECT b.id, b.judul, b.foto_cover, b.isbn_issn, b.no_klasifikasi, b.bahasa, b.jumlah_halaman, b.tahun_terbit, b.sinopsis, b.tempat_terbit, b.penerbit, b.kategori, b.pengarang, r.kode_rak, ru.kode_ruangan, l.kode_lantai , b.ketersediaan, b.dibuat_pada, b.diubah_pada, b.dibuat_oleh, b.diubah_oleh, b.status_data FROM buku b LEFT JOIN rak r ON b.id_rak = r.id LEFT JOIN ruangan ru ON r.id_ruangan = ru.id LEFT JOIN lantai l ON ru.id_lantai = l.id WHERE b.status_data = 'Hapus' AND b.id = ?`, [id])
             return rows[0]
         } catch (err) {
             throw err
@@ -174,6 +174,15 @@ class modelBuku {
     static async searchJudulBuku(judul) {
         try {
             const [rows] = await connection.query(`SELECT b.id, b.judul, b.foto_cover, b.isbn_issn, b.no_klasifikasi, CONCAT(r.kode_rak, ' - ', ru.kode_ruangan, ' - ', l.kode_lantai) AS lokasi_buku FROM buku b LEFT JOIN rak r ON b.id_rak = r.id LEFT JOIN ruangan ru ON r.id_ruangan = ru.id LEFT JOIN lantai l ON ru.id_lantai = l.id WHERE b.status_data = 'Tampil' AND b.judul LIKE CONCAT('%', ?, '%')`, [judul])
+            return rows
+        } catch (err) {
+            throw err
+        }
+    }
+
+    static async searchJudulBukuHapus(judul) {
+        try {
+            const [rows] = await connection.query(`SELECT b.id, b.judul, b.foto_cover, b.isbn_issn, b.no_klasifikasi, CONCAT(r.kode_rak, ' - ', ru.kode_ruangan, ' - ', l.kode_lantai) AS lokasi_buku FROM buku b LEFT JOIN rak r ON b.id_rak = r.id LEFT JOIN ruangan ru ON r.id_ruangan = ru.id LEFT JOIN lantai l ON ru.id_lantai = l.id WHERE b.status_data = 'Hapus' AND b.judul LIKE CONCAT('%', ?, '%')`, [judul])
             return rows
         } catch (err) {
             throw err
