@@ -2,7 +2,7 @@ const connection = require('../config/database')
 const bcrypt = require('bcryptjs')
 
 class ModelPengguna {
-    // Login berdasarkan NP`
+    // cek pengguna berdasarkan NP
     static async login(data) {
         try {
             const [rows] = await connection.query('SELECT * FROM pengguna WHERE NP = ?',[data.NP])
@@ -118,7 +118,7 @@ class ModelPengguna {
         }
     }
 
-    // Update password (hash baru)
+    // update password pengguna dan hash password otomatis
     static async updatePassword(data, idPengguna) {
         try {
             const kata_sandi_hash = await bcrypt.hash(data.kata_sandi_baru, 10)
@@ -126,6 +126,16 @@ class ModelPengguna {
 
             const [result] = await connection.query('UPDATE pengguna SET ? WHERE id = ?',[dataUpdate, idPengguna])
             return result
+        } catch (err) {
+            throw err
+        }
+    }
+
+    // mengambil nama pengguna berdasarkan id pengguna
+    static async getNamaPenggunaById(penggunaId) {
+        try {
+            const [rows] = await connection.query('SELECT nama FROM pengguna WHERE id = ?',[penggunaId])
+            return rows[0]
         } catch (err) {
             throw err
         }

@@ -1,6 +1,5 @@
 const connection = require('../config/database')
 
-// membuat class yang berisi CRUD pada tabel rak
 class ModelRak {
     // mengambil semua data pada tabel rak (join dengan ruangan & lantai)
     static async getAll() {
@@ -42,10 +41,20 @@ class ModelRak {
         }
     }
 
-    // cek apakah kode_rak sudah ada
-    static async checkRak(data) {
+    // memeriksa apakah kode ruangan sudah ada untuk create
+    static async checkRakCreate(data) {
         try {
             const [rows] = await connection.query(`SELECT kode_rak FROM rak WHERE kode_rak = ?`,[data.kode_rak])
+            return rows.length > 0
+        } catch (err) {
+            throw err
+        }
+    }
+
+    // memeriksa apakah kode rak sudah ada untuk udpate
+    static async checkRakUpdate(data,id) {
+        try {
+            const [rows] = await connection.query(`SELECT kode_rak FROM rak WHERE kode_rak = ? and id != ?`,[data.kode_rak, id])
             return rows.length > 0
         } catch (err) {
             throw err

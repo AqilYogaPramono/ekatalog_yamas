@@ -17,6 +17,7 @@ class modelBuku {
         }
     }
 
+    // mengambil buku lalu dirutakan berdasarkan waktu dibuat dan diberikan limit 
     static async getBuku(limit, offset) {
         try {
             const [rows] = await connection.query(`SELECT b.id, b.judul, b.foto_cover, b.isbn_issn, b.no_klasifikasi, CONCAT(r.kode_rak, ' - ', ru.kode_ruangan, ' - ', l.kode_lantai) AS lokasi_buku FROM buku b LEFT JOIN rak r ON b.id_rak = r.id LEFT JOIN ruangan ru ON r.id_ruangan = ru.id LEFT JOIN lantai l ON ru.id_lantai = l.id WHERE b.status_data = 'Tampil' ORDER BY b.dibuat_pada DESC LIMIT ? OFFSET ?`, [limit, offset])
@@ -26,6 +27,7 @@ class modelBuku {
         }
     }
 
+    // menyimpan data buku
     static async store(data) {
         try {
             const [result] = await connection.query(`INSERT INTO buku SET ?`, [data])
@@ -35,6 +37,7 @@ class modelBuku {
         }
     }
 
+    // mengubah data buku
     static async update(id, data) {
         try {
             const [result] = await connection.query(`UPDATE buku SET ? WHERE id = ?`, [data, id])
@@ -44,6 +47,7 @@ class modelBuku {
         }
     }
 
+    // menghapus data buku secara permanen
     static async hardDelete(id) {
         try {
             const [result] = await connection.query(`DELETE FROM buku WHERE id = ?`, [id])
@@ -53,6 +57,7 @@ class modelBuku {
         }
     }
 
+    // mengubah statsu data 
     static async softDelete(user, id) {
         try {
             const [result] = await connection.query(`UPDATE buku SET status_data = 'Hapus', dihapus_pada = now(), dihapus_oleh = ? WHERE id = ?`,[user.nama, id])
@@ -62,15 +67,17 @@ class modelBuku {
         }
     }
 
+    // mengambil semua data buku berdasarkan id
     static async getById(id) {
         try {
-            const [rows] = await connection.query(`SELECT b.id, b.judul, b.foto_cover, b.isbn_issn, b.no_klasifikasi, b.bahasa, b.jumlah_halaman, b.tahun_terbit, b.sinopsis, b.tempat_terbit, b.penerbit, b.kategori, b.pengarang, r.kode_rak, ru.kode_ruangan, l.kode_lantai , b.ketersediaan, b.dibuat_pada, b.diubah_pada, b.dibuat_oleh, b.diubah_oleh, b.status_data FROM buku b LEFT JOIN rak r ON b.id_rak = r.id LEFT JOIN ruangan ru ON r.id_ruangan = ru.id LEFT JOIN lantai l ON ru.id_lantai = l.id WHERE b.status_data = 'Tampil' AND b.id = ?`,[id])
+            const [rows] = await connection.query(`SELECT b.id, b.judul, b.foto_cover, b.isbn_issn, b.no_klasifikasi, b.bahasa, b.jumlah_halaman, b.tahun_terbit, b.sinopsis, b.tempat_terbit, b.penerbit, b.kategori, b.pengarang, b.id_rak, r.kode_rak, ru.kode_ruangan, l.kode_lantai , b.ketersediaan, b.dibuat_pada, b.diubah_pada, b.dibuat_oleh, b.diubah_oleh, b.status_data FROM buku b LEFT JOIN rak r ON b.id_rak = r.id LEFT JOIN ruangan ru ON r.id_ruangan = ru.id LEFT JOIN lantai l ON ru.id_lantai = l.id WHERE b.status_data = 'Tampil' AND b.id = ?`,[id])
             return rows[0]
         } catch (err) {
             throw err
         }
     }
 
+    // memeriksa duplikasi no_klasifikasi saat create
     static async checkNoKlasifikasiCreate(data) {
         try {
             const [rows] = await connection.query(`SELECT * FROM buku WHERE no_klasifikasi = ?`, [data.no_klasifikasi])
@@ -80,6 +87,7 @@ class modelBuku {
         }
     }
 
+    // memerik duplikasi isbn_issn saat create
     static async checkIsbnIssnCreate(data) {
         try {
             const [rows] = await connection.query(`SELECT * FROM buku WHERE isbn_issn = ?`, [data.isbn_issn])
@@ -89,6 +97,7 @@ class modelBuku {
         }
     }
 
+    // memerik duplikasi no_klasifikasi saat edit
     static async checkNoKlasifikasiEdit(data, id) {
         try {
             const [rows] = await connection.query(`SELECT * FROM buku WHERE no_klasifikasi = ? AND id != ?`, [data.no_klasifikasi, id])
@@ -98,6 +107,7 @@ class modelBuku {
         }
     }
 
+    // memerik duplikasi isbn_issn saat edit
     static async checkIsbnIssnEdit(data, id) {
         try {
             const [rows] = await connection.query(`SELECT * FROM buku WHERE isbn_issn = ? AND id != ?`, [data.isbn_issn, id])
@@ -107,6 +117,7 @@ class modelBuku {
         }
     }
 
+    // total buku dengan status data tampil
     static async getCountBuku() {
         try {
             const [rows] = await connection.query(`SELECT COUNT(id) as total_buku FROM buku WHERE status_data = 'Tampil'`)
@@ -116,6 +127,7 @@ class modelBuku {
         }
     }
 
+    // mengambil buku terbaru yang dibuat dengan limit 5
     static async getNewBuku() {
         try {
             const [rows] = await connection.query(`SELECT b.judul, b.isbn_issn, b.no_klasifikasi, CONCAT(r.kode_rak, ' - ', ru.kode_ruangan, ' - ', l.kode_lantai) as lokasi_buku FROM buku b LEFT JOIN rak r ON b.id_rak = r.id LEFT JOIN ruangan ru ON r.id_ruangan = ru.id LEFT JOIN lantai l ON ru.id_lantai = l.id WHERE b.status_data = 'Tampil' ORDER BY b.dibuat_pada desc LIMIT 5`)
@@ -125,6 +137,7 @@ class modelBuku {
         }
     }
 
+    // total buku dengan status data hapus
     static async getCountBukuHapus() {
         try {
             const [rows] = await connection.query(`SELECT COUNT(id) as total_buku_hapus FROM buku WHERE status_data = 'Hapus'`)
@@ -134,6 +147,7 @@ class modelBuku {
         }
     }
 
+    // mengambil buku yang statusnya dihapus dan diurutkan descending berdasarkan waktu dihapus dengan limit 5
     static async getNewBukuHapus() {
         try {
             const [rows] = await connection.query(`SELECT b.judul, b.isbn_issn, b.no_klasifikasi, CONCAT(r.kode_rak, ' - ', ru.kode_ruangan, ' - ', l.kode_lantai) as lokasi_buku FROM buku b LEFT JOIN rak r ON b.id_rak = r.id LEFT JOIN ruangan ru ON r.id_ruangan = ru.id LEFT JOIN lantai l ON ru.id_lantai = l.id WHERE b.status_data = 'Hapus' ORDER BY b.dihapus_pada DESC LIMIT 5`
@@ -144,6 +158,7 @@ class modelBuku {
         }
     }
 
+    // mengambil buku yang statusnya dihapus dan diurutkan descending berdasarkan waktu dihapus dengan limit dan offset untuk pagination
     static async getBukuHapus(limit, offset) {
         try {
             const [rows] = await connection.query(`SELECT b.id, b.judul, b.foto_cover, b.isbn_issn, b.no_klasifikasi, CONCAT(r.kode_rak, ' - ', ru.kode_ruangan, ' - ', l.kode_lantai) AS lokasi_buku FROM buku b LEFT JOIN rak r ON b.id_rak = r.id LEFT JOIN ruangan ru ON r.id_ruangan = ru.id LEFT JOIN lantai l ON ru.id_lantai = l.id WHERE b.status_data = 'Hapus' ORDER BY b.dihapus_pada DESC LIMIT ? OFFSET ?`, [limit, offset])
@@ -153,6 +168,7 @@ class modelBuku {
         }
     }
 
+    // mengubah status data buku
     static async updateStatusData(data, id) {
         try {
             const [result] = await connection.query(`UPDATE buku SET ? WHERE id = ?`, [data, id])
@@ -162,6 +178,7 @@ class modelBuku {
         }
     }
 
+    // mengambil semua data buku yang dihapus berdasarkan id
     static async getByIdHapus(id) {
         try {
             const [rows] = await connection.query(`SELECT b.id, b.judul, b.foto_cover, b.isbn_issn, b.no_klasifikasi, b.bahasa, b.jumlah_halaman, b.tahun_terbit, b.sinopsis, b.tempat_terbit, b.penerbit, b.kategori, b.pengarang, r.kode_rak, ru.kode_ruangan, l.kode_lantai , b.ketersediaan, b.dibuat_pada, b.diubah_pada, b.dibuat_oleh, b.diubah_oleh, b.status_data FROM buku b LEFT JOIN rak r ON b.id_rak = r.id LEFT JOIN ruangan ru ON r.id_ruangan = ru.id LEFT JOIN lantai l ON ru.id_lantai = l.id WHERE b.status_data = 'Hapus' AND b.id = ?`, [id])
@@ -171,6 +188,17 @@ class modelBuku {
         }
     }
 
+    // mengambil semua data buku yang dihapus berdasarkan id
+    static async getCoverByIdHapus(id) {
+        try {
+            const [rows] = await connection.query(`SELECT id, foto_cover FROM buku WHERE status_data = 'Hapus' AND id = ?`, [id])
+            return rows[0]
+        } catch (err) {
+            throw err
+        }
+    }
+
+    // mengambil data buku berdasarkan judul
     static async searchJudulBuku(judul) {
         try {
             const [rows] = await connection.query(`SELECT b.id, b.judul, b.foto_cover, b.isbn_issn, b.no_klasifikasi, CONCAT(r.kode_rak, ' - ', ru.kode_ruangan, ' - ', l.kode_lantai) AS lokasi_buku FROM buku b LEFT JOIN rak r ON b.id_rak = r.id LEFT JOIN ruangan ru ON r.id_ruangan = ru.id LEFT JOIN lantai l ON ru.id_lantai = l.id WHERE b.status_data = 'Tampil' AND b.judul LIKE CONCAT('%', ?, '%')`, [judul])
@@ -180,10 +208,21 @@ class modelBuku {
         }
     }
 
+    // mengambil data buku yang dihapus berdasarkan judul
     static async searchJudulBukuHapus(judul) {
         try {
             const [rows] = await connection.query(`SELECT b.id, b.judul, b.foto_cover, b.isbn_issn, b.no_klasifikasi, CONCAT(r.kode_rak, ' - ', ru.kode_ruangan, ' - ', l.kode_lantai) AS lokasi_buku FROM buku b LEFT JOIN rak r ON b.id_rak = r.id LEFT JOIN ruangan ru ON r.id_ruangan = ru.id LEFT JOIN lantai l ON ru.id_lantai = l.id WHERE b.status_data = 'Hapus' AND b.judul LIKE CONCAT('%', ?, '%')`, [judul])
             return rows
+        } catch (err) {
+            throw err
+        }
+    }
+
+    // mengambil semua data buku berdasarkan id
+    static async getCoverById(id) {
+        try {
+            const [rows] = await connection.query(`SELECT foto_cover from buku WHERE status_data = 'Tampil' AND id = ?`,[id])
+            return rows[0]
         } catch (err) {
             throw err
         }

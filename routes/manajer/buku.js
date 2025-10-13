@@ -1,10 +1,13 @@
 const express = require('express')
 const router = express.Router()
-const modelBuku = require('../../model/modelBuku')
 const path = require('path')
 const fs = require('fs')
-const {authManajer} = require('../../middleware/auth')
+// import model buku
+const modelBuku = require('../../model/modelBuku')
+// import model pengguna
 const modelPengguna = require('../../model/modelPengguna')
+// import middleware untuk mengecek peran pengguna login
+const {authManajer} = require('../../middleware/auth')
 
 const deleteOldPhoto = (oldPhoto) => {
     if (oldPhoto) {
@@ -15,16 +18,25 @@ const deleteOldPhoto = (oldPhoto) => {
 
 router.get('/', authManajer, async (req, res) => {
     try {
+        // mendapatkan id pengguna dari session
+        const userId = req.session.penggunaId
+        const user = await modelPengguna.getNamaPenggunaById(userId)
+
+        const flashedKeyword = req.flash('keyword')[0]
         const page = parseInt(req.query.page) || 1
         const limit = 20
         const offset = (page - 1) * limit
 
+        if (flashedKeyword) {
+            const buku = await modelBuku.searchJudulBukuHapus(flashedKeyword)
+            const totalBuku = buku.length
+            const totalHalaman = 1
+            return res.render('pengurus/manajer/buku/index', {buku, user, page: 1, totalHalaman, keyword: flashedKeyword})
+        }
+
         const buku = await modelBuku.getBukuHapus(limit, offset)
         const totalBuku = buku.length
         const totalHalaman = Math.ceil(totalBuku / limit)
-
-        const userId = req.session.penggunaId
-        const  user = await modelPengguna.getPenggunaById(userId)
 
         res.render('pengurus/manajer/buku/index', { buku, user, page, totalHalaman })
     } catch (err) {
@@ -37,13 +49,8 @@ router.get('/', authManajer, async (req, res) => {
 router.post('/search', authManajer, async (req, res) => {
     try {
         const {judul} = req.body
-
-        const userId = req.session.penggunaId
-        const  user = await modelPengguna.getPenggunaById(userId)
-
-        const buku = await modelBuku.searchJudulBukuHapus(judul)
-
-        res.render('pengurus/manajer/buku/index', {buku, user})
+        req.flash('keyword', judul)
+        return res.redirect('/manajer/buku')
     } catch (err) {
         console.log(err)
         req.flash('error', err.message)
@@ -54,8 +61,9 @@ router.post('/search', authManajer, async (req, res) => {
 router.get('/:id', authManajer, async (req, res) => {
     try {
         const {id} = req.params
+        // mendapatkan id pengguna dari session
         const userId = req.session.penggunaId
-        const  user = await modelPengguna.getPenggunaById(userId)
+        const user = await modelPengguna.getNamaPenggunaById(userId)
 
         const buku = await modelBuku.getByIdHapus(id)
 
@@ -69,9 +77,11 @@ router.get('/:id', authManajer, async (req, res) => {
 
 router.post('/edit/:id', authManajer, async (req, res) => {
     try {
+        // mengambil id dari params
         const {id} = req.params
-
+        // mengambil status data dari body
         const {status_data} = req.body
+        // menyimpan data yang diinputkan user
         const data = {status_data}
 
         await modelBuku.updateStatusData(data, id)
@@ -87,12 +97,13 @@ router.post('/edit/:id', authManajer, async (req, res) => {
 
 router.post('/delete/:id', authManajer, async (req, res) => {
     try {
+        // mengambil id dari params
         const {id} = req.params
 
-        const buku = await modelBuku.getByIdHapus(id)
+        const buku = await modelBuku.getCoverByIdHapus(id)
         const oldPhoto = buku.foto_cover
-
         deleteOldPhoto(oldPhoto)
+        
         await modelBuku.hardDelete(id)
         
         req.flash('success', 'Buku berhasil dihapus')

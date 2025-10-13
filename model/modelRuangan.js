@@ -1,6 +1,5 @@
 const connection = require('../config/database')
 
-// membuat class yang berisi CRUD pada tabel ruangan
 class ModelRuangan {
     // mengambil semua data pada tabel ruangan (join dengan lantai)
     static async getAll() {
@@ -52,8 +51,8 @@ class ModelRuangan {
         }
     }
 
-    // cek apakah kode_ruangan sudah ada
-    static async checkKodeRuangan(data) {
+    // cek apakah kode_ruangan sudah ada untuk create
+    static async checkKodeRuanganCreate(data) {
         try {
             const [rows] = await connection.query(`SELECT * FROM ruangan WHERE kode_ruangan = ?`,[data.kode_ruangan])
             return rows.length > 0
@@ -73,10 +72,10 @@ class ModelRuangan {
         }
     }
 
-    // memeriksa apakah kode_lantai sudah ada
-    static async checkRuangan(data) {
+    // memeriksa apakah kode_lantai sudah ada untuk update
+    static async checkRuanganUpdate(data, id) {
         try {
-            const [rows] = await connection.query(`SELECT kode_ruangan FROM ruangan WHERE kode_ruangan = ?`, [data.kode_ruangan])
+            const [rows] = await connection.query(`SELECT kode_ruangan FROM ruangan WHERE kode_ruangan = ? and id != ?`, [data.kode_ruangan, id])
             return rows.length > 0
         } catch (err) {
             throw err

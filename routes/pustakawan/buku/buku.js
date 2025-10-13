@@ -6,9 +6,13 @@ const fs = require('fs')
 const xlsx = require('xlsx')
 // Import model buku
 const modelBuku = require('../../../model/modelBuku')
+// import model rak
 const modelRak = require('../../../model/modelRak')
+// import model pengguna
 const modelPengguna = require('../../../model/modelPengguna')
+// import middleware untuk mengecek peran pada pengguna
 const {authPustakawan} = require('../.././../middleware/auth')
+// import middleware untuk compress gambar dan convert ke webp
 const { convertImageFile } = require('../../../middleware/convertImage')
 
 //konfigurasi multer untuk upload gambar
@@ -23,29 +27,9 @@ const storage = multer.diskStorage({
 })
 
 //instalisasi multer dengan konfigurasi storage dan filter ukuran file
-const upload = multer({
-    storage,
-    fileFilter: (req, file, cb) => {
-        const allowed = /jpeg|jpg|png/
-        const ok = allowed.test(file.mimetype) && allowed.test(path.extname(file.originalname).toLowerCase())
-        cb(ok ? null : new Error('Only image files (jpeg, jpg, png) are allowed'), ok)
-    }
-})
+const upload = multer({ storage })
 
-const uploadBatch = multer({
-    storage,
-    fileFilter: (req, file, cb) => {
-        const allowedImage = /jpeg|jpg|png/
-        const isImage = allowedImage.test(file.mimetype) && allowedImage.test(path.extname(file.originalname).toLowerCase())
-        const isExcel = file.mimetype == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-
-        if (isImage || isExcel) {
-        cb(null, true)
-        } else {
-        cb(new Error('File harus berupa gambar (jpg/png) atau Excel (.xlsx)'), false)
-        }
-    }
-})
+const uploadBatch = multer({ storage })
 
 // Fungsi untuk menghapus file yang diupload
 const deleteUploadedFile = (input) => {
@@ -72,18 +56,25 @@ const deleteOldPhoto = (oldPhoto) => {
 
 router.get('/', authPustakawan, async (req, res) => {
     try {
+        // mendapatkan id pengguna dari session
+        const userId = req.session.penggunaId
+        const user = await modelPengguna.getNamaPenggunaById(userId)
+
+        const flashedKeyword = req.flash('keyword')[0]
         const page = parseInt(req.query.page) || 1
         const limit = 20
         const offset = (page - 1) * limit
 
+        if (flashedKeyword) {
+            const buku = await modelBuku.searchJudulBuku(flashedKeyword)
+            const totalBuku = buku.length
+            const totalHalaman = 1
+            return res.render('pengurus/pustakawan/buku/index', {buku, user, page: 1, totalHalaman, keyword: flashedKeyword})
+        }
+
         const buku = await modelBuku.getBuku(limit, offset)
         const totalBuku = buku.length
-
         const totalHalaman = Math.ceil(totalBuku / limit)
-
-        const userId = req.session.penggunaId
-
-        const  user = await modelPengguna.getPenggunaById(userId)
 
         res.render('pengurus/pustakawan/buku/index', {buku, user, page, totalHalaman})
     } catch (err) {
@@ -93,12 +84,12 @@ router.get('/', authPustakawan, async (req, res) => {
     }
 })
 
+// buata agar redirect ke halaman pustakan buku
 router.post('/search', authPustakawan, async (req, res) => {
     try {
         const {judul} = req.body
-        const buku = await modelBuku.searchJudulBuku(judul)
-
-        res.render('pengurus/pustakawan/buku/index', {buku})
+        req.flash('keyword', judul)
+        return res.redirect('/pustakawan/buku')
     } catch (err) {
         console.log(err)
         req.flash('error', err.message)
@@ -108,9 +99,11 @@ router.post('/search', authPustakawan, async (req, res) => {
 
 router.get('/buat', authPustakawan, async (req, res) => {
     try {
+        // mendapatkan id pengguna dari session
         const userId = req.session.penggunaId
+        const user = await modelPengguna.getNamaPenggunaById(userId)
 
-        const user = await modelPengguna.getPenggunaById(userId)
+        // mengambil semua data rak
         const rak = await modelRak.getAll()
 
         res.render('pengurus/pustakawan/buku/buat', { 
@@ -127,11 +120,13 @@ router.get('/buat', authPustakawan, async (req, res) => {
 
 router.get('/:id', authPustakawan, async (req, res) => {
     try {
-        const userId = req.session.penggunaId
+        // destructuring req.params
         const {id} = req.params
+        // mendapatkan id pengguna dari session
+        const userId = req.session.penggunaId
+        const user = await modelPengguna.getNamaPenggunaById(userId)
 
-        const user = await modelPengguna.getPenggunaById(userId)
-
+        // mengambil semua data buku berdasarkan id
         const buku = await modelBuku.getById(id)
         
         res.render('pengurus/pustakawan/buku/detail', {buku, user})
@@ -144,18 +139,18 @@ router.get('/:id', authPustakawan, async (req, res) => {
 
 router.post('/create', authPustakawan, upload.single('foto_cover'), async (req, res) => {
     try {
-
+        // destructuring req.body
         const {judul, isbn_issn, no_klasifikasi, bahasa, jumlah_halaman, tahun_terbit, sinopsis, tempat_terbit, penerbit, kategori, pengarang, id_rak} = req.body
-
         const foto_cover = req.file ? req.file.filename : null
 
+        // mendapatkan id pengguna dari session
         const userId = req.session.penggunaId
+        const user = await modelPengguna.getNamaPenggunaById(userId)
 
-        const user = await modelPengguna.getPenggunaById(userId)
-
+        // menyimpan data yang diinptakn user
         const data = {judul, foto_cover, isbn_issn, no_klasifikasi, bahasa, jumlah_halaman, tahun_terbit, sinopsis, tempat_terbit, penerbit, kategori, pengarang, id_rak, dibuat_oleh: user.nama}
 
-        // cek judul
+        // input judul tidak boleh kosong
         if (!data.judul) {
             deleteUploadedFile(req.file)
 
@@ -164,7 +159,16 @@ router.post('/create', authPustakawan, upload.single('foto_cover'), async (req, 
             return res.redirect('/pustakawan/buku/buat')
         }
 
-        // cek isbn_issn
+        // input tahun tempat_terbit tidak boleh kosong
+        if (!data.tahun_terbit) {
+            deleteUploadedFile(req.file)
+
+            req.flash('error', 'Tahun Terbit tidak boleh kosong')
+            req.flash('data', req.body)
+            return res.redirect('/pustakawan/buku/buat')
+        }
+
+        // input isbn_issn tidak boleh kosong
         if (!data.isbn_issn) {
             deleteUploadedFile(req.file)
 
@@ -173,7 +177,7 @@ router.post('/create', authPustakawan, upload.single('foto_cover'), async (req, 
             return res.redirect('/pustakawan/buku/buat')
         }
 
-        // cek foto_cover
+        // input foto_cover tidak boleh kosong
         if (!data.foto_cover) {
             deleteUploadedFile(req.file)
 
@@ -182,7 +186,7 @@ router.post('/create', authPustakawan, upload.single('foto_cover'), async (req, 
             return res.redirect('/pustakawan/buku/buat')
         }
 
-        // cek lokasi
+        // input lokasi tidak boleh kosong
         if (!data.id_rak) {
             deleteUploadedFile(req.file)
 
@@ -191,7 +195,7 @@ router.post('/create', authPustakawan, upload.single('foto_cover'), async (req, 
             return res.redirect('/pustakawan/buku/buat')
         }
 
-        // cek no_klasifikasi
+        // input no_klasifikasi tidak boleh kosong
         if (!data.no_klasifikasi) {
             deleteUploadedFile(req.file)
 
@@ -201,8 +205,7 @@ router.post('/create', authPustakawan, upload.single('foto_cover'), async (req, 
         }
 
         //cek no_klasifikasi duplikat
-        const cekNoKlasifikasi = await modelBuku.checkNoKlasifikasiCreate(data)
-        if (cekNoKlasifikasi) {
+        if (await modelBuku.checkNoKlasifikasiCreate(data)) {
             deleteUploadedFile(req.file)
 
             req.flash('error', 'No Klasifikasi sudah ada')
@@ -211,8 +214,7 @@ router.post('/create', authPustakawan, upload.single('foto_cover'), async (req, 
         }
 
         //cek isbn/issn duplikat
-        const cekIsbnIssn = await modelBuku.checkIsbnIssnCreate(data)
-        if (cekIsbnIssn) {
+        if (await modelBuku.checkIsbnIssnCreate(data)) {
             deleteUploadedFile(req.file)
 
             req.flash('error', 'ISBN/ISSN sudah ada')
@@ -220,6 +222,7 @@ router.post('/create', authPustakawan, upload.single('foto_cover'), async (req, 
             return res.redirect('/pustakawan/buku/buat')
         }
 
+        // mengecek format file yang diinput
         const allowedFormats = ['image/jpeg', 'image/png', 'image/jpg', 'image/webp']
         if (req.file && !allowedFormats.includes(req.file.mimetype)) {
             req.flash('error', 'Hanya file gambar (jpg, jpeg, png, webp) yang diizinkan')
@@ -236,10 +239,10 @@ router.post('/create', authPustakawan, upload.single('foto_cover'), async (req, 
         }
 
         await modelBuku.store(data)
-
         req.flash('success', 'Buku berhasil ditambahkan')
         res.redirect('/pustakawan/buku')
     } catch (err) {
+        deleteUploadedFile(req.file)
         console.log(err)
         req.flash('error', err.message)
         res.redirect('/pustakawan/buku')
@@ -271,7 +274,7 @@ router.post('/create-batch-buku', authPustakawan, uploadBatch.array('files'), as
 
         const userId = req.session.penggunaId
 
-        const  user = await modelPengguna.getPenggunaById(userId)
+        const user = await modelPengguna.getNamaPenggunaById(userId)
 
         const imgMap = {}
         const filenameToFile = {}
@@ -331,15 +334,13 @@ router.post('/create-batch-buku', authPustakawan, uploadBatch.array('files'), as
                 return res.redirect('/pustakawan/buku')
             }
 
-            const checkNoKlasifikasi = await modelBuku.checkNoKlasifikasiCreate(data)
-            if (checkNoKlasifikasi) {
+            if (await modelBuku.checkNoKlasifikasiCreate(data)) {
                 req.flash('error', `No klasifikasi "${data.no_klasifikasi}" sudah digunakan, pada baris ke-${barisKe}`)
                 deleteUploadedFile(files)
                 return res.redirect('/pustakawan/buku')
             }
 
-            const checkIsbnIssn = await modelBuku.checkIsbnIssnCreate(data)
-            if (checkIsbnIssn) {
+            if (await modelBuku.checkIsbnIssnCreate(data)) {
                 req.flash('error', `ISBN/ISSN "${data.isbn_issn}" sudah digunakan, pada baris ke-${barisKe}`)
                 deleteUploadedFile(files)
                 return res.redirect('/pustakawan/buku')
@@ -402,16 +403,21 @@ router.post('/create-batch-buku', authPustakawan, uploadBatch.array('files'), as
 
 router.get('/edit/:id', authPustakawan, async (req, res) => {
     try {
+        // destructuring req.params
         const {id} = req.params
-        const rak = await modelRak.getAll()
-        const buku = await modelBuku.getById(id)
-        const userId = req.session.penggunaId
 
-        const  user = await modelPengguna.getPenggunaById(userId)
+        // mendapatkan id pengguna dari session
+        const userId = req.session.penggunaId
+        const user = await modelPengguna.getNamaPenggunaById(userId)
+
+        // mengambil semua data rak
+        const rak = await modelRak.getAll()
+        // mengambil semua data buku berdasarkan id
+        const buku = await modelBuku.getById(id)
 
         res.render('pengurus/pustakawan/buku/edit', { rak, buku, user })
     } catch(err) {
-        console.log(err)
+        console.log(err)    
         req.flash('error', err.message)
         res.redirect('/pustakawan/buku')
     }
@@ -419,21 +425,24 @@ router.get('/edit/:id', authPustakawan, async (req, res) => {
 
 router.post('/update/:id', authPustakawan, upload.single('foto_cover'), async (req, res) => {
     try {
+        // destructuring req.params
         const {id} = req.params
 
+        // mengambil data gambar buku berdasarkan id
+        const buku = await modelBuku.getCoverById(id)
+
+        // mendapatkan id pengguna dari session
         const userId = req.session.penggunaId
+        const user = await modelPengguna.getNamaPenggunaById(userId)
 
-        const  user = await modelPengguna.getPenggunaById(userId)
-
-        const buku = await modelBuku.getById(id)
-
+        // destructuring req.body
         const {judul, isbn_issn, no_klasifikasi, bahasa, jumlah_halaman, tahun_terbit, sinopsis, tempat_terbit, penerbit, kategori, pengarang, id_rak, ketersediaan} = req.body
-
         const foto_cover = req.file ? req.file.filename : buku.foto_cover
 
+        // menyimpan data yang diinptakn user
         const data = {judul, foto_cover, isbn_issn, no_klasifikasi, bahasa, jumlah_halaman, tahun_terbit, sinopsis, tempat_terbit, penerbit, kategori, pengarang, id_rak, ketersediaan, diubah_oleh: user.nama}
 
-        // cek judul
+        // inputan judul tidak boleh kosong
         if (!data.judul) {
             deleteUploadedFile(req.file)
             
@@ -441,7 +450,7 @@ router.post('/update/:id', authPustakawan, upload.single('foto_cover'), async (r
             return res.redirect(`/pustakawan/buku/edit/${id}`)
         }
 
-        // cek isbn_issn
+        // inputan isbn_issn tidak boleh kosong
         if (!data.isbn_issn) {
             deleteUploadedFile(req.file)
 
@@ -449,7 +458,7 @@ router.post('/update/:id', authPustakawan, upload.single('foto_cover'), async (r
             return res.redirect(`/pustakawan/buku/edit/${id}`)
         }
 
-        // cek no_klasifikasi
+        // inputan no_klasifikasi tidak boleh kosong
         if (!data.no_klasifikasi) {
             deleteUploadedFile(req.file)
 
@@ -457,7 +466,7 @@ router.post('/update/:id', authPustakawan, upload.single('foto_cover'), async (r
             return res.redirect(`/pustakawan/buku/edit/${id}`)
         }
 
-        // cek lokasi
+        // inputan lokasi tidak boleh kosong
         if (!data.id_rak) {
             deleteUploadedFile(req.file)
 
@@ -465,7 +474,7 @@ router.post('/update/:id', authPustakawan, upload.single('foto_cover'), async (r
             return res.redirect(`/pustakawan/buku/edit/${id}`)
         }
 
-        // cek foto_cover
+        // inputan foto_cover tidak boleh kosong
         if (!data.foto_cover) {
             deleteUploadedFile(req.file)
 
@@ -473,7 +482,7 @@ router.post('/update/:id', authPustakawan, upload.single('foto_cover'), async (r
             return res.redirect(`/pustakawan/buku/edit/${id}`)
         }
 
-        //cek no_klasifikasi duplikat
+        // memastikan no_klasifikasi tidak duplikat
         if (await modelBuku.checkNoKlasifikasiEdit(data, id)) {
             deleteUploadedFile(req.file)
 
@@ -481,7 +490,7 @@ router.post('/update/:id', authPustakawan, upload.single('foto_cover'), async (r
             return res.redirect(`/pustakawan/buku/edit/${id}`)
         }
 
-        //cek isbn/issn duplikat
+        // memastikan isbn/issn tidak duplikat
         if (await modelBuku.checkIsbnIssnEdit(data, id)) {
             deleteUploadedFile(req.file)
 
@@ -489,6 +498,7 @@ router.post('/update/:id', authPustakawan, upload.single('foto_cover'), async (r
             return res.redirect(`/pustakawan/buku/edit/${id}`)
         }
 
+        // mengecek format file yang diinput
         const allowedFormats = ['image/jpeg', 'image/png', 'image/jpg', 'image/webp']
         if (req.file && !allowedFormats.includes(req.file.mimetype)) {
             deleteUploadedFile(req.file)
@@ -506,10 +516,10 @@ router.post('/update/:id', authPustakawan, upload.single('foto_cover'), async (r
             }
         }
 
+        // menghapus foto lama jika ada foto baru yang diupload
         if (req.file) deleteOldPhoto(buku.foto_cover)
 
         await modelBuku.update(id, data)
-
         req.flash('success', 'Buku berhasil diperbarui')
         res.redirect('/pustakawan/buku')
     } catch (err) {
@@ -522,13 +532,13 @@ router.post('/update/:id', authPustakawan, upload.single('foto_cover'), async (r
 
 router.post('/delete/:id', authPustakawan, async (req, res) => {
     try {
+        // destructuring req.params
         const {id} = req.params
+        // mendapatkan id pengguna dari session
         const userId = req.session.penggunaId
-
-        const  user = await modelPengguna.getPenggunaById(userId)
+        const user = await modelPengguna.getNamaPenggunaById(userId)
 
         await modelBuku.softDelete(user, id)
-        
         req.flash('success', 'Buku berhasil dihapus')
         res.redirect('/pustakawan/buku')
     } catch (err) {

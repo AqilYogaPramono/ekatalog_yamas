@@ -4,10 +4,15 @@ const path = require('path')
 const multer = require('multer')
 const fs = require('fs')
 const xlsx = require('xlsx')
+// import model majalah
 const modelMajalah = require('../../../model/modelMajalah')
+// import model rak
 const modelRak = require('../../../model/modelRak')
+// import model pengguna
 const modelPengguna = require('../../../model/modelPengguna')
+// import middleware untuk mengecek peran pengguna
 const {authPustakawan} = require('../.././../middleware/auth')
+// import middleware untuk compress dan convert image ke webp
 const { convertImageFile } = require('../../../middleware/convertImage')
 
 //konfigurasi multer untuk upload gambar
@@ -52,12 +57,21 @@ const deleteOldPhoto = (oldPhoto) => {
 // get majalah
 router.get('/', authPustakawan, async (req, res) => {
     try {
+        // mendapatkan id pengguna dari session
         const userId = req.session.penggunaId
-        const  user = await modelPengguna.getPenggunaById(userId)
+        const user = await modelPengguna.getNamaPenggunaById(userId)
 
+        const flashedKeyword = req.flash('keyword')[0]
         const page = parseInt(req.query.page) || 1
         const limit = 20
         const offset = (page - 1) * limit
+
+        if (flashedKeyword) {
+            const majalah = await modelMajalah.searchJudulMajalah(flashedKeyword)
+            const totalMajalah = majalah.length
+            const totalHalaman = 1
+            return res.render('pengurus/pustakawan/majalah/index', {majalah, user, page: 1, totalHalaman, keyword: flashedKeyword})
+        }
 
         const majalah = await modelMajalah.getMajalah(limit, offset)
         
@@ -76,12 +90,9 @@ router.get('/', authPustakawan, async (req, res) => {
 router.post('/search', authPustakawan, async (req, res) => {
     try {
         const {judul} = req.body
-        const userId = req.session.penggunaId
-        const user = await modelPengguna.getPenggunaById(userId)
-
-        const majalah = await modelMajalah.searchJudulMajalah(judul)
-
-        res.render('pengurus/pustakawan/majalah/index', {majalah, user})
+        
+        req.flash('keyword', judul)
+        return res.redirect('/pustakawan/majalah')
     } catch (err) {
         console.log(err)
         req.flash('error', err.message)
@@ -92,9 +103,11 @@ router.post('/search', authPustakawan, async (req, res) => {
 //view buat majalah
 router.get('/buat', authPustakawan, async (req, res) => {
     try {
+        // mendapatkan id pengguna dari session
         const userId = req.session.penggunaId
-        const  user = await modelPengguna.getPenggunaById(userId)
+        const user = await modelPengguna.getNamaPenggunaById(userId)
 
+        // mengambil semua data rak
         const rak = await modelRak.getAll()
         
         res.render('pengurus/pustakawan/majalah/buat', { 
@@ -112,11 +125,14 @@ router.get('/buat', authPustakawan, async (req, res) => {
 //detail majalah
 router.get('/:id', authPustakawan, async (req, res) => {
     try {
+        // destructuring req.params
         const {id} = req.params
 
+        // mendapatkan id pengguna dari session
         const userId = req.session.penggunaId
-        const user = await modelPengguna.getPenggunaById(userId)
+        const user = await modelPengguna.getNamaPenggunaById(userId)
 
+        // mengambil semua data majalah berdasarakn id
         const majalah = await modelMajalah.getById(id)
         
         res.render('pengurus/pustakawan/majalah/detail', {majalah, user})
@@ -130,14 +146,18 @@ router.get('/:id', authPustakawan, async (req, res) => {
 //create new majalah
 router.post('/create', authPustakawan, upload.single('foto_cover'), async (req, res) => {
     try {
+        // destructuring req.body
         const {judul, edisi, no_klasifikasi, bahasa, tahun_terbit, sinopsis, tempat_terbit, penerbit, id_rak } = req.body
-        let foto_cover = req.file ? req.file.filename : null
+        const foto_cover = req.file ? req.file.filename : null
         
+        // mendapatkan id pengguna dari session
         const userId = req.session.penggunaId
-        const user = await modelPengguna.getPenggunaById(userId)
+        const user = await modelPengguna.getNamaPenggunaById(userId)
 
+        // menyimpan data yang diinptakn user
         const data = { judul, foto_cover, edisi, no_klasifikasi, bahasa, tahun_terbit, sinopsis, tempat_terbit, penerbit, id_rak, dibuat_oleh: user.nama }
 
+        // inputan judul tidak boleh kosong
         if (!data.judul) {
             deleteUploadedFile(req.file)
             req.flash('error', 'Judul tidak boleh kosong')
@@ -145,6 +165,7 @@ router.post('/create', authPustakawan, upload.single('foto_cover'), async (req, 
             return res.redirect('/pustakawan/majalah/buat')
         }
 
+        // inputan edisi tidak boleh kosong
         if (!data.edisi) {
             deleteUploadedFile(req.file)
 
@@ -153,6 +174,7 @@ router.post('/create', authPustakawan, upload.single('foto_cover'), async (req, 
             return res.redirect('/pustakawan/majalah/buat')
         }
 
+        // inputan no_klasifikasi tidak boleh kosong
         if (!data.no_klasifikasi) {
             deleteUploadedFile(req.file)
 
@@ -161,6 +183,7 @@ router.post('/create', authPustakawan, upload.single('foto_cover'), async (req, 
             return res.redirect('/pustakawan/majalah/buat')
         }
 
+        // inputan id rak tidak boleh kosong
         if (!data.id_rak) {
             deleteUploadedFile(req.file)
 
@@ -169,15 +192,7 @@ router.post('/create', authPustakawan, upload.single('foto_cover'), async (req, 
             return res.redirect('/pustakawan/majalah/buat')
         }
 
-        //cek no_klasifikasi
-        if (await modelMajalah.checkNoKlasifikasiCreate(data)) {
-            deleteUploadedFile(req.file)
-
-            req.flash('error', 'No Klasifikasi sudah ada')
-            req.flash('data', data)
-            return res.redirect('/pustakawan/majalah/buat')
-        }
-
+        // inputan foto cover tidak boleh kosong
         if (!data.foto_cover) {
             deleteUploadedFile(req.file)
 
@@ -186,6 +201,16 @@ router.post('/create', authPustakawan, upload.single('foto_cover'), async (req, 
             return res.redirect('/pustakawan/majalah/buat')
         }
 
+        // memeriksa duplikasi no klasifikasi
+        if (await modelMajalah.checkNoKlasifikasiCreate(data)) {
+            deleteUploadedFile(req.file)
+
+            req.flash('error', 'No Klasifikasi sudah ada')
+            req.flash('data', data)
+            return res.redirect('/pustakawan/majalah/buat')
+        }
+
+        // mengecek format file yang diinput
         const allowedFormats = ['image/jpeg', 'image/png', 'image/jpg', 'image/webp']
         if (req.file && !allowedFormats.includes(req.file.mimetype)) {
             req.flash('error', 'Hanya file gambar (jpg, jpeg, png, webp) yang diizinkan')
@@ -193,6 +218,7 @@ router.post('/create', authPustakawan, upload.single('foto_cover'), async (req, 
             return res.redirect('/pustakawan/majalah/buat')
         }
 
+        //convert image to webp and compress when < 500kb
         if (req.file && req.file.path) {
             const result = await convertImageFile(req.file.path)
             if (result && result.outputPath) {
@@ -201,7 +227,6 @@ router.post('/create', authPustakawan, upload.single('foto_cover'), async (req, 
         }
 
         await modelMajalah.store(data)
-
         req.flash('success', 'Majalah berhasil ditambahkan')
         return res.redirect('/pustakawan/majalah')
     } catch (err) {
@@ -248,8 +273,9 @@ router.post('/create-batch-majalah', authPustakawan, uploadBatch.array('files'),
         const sheet = workbook.Sheets[workbook.SheetNames[0]]
         const rows = xlsx.utils.sheet_to_json(sheet)
 
+        // mendapatkan id pengguna dari session
         const userId = req.session.penggunaId
-        const user = await modelPengguna.getPenggunaById(userId)
+        const user = await modelPengguna.getNamaPenggunaById(userId)
 
         const rak = await modelRak.getAll()
 
@@ -370,13 +396,16 @@ router.post('/create-batch-majalah', authPustakawan, uploadBatch.array('files'),
 
 router.get('/edit/:id', authPustakawan, async (req, res) => {
     try {
+        // destructuring req.params
         const {id} = req.params
-
-        const rak = await modelRak.getAll()
-        const majalah = await modelMajalah.getById(id)
+        // mendapatkan id pengguna dari session
         const userId = req.session.penggunaId
+        const user = await modelPengguna.getNamaPenggunaById(userId)
 
-        const  user = await modelPengguna.getPenggunaById(userId)
+        // mengambil semua data rak
+        const rak = await modelRak.getAll()
+        // mengambil semua data majalah berdasarkan id
+        const majalah = await modelMajalah.getById(id)
 
         res.render('pengurus/pustakawan/majalah/edit', { majalah, rak, user })
     } catch (err) {
@@ -389,17 +418,23 @@ router.get('/edit/:id', authPustakawan, async (req, res) => {
 // Update majalah
 router.post('/update/:id', authPustakawan, upload.single('foto_cover'), async (req, res) => {
     try {
+        // destructuring req.params
         const { id } = req.params
-        const {judul, edisi, no_klasifikasi, bahasa, tahun_terbit, sinopsis, tempat_terbit, penerbit, id_rak, ketersediaan} = req.body
+        // mendapatkan cover majalah berdasarkan id
+        const majalah = await modelMajalah.getCoverById(id)
 
+        // mendapatkan id pengguna dari session
         const userId = req.session.penggunaId
-        const  user = await modelPengguna.getPenggunaById(userId)
+        const user = await modelPengguna.getNamaPenggunaById(userId)
+        
+        // destructuring req.body
+        const {judul, edisi, no_klasifikasi, bahasa, tahun_terbit, sinopsis, tempat_terbit, penerbit, id_rak, ketersediaan} = req.body
+        const foto_cover = req.file ? req.file.filename : majalah.foto_cover
 
-        const majalah = await modelMajalah.getById(id)
-        let foto_cover = req.file ? req.file.filename : majalah.foto_cover
-
+        // menyimpan data yang diinptakn user
         const data = {judul, foto_cover, edisi, no_klasifikasi, bahasa, tahun_terbit, sinopsis, tempat_terbit, penerbit, id_rak, ketersediaan, diubah_oleh: user.nama}
 
+        // inputan judul tidak boleh kosong
         if (!data.judul) {
             deleteUploadedFile(req.file)
 
@@ -407,6 +442,7 @@ router.post('/update/:id', authPustakawan, upload.single('foto_cover'), async (r
             return res.redirect(`/pustakawan/majalah/edit/${id}`)
         }
 
+        // inputan edisi tidak boleh kosong
         if (!data.edisi) {
             deleteUploadedFile(req.file)
 
@@ -414,6 +450,7 @@ router.post('/update/:id', authPustakawan, upload.single('foto_cover'), async (r
             return res.redirect(`/pustakawan/majalah/edit/${id}`)
         }
 
+        // inputan no_klasifikasi tidak boleh kosong
         if (!data.no_klasifikasi) {
             deleteUploadedFile(req.file)
 
@@ -421,6 +458,7 @@ router.post('/update/:id', authPustakawan, upload.single('foto_cover'), async (r
             return res.redirect(`/pustakawan/majalah/edit/${id}`)
         }
 
+        // inputan id rak tidak boleh kosong
         if (!data.id_rak) {
             deleteUploadedFile(req.file)
 
@@ -432,11 +470,19 @@ router.post('/update/:id', authPustakawan, upload.single('foto_cover'), async (r
         if (await modelMajalah.checkNoKlasifikasiEdit(data, id)) {
             deleteUploadedFile(req.file)
 
-            const rak = await modelRak.getAll()
             req.flash('error', 'No Klasifikasi sudah ada')
-            return res.redirect(`/pustakawan/majalah/edit/${id}`, { user })
+            return res.redirect(`/pustakawan/majalah/edit/${id}`)
         }
 
+        // mengecek format file yang diinput
+        const allowedFormats = ['image/jpeg', 'image/png', 'image/jpg', 'image/webp']
+        if (req.file && !allowedFormats.includes(req.file.mimetype)) {
+            req.flash('error', 'Hanya file gambar (jpg, jpeg, png, webp) yang diizinkan')
+            req.flash('data', req.body)
+            return res.redirect(`/pustakawan/majalah/edit/${id}`)
+        }
+
+        // compres dan convert image to webp 
         if (req.file && req.file.path) {
             const result = await convertImageFile(req.file.path)
             if (result && result.outputPath) {
@@ -444,10 +490,10 @@ router.post('/update/:id', authPustakawan, upload.single('foto_cover'), async (r
             }
         }
 
+        // jika ada foto lama dan diupdate dengan foto baru, maka foto lama dihapus
         if (req.file) deleteOldPhoto(majalah.foto_cover)
 
         await modelMajalah.update(id, data)
-
         req.flash('success', 'Majalah berhasil diupdate')
         res.redirect(`/pustakawan/majalah`)
     } catch (err) {
@@ -461,10 +507,12 @@ router.post('/update/:id', authPustakawan, upload.single('foto_cover'), async (r
 // Delete majalah
 router.post('/delete/:id', authPustakawan, async (req, res) => {
     try {
+        // destructuring req.params
         const { id } = req.params
         
+        // mendapatkan id pengguna dari session
         const userId = req.session.penggunaId
-        const  user = await modelPengguna.getPenggunaById(userId)
+        const user = await modelPengguna.getNamaPenggunaById(userId)
 
         await modelMajalah.softDelete(user, id)
 
