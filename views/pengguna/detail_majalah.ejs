@@ -1,177 +1,366 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
-    <%- include('../partials/__head.ejs', { title: 'Detail Majalah' }) %>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.min.css">
+    <%- include('../../partials/__head.ejs', { title: 'Dashboard Pengurus' }) %>
     <style>
         body {
             font-family: 'Poppins', sans-serif;
             background-color: #f8f9fa;
         }
-        .btn-add {
-            background-color: #0F8EC8;
+
+        .hero-section {
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('../../images/assets/bg_medayuagung_2.webp');
+            background-size: cover;
+            background-position: center;
+            height: 75vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
             color: white;
-            border: 1px solid #0F8EC8;
         }
 
-        .btn-add:hover {
-            background-color: #0c75a4;
-            transform: translateY(-2px);
-        }
-        .navbar {
-            box-shadow: 0 2px 4px rgba(0,0,0,.04);
-        }
-        .detail-header {
+        .hero-title {
+            font-size: 3rem;
             font-weight: 700;
-            font-size: 2rem;
-            color: #212529;
-            margin-bottom: 1.5rem;
         }
-        .detail-cover-img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            cursor: pointer;
+
+        .hero-subtitle {
+            font-size: 1.25rem;
         }
-        .detail-info-item {
-            margin-bottom: 1rem;
+
+        @media (max-width: 767.98px) {
+            .hero-title {
+                font-size: 2rem;
+            }
+            .hero-subtitle {
+                font-size: 1rem;
+            }
+        }
+
+        .search-form {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 50px;
+            padding: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-container {
             display: flex;
+            align-items: center;
+            border: none !important;
         }
-        .detail-info-label {
-            font-weight: 700;
-            color: #495057;
-            min-width: 150px;
+
+        .search-icon {
+            background: transparent;
+            border: none;
+            color: #0F8EC8;
+            padding: 0 1rem;
+            cursor: default;
         }
-        .detail-info-value {
-            color: #5f6870;
-            flex-grow: 1;
-            text-align: justify;
+
+        .search-container .form-control {
+            border: none !important;
+            box-shadow: none !important;
+            padding: 0.75rem 0.5rem;
+            font-size: 1rem;
         }
-        .mfp-close {
-            color: #fff !important;
-            opacity: 1;
-            font-size: 30px !important;
-            right: 0px !important;
-            top: 0px !important;
+
+        .search-button {
+            background-color: #0F8EC8;
+            border: none;
+            border-radius: 50px;
+            padding: 0.75rem 2rem;
+            margin-left: 8px;
+        }
+
+        @media (max-width: 575.98px) {
+            .search-form {
+                padding: 5px;
+            }
+            .search-button {
+                padding: 0.5rem 1rem;
+                margin-left: 5px;
+            }
+        }
+
+        .section-title-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-top: 1.5rem;
+        }
+
+        .section-title {
+            font-size: 1.75rem;
+            font-weight: 600;
+        }
+
+        @media (max-width: 575.98px) {
+            .section-title {
+                font-size: 1.5rem;
+            }
+        }
+
+        .card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid #e9ecef;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .book-cover,
+        .magazine-cover {
+            object-fit: cover;
+            height: 250px;
+            width: 100%;
+        }
+
+        @media (max-width: 767.98px) {
+            .book-cover,
+            .magazine-cover {
+                height: 200px;
+            }
+        }
+
+        .card-title {
+            font-size: 1rem;
+            font-weight: 600;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+
+        .card-text {
+            font-size: 0.875rem;
+        }
+
+        .stretched-link::after {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 1;
+            content: "";
+        }
+
+        #empty-results {
+            text-align: center;
+            padding: 50px;
+            color: #6c757d;
+        }
+
+        @media (max-width: 991.98px) {
+            .footer-content-wrapper {
+                flex-direction: column;
+                align-items: center;
+            }
+            .footer-section {
+                padding: 0 10px;
+                text-align: center;
+                align-items: center;
+            }
+            .footer-section p,
+            .footer-section ul li {
+                justify-content: center;
+            }
+            .logo-section {
+                justify-content: center;
+                width: 100%;
+            }
+        }
+
+        .logo-section {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            padding: 0;
+            margin-top: 20px;
+        }
+
+        .logo-section img {
+            max-height: 50px;
+            margin-right: 10px;
+        }
+
+        .logo-section p {
+            color: #fff;
+            font-size: 1.2rem;
+            font-weight: 600;
+            white-space: nowrap;
+            margin: 0;
+        }
+
+        @media (max-width: 575.98px) {
+            .row-cols-2 > * {
+                flex: 0 0 50%;
+                max-width: 50%;
+            }
+        }
+        @media (min-width: 576px) and (max-width: 767.98px) {
+            .row-cols-md-4 > * {
+                flex: 0 0 50%;
+                max-width: 50%;
+            }
+        }
+
+        #clear-search {
+            border: none;
+            background: transparent;
+        }
+        #clear-search svg {
+            pointer-events: none;
         }
     </style>
 </head>
 <body>
-    <div class="container-fluid page-body-wrapper flex flex-grow">
-        <div class="container mt-5 mb-5">
-            <a href="javascript:history.back()" class="btn btn-add mb-3">
-                <i class="bi bi-arrow-left"></i> Kembali
-            </a>
-            
-            <div class="row">
-                <div class="col-md-4 text-center mb-4">
-                    <a href="" class="portfolio-popup" id="magazine-cover-link">
-                        <img src="" alt="Cover Majalah" class="detail-cover-img" id="magazine-cover">
-                    </a>
-                </div>
-                
-                <div class="col-md-8">
-                    <h1 class="detail-header" id="magazine-title"></h1>
-                    <div class="mb-4">
-                        <div class="detail-info-item">
-                            <span class="detail-info-label">Edisi</span>
-                            <span class="detail-info-value" id="magazine-edition"></span>
-                        </div>
-                        <div class="detail-info-item">
-                            <span class="detail-info-label">No. Klasifikasi</span>
-                            <span class="detail-info-value" id="magazine-classification"></span>
-                        </div>
-                        <div class="detail-info-item">
-                            <span class="detail-info-label">Bahasa</span>
-                            <span class="detail-info-value" id="magazine-language"></span>
-                        </div>
-                        <div class="detail-info-item">
-                            <span class="detail-info-label">Tahun Terbit</span>
-                            <span class="detail-info-value" id="magazine-year"></span>
-                        </div>
-                        <div class="detail-info-item">
-                            <span class="detail-info-label">Tempat Terbit</span>
-                            <span class="detail-info-value" id="magazine-publication-place"></span>
-                        </div>
-                        <div class="detail-info-item">
-                            <span class="detail-info-label">Penerbit</span>
-                            <span class="detail-info-value" id="magazine-publisher"></span>
-                        </div>
-                        <div class="detail-info-item">
-                            <span class="detail-info-label">Lokasi</span>
-                            <span class="detail-info-value" id="magazine-location"></span>
-                        </div>
-                        <div class="detail-info-item">
-                            <span class="detail-info-label">Ketersediaan</span>
-                            <span class="detail-info-value" id="magazine-availability"></span>
-                        </div>
-                        <div class="detail-info-item">
-                            <span class="detail-info-label">Sinopsis</span>
-                            <span class="detail-info-value" id="magazine-synopsis"></span>
-                        </div>
+    <div class="main-panel">
+        <section class="hero-section text-center d-flex align-items-center justify-content-center">
+            <div class="container">
+                <h1 class="hero-title mb-4">Temukan Koleksi Pustaka Kami</h1>
+                <p class="hero-subtitle mb-5">Jelajahi ribuan buku dan majalah yang tersedia.</p>
+
+                <form id="search-form" class="search-form">
+                    <div class="input-group search-container">
+                        <span class="input-group-text search-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                <path
+                                    d="M11.742 10.344a6.5 6.5 0 1 0-1.397 
+                                    1.398h-.001q.044.06.085.122l3.023 
+                                    3.023a.75.75 0 0 0 1.06-1.06l-3.023-3.023
+                                    q-.062-.041-.122-.085zm-5.442 
+                                    1.597a5.25 5.25 0 1 1 0-10.5 
+                                    5.25 5.25 0 0 1 0 10.5"/>
+                            </svg>
+                        </span>
+                        <input type="text" id="search-input" class="form-control" placeholder="Cari buku atau majalah">
+                        
+                        <button type="button" id="clear-search" class="btn btn-link px-2 d-none">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor"
+                                class="bi bi-x-circle text-secondary" viewBox="0 0 16 16">
+                                <path d="M8 15A7 7 0 1 0 8 1a7 7 0 
+                                    0 0 0 14zm3.354-9.646a.5.5 0 
+                                    0 1 0 .708L8.707 8l2.647 2.646a.5.5 
+                                    0 0 1-.708.708L8 8.707l-2.646 
+                                    2.647a.5.5 0 0 1-.708-.708L7.293 
+                                    8 4.646 5.354a.5.5 0 1 1 
+                                    .708-.708L8 7.293l2.646-2.647a.5.5 
+                                    0 0 1 .708 0z"/>
+                            </svg>
+                        </button>
+                        <button class="btn btn-primary search-button" type="submit">Cari</button>
                     </div>
+                </form>
+            </div>
+        </section>
+
+        <div class="container mt-5">
+            <div id="new-books-section">
+                <div class="section-title-wrapper d-flex justify-content-between align-items-center mb-4">
+                    <h3 class="section-title">Buku Terbaru</h3>
                 </div>
+                <div class="row row-cols-2 row-cols-md-4 g-4 mb-5" id="new-books-list">
+                </div>
+            </div>
+
+            <div id="new-magazines-section">
+                <div class="section-title-wrapper d-flex justify-content-between align-items-center mb-4">
+                    <h3 class="section-title">Majalah Terbaru</h3>
+                </div>
+                <div class="row row-cols-2 row-cols-md-4 g-4" id="new-magazines-list">
+                </div>
+            </div>
+
+            <div id="search-results-section" class="d-none">
+                <div class="section-title-wrapper d-flex justify-content-between align-items-center mb-4">
+                    <h3 class="section-title">Hasil Pencarian</h3>
+                </div>
+                <div class="row row-cols-2 row-cols-md-4 g-4" id="search-results-list"></div>
             </div>
         </div>
     </div>
-    
-    <%- include('../partials/__foot.ejs') %>
+
+    <%- include('../../partials/__foot.ejs') %>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js"></script>
+
     <script>
-        const magazineData = {
-            cover: "https://images.unsplash.com/photo-1579894451006-218413b5d2ef?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-            title: "National Geographic Indonesia",
-            edition: "Edisi Khusus 'Keajaiban Laut'",
-            classification: "059.922 1 NAT k",
-            language: "Indonesia",
-            year: "2024",
-            publicationPlace: "Jakarta",
-            publisher: "Gramedia Majalah",
-            location: "Rak 3",
-            availability: "Tersedia",
-            synopsis: "Majalah ini mengulas secara mendalam keindahan dan keunikan ekosistem laut Indonesia. Dilengkapi dengan foto-foto eksklusif, artikel ini membahas terumbu karang, kehidupan biota laut langka, serta upaya konservasi yang dilakukan untuk menjaga kelestarian perairan nusantara."
-        };
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchForm = document.getElementById('search-form');
+            const searchInput = document.getElementById('search-input');
+            const newBooksSection = document.getElementById('new-books-section');
+            const newMagazinesSection = document.getElementById('new-magazines-section');
+            const searchResultsSection = document.getElementById('search-results-section');
+            const searchResultsList = document.getElementById('search-results-list');
+            const clearSearchButton = document.getElementById('clear-search');
 
-        function displayMagazineDetails(data) {
-            document.getElementById('magazine-cover').src = data.cover;
-            document.getElementById('magazine-cover').alt = `Cover Majalah ${data.title}`;
-            document.getElementById('magazine-title').textContent = data.title;
-            document.getElementById('magazine-cover-link').href = data.cover;
+            const allItems = Array.from(document.querySelectorAll('#new-books-list .col, #new-magazines-list .col'));
 
-            document.getElementById('magazine-edition').textContent = `: ${data.edition}`;
-            document.getElementById('magazine-classification').textContent = `: ${data.classification}`;
-            document.getElementById('magazine-language').textContent = `: ${data.language}`;
-            document.getElementById('magazine-year').textContent = `: ${data.year}`;
-            document.getElementById('magazine-publication-place').textContent = `: ${data.publicationPlace}`;
-            document.getElementById('magazine-publisher').textContent = `: ${data.publisher}`;
-            document.getElementById('magazine-location').textContent = `: ${data.location}`;
-            document.getElementById('magazine-availability').textContent = `: ${data.availability}`;
-            document.getElementById('magazine-synopsis').textContent = `: ${data.synopsis}`;
-        }
-        
-        document.addEventListener('DOMContentLoaded', () => {
-            displayMagazineDetails(magazineData);
-        });
+            // Fungsi untuk menampilkan hasil pencarian
+            function showSearchResults(query) {
+                newBooksSection.classList.add('d-none');
+                newMagazinesSection.classList.add('d-none');
 
-        $(document).ready(function() {
-            $('.portfolio-popup').magnificPopup({
-                type: 'image',
-                removalDelay: 300,
-                mainClass: 'mfp-fade',
-                gallery: {
-                    enabled: true
-                },
-                zoom: {
-                    enabled: true,
-                    duration: 300,
-                    easing: 'ease-in-out',
-                    opener: function(openerElement) {
-                        return openerElement.is('img') ? openerElement : openerElement.find('img');
-                    }
+                searchResultsSection.classList.remove('d-none');
+                searchResultsList.innerHTML = '';
+
+                const filteredItems = allItems.filter(item => {
+                    const title = item.getAttribute('data-title')?.toLowerCase() || '';
+                    const author = item.getAttribute('data-author')?.toLowerCase() || '';
+                    const edition = item.getAttribute('data-edition')?.toLowerCase() || '';
+                    return title.includes(query) || author.includes(query) || edition.includes(query);
+                });
+
+                const limitedResults = filteredItems.slice(0, 4);
+
+                if (limitedResults.length > 0) {
+                    limitedResults.forEach(item => {
+                        searchResultsList.appendChild(item.cloneNode(true));
+                    });
+                } else {
+                    searchResultsList.innerHTML = `
+                        <div id="empty-results" class="col-12">
+                            <p>Tidak ada hasil untuk kata kunci "${searchInput.value}".</p>
+                        </div>
+                    `;
                 }
+            }
+
+            searchForm.addEventListener('submit', function(event) {
+                event.preventDefault();
+                const query = searchInput.value.toLowerCase().trim();
+                if (query) {
+                    showSearchResults(query);
+                }
+            });
+
+            // Tampilkan ikon x saat ada teks
+            searchInput.addEventListener('input', function () {
+                if (searchInput.value.trim() !== "") {
+                    clearSearchButton.classList.remove('d-none');
+                } else {
+                    clearSearchButton.classList.add('d-none');
+                }
+            });
+
+            // Event listener untuk tombol hapus pencarian (ikon X)
+            clearSearchButton.addEventListener('click', function () {
+                searchInput.value = '';
+                clearSearchButton.classList.add('d-none');
+                searchResultsSection.classList.add('d-none');
+                newBooksSection.classList.remove('d-none');
+                newMagazinesSection.classList.remove('d-none');
+                searchResultsList.innerHTML = '';
             });
         });
     </script>
