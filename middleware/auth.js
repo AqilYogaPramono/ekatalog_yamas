@@ -1,6 +1,7 @@
-//midleware to check peran
+// import model pengguna
 const modelPengguna = require('../model/modelPengguna')
 
+// mengecek peran berdasakan id pengguna
 const authPustakawan = async (req, res, next) => {
     try {
         const penggunaId = req.session.penggunaId
