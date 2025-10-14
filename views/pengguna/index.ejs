@@ -1,244 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
-    <%- include('../partials/__head.ejs', { title: 'Dashboard Pengurus' }) %>
-    <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #f8f9fa;
-        }
-
-        .hero-section {
-            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('../../images/assets/bg_medayuagung_2.webp');
-            background-size: cover;
-            background-position: center;
-            height: 75vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            color: white;
-        }
-
-        .hero-title {
-            font-size: 3rem;
-            font-weight: 700;
-        }
-
-        .hero-subtitle {
-            font-size: 1.25rem;
-        }
-
-        @media (max-width: 767.98px) {
-            .hero-title {
-                font-size: 2rem;
-            }
-            .hero-subtitle {
-                font-size: 1rem;
-            }
-        }
-
-        .search-form {
-            max-width: 600px;
-            margin: 0 auto;
-            background-color: white;
-            border-radius: 50px;
-            padding: 8px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .search-container {
-            display: flex;
-            align-items: center;
-            border: none !important;
-        }
-
-        .search-icon {
-            background: transparent;
-            border: none;
-            color: #0F8EC8;
-            padding: 0 1rem;
-            cursor: default;
-        }
-
-        .search-container .form-control {
-            border: none !important;
-            box-shadow: none !important;
-            padding: 0.75rem 0.5rem;
-            font-size: 1rem;
-        }
-
-        .search-button {
-            background-color: #0F8EC8;
-            border: none;
-            border-radius: 50px;
-            padding: 0.75rem 2rem;
-            margin-left: 8px;
-        }
-
-        @media (max-width: 575.98px) {
-            .search-form {
-                padding: 5px;
-            }
-            .search-button {
-                padding: 0.5rem 1rem;
-                margin-left: 5px;
-            }
-        }
-
-        .section-title-wrapper {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-            padding-top: 1.5rem;
-        }
-
-        .section-title { 
-            font-size: 1.75rem;
-            font-weight: 600;
-        }
-
-        @media (max-width: 575.98px) {
-            .section-title {
-                font-size: 1.5rem;
-            }
-        }
-
-        .card {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            border-radius: 8px;
-            width:  100%;
-            position: relative;
-            overflow: hidden;
-            border: 1px solid #e9ecef;            
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .card-img-wrapper {
-            position: relative;
-            width: 100%;
-            padding-top: 140%; 
-            overflow: hidden;
-            border-radius: 8px 8px 0 0;
-        }
-
-        .card-img-wrapper img.book-cover,
-        .card-img-wrapper img.magazine-cover {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            object-position: center;
-        }
-
-        .card-title {
-            font-size: 1rem;
-            font-weight: 600;
-            overflow: hidden;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-        }
-
-        .card-text {
-            font-size: 0.875rem;
-        }
-
-        .stretched-link::after {
-            position: absolute;
-            top: 0;
-            right: 0;
-            bottom: 0;
-            left: 0;
-            z-index: 1;
-            content: "";
-        }
-
-        #empty-results {
-            text-align: center;
-            padding: 0; 
-            color: #6c757d;
-        }
-        
-        #search-results-list {
-            min-height: 250px; 
-        }
-
-
-        @media (max-width: 991.98px) {
-            .footer-content-wrapper {
-                flex-direction: column;
-                align-items: center;
-            }
-            .footer-section {
-                padding: 0 10px;
-                text-align: center;
-                align-items: center;
-            }
-            .footer-section p,
-            .footer-section ul li {
-                justify-content: center;
-            }
-            .logo-section {
-                justify-content: center;
-                width: 100%;
-            }
-        }
-
-        .logo-section {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            padding: 0;
-            margin-top: 20px;
-        }
-
-        .logo-section img {
-            max-height: 50px;
-            margin-right: 10px;
-        }
-
-        .logo-section p {
-            color: #fff;
-            font-size: 1.2rem;
-            font-weight: 600;
-            white-space: nowrap;
-            margin: 0;
-        }
-
-        @media (max-width: 575.98px) {
-            .row-cols-2 > * {
-                flex: 0 0 50%;
-                max-width: 50%;
-            }
-        }
-        @media (min-width: 576px) and (max-width: 767.98px) {
-            .row-cols-md-4 > * {
-                flex: 0 0 50%;
-                max-width: 50%;
-            }
-        }
-
-        #clear-search {
-            border: none;
-            background: transparent;
-        }
-        #clear-search svg {
-            pointer-events: none;
-        }
-        
-        /* batasi item jadi 4 */
-        #new-books-list .col:nth-child(n+5),
-        #new-magazines-list .col:nth-child(n+5) {
-            display: none;
-        }
-    </style>
+    <%- include('../partials/header/__headerPengguna.ejs', { title: 'Katalog Perpustakaan' }) %>
 </head>
 <body>
     <section class="hero-section text-center d-flex align-items-center justify-content-center">
@@ -246,243 +9,108 @@
             <h1 class="hero-title mb-4">Temukan Koleksi Pustaka Kami</h1>
             <p class="hero-subtitle mb-5">Jelajahi ribuan buku dan majalah yang tersedia.</p>
 
-            <form id="search-form" class="search-form">
+            <form id="search-form" class="search-form" method="POST" action="/">
                 <div class="input-group search-container">
-                        <span class="input-group-text search-icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-                                <path
-                                    d="M11.742 10.344a6.5 6.5 0 1 0-1.397 
-                                    1.398h-.001q.044.06.085.122l3.023 
-                                    3.023a.75.75 0 0 0 1.06-1.06l-3.023-3.023
-                                    q-.062-.041-.122-.085zm-5.442 
-                                    1.597a5.25 5.25 0 1 1 0-10.5 
-                                    5.25 5.25 0 0 1 0 10.5"/>
-                            </svg>
-                        </span>
-                        <input type="text" id="search-input" class="form-control" placeholder="Cari buku atau majalah">
-                        
-                        <button type="button" id="clear-search" class="btn btn-link px-2 d-none">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor"
-                                class="bi bi-x-circle text-secondary" viewBox="0 0 16 16">
-                                <path d="M8 15A7 7 0 1 0 8 1a7 7 0 
-                                    0 0 0 14zm3.354-9.646a.5.5 0 
-                                    0 1 0 .708L8.707 8l2.647 2.646a.5.5 
-                                    0 0 1-.708.708L8 8.707l-2.646 
-                                    2.647a.5.5 0 0 1-.708-.708L7.293 
-                                    8 4.646 5.354a.5.5 0 1 1 
-                                    .708-.708L8 7.293l2.646-2.647a.5.5 
-                                    0 0 1 .708 0z"/>
-                            </svg>
-                        </button>
-                        <button class="btn btn-primary search-button" type="submit">Cari</button>
-                    </div>
+                    <span class="input-group-text search-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                            fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                            <path
+                                d="M11.742 10.344a6.5 6.5 0 1 0-1.397 
+                                1.398h-.001q.044.06.085.122l3.023 
+                                3.023a.75.75 0 0 0 1.06-1.06l-3.023-3.023
+                                q-.062-.041-.122-.085zm-5.442 
+                                1.597a5.25 5.25 0 1 1 0-10.5 
+                                5.25 5.25 0 0 1 0 10.5"/>
+                        </svg>
+                    </span>
+                    <input type="text" id="search-input" name="keyword" class="form-control" placeholder="Cari buku atau majalah" value="<%= typeof keyword !== 'undefined' ? keyword : '' %>">
+                    
+                    <button type="button" id="clear-search" class="btn btn-link px-2 d-none">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor"
+                            class="bi bi-x-circle text-secondary" viewBox="0 0 16 16">
+                            <path d="M8 15A7 7 0 1 0 8 1a7 7 0 
+                                0 0 0 14zm3.354-9.646a.5.5 0 
+                                0 1 0 .708L8.707 8l2.647 2.646a.5.5 
+                                0 0 1-.708.708L8 8.707l-2.646 
+                                2.647a.5.5 0 0 1-.708-.708L7.293 
+                                8 4.646 5.354a.5.5 0 1 1 
+                                .708-.708L8 7.293l2.646-2.647a.5.5 
+                                0 0 1 .708 0z"/>
+                        </svg>
+                    </button>
+                    <button class="btn btn-primary search-button" type="submit">Cari</button>
+                </div>
             </form>
         </div>
     </section>
 
     <div class="container mt-5 mb-5">
-        <div id="new-books-section">
-            <div class="section-title-wrapper d-flex justify-content-between align-items-center mb-4">
-                <h3 class="section-title">Koleksi Buku</h3>
-            </div>
-            <div class="row row-cols-2 row-cols-md-4 g-4 mb-5" id="new-books-list">
-                <div class="col mb-3" data-title="Teori Koding Lanjut" data-author="Budi Santoso" data-edition="Edisi Pertama">
-                    <div class="card h-100">
-                        <div class="card-img-wrapper">
-                            <img src="../../images/assets/1757919791539-47227693.webp" class="book-cover" alt="Cover Buku 1">
-                        </div>
-                        <div class="card-body">
-                            <h5 class="card-title">Teori Koding Lanjut</h5>
-                            <p class="card-text text-muted">Budi Santoso</p>
-                            <a href="#" class="stretched-link"></a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col mb-3" data-title="Sejarah Nusantara Era Modern" data-author="Dewi Sartika" data-edition="Edisi Kedua">
-                    <div class="card h-100">
-                        <div class="card-img-wrapper">
-                            <img src="../../images/assets/1757919791539-47227693.webp" class="book-cover" alt="Cover Buku 2">
-                        </div>
-                        <div class="card-body">
-                            <h5 class="card-title">Sejarah Nusantara Era Modern</h5>
-                            <p class="card-text text-muted">Dewi Sartika</p>
-                            <a href="#" class="stretched-link"></a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col mb-3" data-title="Kumpulan Puisi Senja" data-author="Risa Saraswati" data-edition="Edisi Cetak">
-                    <div class="card h-100">
-                        <div class="card-img-wrapper">
-                            <img src="../../images/assets/1757919791539-47227693.webp" class="book-cover" alt="Cover Buku 3">
-                        </div>
-                        <div class="card-body">
-                            <h5 class="card-title">Kumpulan Puisi Senja</h5>
-                            <p class="card-text text-muted">Risa Saraswati</p>
-                            <a href="#" class="stretched-link"></a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col mb-3" data-title="Dasar-Dasar Desain Grafis" data-author="Joko Anwar" data-edition="Edisi Ketiga">
-                    <div class="card h-100">
-                        <div class="card-img-wrapper">
-                            <img src="../../images/assets/1757919791539-47227693.webp" class="book-cover" alt="Cover Buku 4">
-                        </div>
-                        <div class="card-body">
-                            <h5 class="card-title">Ilmu Politik</h5>
-                            <p class="card-text text-muted">Pengarang</p>
-                            <a href="#" class="stretched-link"></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div id="new-magazines-section">
-            <div class="section-title-wrapper d-flex justify-content-between align-items-center mb-4">
-                <h3 class="section-title">Koleksi Majalah</h3>
-            </div>
-            <div class="row row-cols-2 row-cols-md-4 g-4" id="new-magazines-list">
-                <div class="col mb-3" data-title="Teknologi Masa Depan" data-author="Majalah Digital" data-edition="Vol. 10 No. 5">
-                    <div class="card h-100">
-                        <div class="card-img-wrapper">
-                            <img src="../../images/assets/1757919791539-47227693.webp" class="magazine-cover" alt="Cover Majalah 1">
-                        </div>
-                        <div class="card-body">
-                            <h5 class="card-title">Teknologi Masa Depan</h5>
-                            <p class="card-text text-muted">Vol. 10 No. 5</p>
-                            <a href="#" class="stretched-link"></a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col mb-3" data-title="Gaya Hidup Sehat" data-author="Majalah Kesehatan" data-edition="Vol. 3 No. 12">
-                    <div class="card h-100">
-                        <div class="card-img-wrapper">
-                            <img src="../../images/assets/1757919791539-47227693.webp" class="magazine-cover" alt="Cover Majalah 2">
-                        </div>
-                        <div class="card-body">
-                            <h5 class="card-title">Gaya Hidup Sehat</h5>
-                            <p class="card-text text-muted">Vol. 3 No. 12</p>
-                            <a href="#" class="stretched-link"></a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col mb-3" data-title="Wisata Alam Indonesia" data-author="Majalah Travel" data-edition="Vol. 7 No. 3">
-                    <div class="card h-100">
-                        <div class="card-img-wrapper">
-                            <img src="../../images/assets/1757919791539-47227693.webp" class="magazine-cover" alt="Cover Majalah 3">
-                        </div>
-                        <div class="card-body">
-                            <h5 class="card-title">Wisata Alam Indonesia</h5>
-                            <p class="card-text text-muted">Vol. 7 No. 3</p>
-                            <a href="#" class="stretched-link"></a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col mb-3" data-title="Fashion Terkini" data-author="Majalah Gaya" data-edition="Vol. 15 No. 6">
-                    <div class="card h-100">
-                        <div class="card-img-wrapper">
-                            <img src="../../images/assets/1757919791539-47227693.webp" class="magazine-cover" alt="Cover Majalah 4">
-                        </div>
-                        <div class="card-body">
-                            <h5 class="card-title">Fashion Terkini</h5>
-                            <p class="card-text text-muted">Vol. 15 No. 6</p>
-                            <a href="#" class="stretched-link"></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div id="search-results-section" class="d-none">
+        <div id="search-results-section">
             <div class="section-title-wrapper d-flex justify-content-between align-items-center mb-4">
                 <h3 class="section-title">Hasil Pencarian</h3>
+                <% if (typeof result !== 'undefined' && result.length > 0) { %>
+                    <span class="result-count"><%= result.length %> hasil ditemukan</span>
+                <% } %>
             </div>
-            <div class="row row-cols-2 row-cols-md-4 g-4" id="search-results-list"></div>
+            
+            <div class="search-content">
+                <% if (typeof result !== 'undefined') { %>
+                    <% if (result.length > 0) { %>
+                        <div class="row row-cols-2 row-cols-md-4 g-4" id="search-results-list">
+                            <% result.forEach(item => { %>
+                                <div class="col mb-3">
+                                    <div class="card h-100 modern-card">
+                                        <div class="card-img-wrapper">
+                                            <img src="/images/<%= item.tipe === 'Buku' ? 'buku' : 'majalah' %>/<%= item['foto-cover'] %>" 
+                                                 class="<%= item.tipe === 'Buku' ? 'book-cover' : 'magazine-cover' %>" 
+                                                 alt="Cover <%= item.tipe %>"
+                                                 loading="lazy">
+                                            <div class="tipe-badge"><%= item.tipe %></div>
+                                        </div>
+                                        <div class="card-body">
+                                            <h5 class="card-title"><%= item.judul %></h5>
+                                            <% if (item.tipe === 'Majalah') { %>
+                                                <p class="card-text text-muted small">Edisi: <%= item.edisi %></p>
+                                                <p class="card-text text-muted small">No. Klasifikasi: <%= item.no_klasifikasi %></p>
+                                                <p class="card-text text-muted small">Lokasi: <%= item.lokasi %></p>
+                                            <% } else { %>
+                                                <p class="card-text text-muted">No. Klasifikasi: <%= item.no_klasifikasi %></p>
+                                                <p class="card-text text-muted small">Lokasi: <%= item.lokasi %></p>
+                                            <% } %>
+                                            <a href="/detail/<%= item.tipe %>/<%= item.id %>" class="stretched-link"></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            <% }) %>
+                        </div>
+                    <% } else { %>
+                        <div class="no-results-state">
+                            <div class="no-results-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.085.122l3.023 3.023a.75.75 0 0 0 1.06-1.06l-3.023-3.023q-.062-.041-.122-.085zm-5.442 1.597a5.25 5.25 0 1 1 0-10.5 5.25 5.25 0 0 1 0 10.5"/>
+                                </svg>
+                            </div>
+                            <h4 class="no-results-title">Tidak ada hasil ditemukan</h4>
+                            <p class="no-results-message">Tidak ada hasil untuk kata kunci "<%= keyword %>"</p>
+                            <p class="no-results-suggestion">Silakan coba dengan kata kunci yang berbeda atau periksa ejaan kata kunci Anda</p>
+                        </div>
+                    <% } %>
+                <% } else { %>
+                    <div class="empty-state">
+                        <div class="empty-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.085.122l3.023 3.023a.75.75 0 0 0 1.06-1.06l-3.023-3.023q-.062-.041-.122-.085zm-5.442 1.597a5.25 5.25 0 1 1 0-10.5 5.25 5.25 0 0 1 0 10.5"/>
+                            </svg>
+                        </div>
+                        <h4 class="empty-title">Mulai Pencarian Anda</h4>
+                        <p class="empty-message">Gunakan kolom pencarian di atas untuk menemukan buku atau majalah</p>
+                    </div>
+                <% } %>
+            </div>
         </div>
     </div>
-
-    <%- include('../partials/__foot.ejs') %>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const searchForm = document.getElementById('search-form');
-            const searchInput = document.getElementById('search-input');
-            const newBooksSection = document.getElementById('new-books-section');
-            const newMagazinesSection = document.getElementById('new-magazines-section');
-            const searchResultsSection = document.getElementById('search-results-section');
-            const searchResultsList = document.getElementById('search-results-list');
-            const clearSearchButton = document.getElementById('clear-search');
-
-            const allItems = Array.from(document.querySelectorAll('#new-books-list .col, #new-magazines-list .col'));
-
-            function showSearchResults(query) {
-                newBooksSection.classList.add('d-none');
-                newMagazinesSection.classList.add('d-none');
-                searchResultsSection.classList.remove('d-none');
-               
-                searchResultsList.classList.remove('d-flex', 'justify-content-center', 'align-items-center', 'py-5'); 
-                searchResultsList.innerHTML = '';
-
-                const filteredItems = allItems.filter(item => {
-                    const title = item.getAttribute('data-title')?.toLowerCase() || '';
-                    const author = item.getAttribute('data-author')?.toLowerCase() || '';
-                    const edition = item.getAttribute('data-edition')?.toLowerCase() || '';
-                    return title.includes(query) || author.includes(query) || edition.includes(query);
-                });
-
-                if (filteredItems.length > 0) {   
-                    filteredItems.forEach(item => {
-                        const clonedItem = item.cloneNode(true);
-                        clonedItem.classList.add('mb-3'); 
-                        searchResultsList.appendChild(clonedItem);
-                    });
-                } else {
-                    searchResultsList.classList.add('d-flex', 'justify-content-center', 'align-items-center', 'py-5'); 
-                    searchResultsList.innerHTML = `
-                        <div id="empty-results" class="col-12 text-center">
-                            <h3>Tidak ada hasil untuk kata kunci "${searchInput.value}".</h3>
-                        </div>
-                    `;
-                }
-            }
-
-            searchForm.addEventListener('submit', function(event) {
-                event.preventDefault();
-                const query = searchInput.value.toLowerCase().trim();
-                if (query) {
-                    showSearchResults(query);
-                }
-            });
-
-            searchInput.addEventListener('input', function () {
-                if (searchInput.value.trim() !== "") {
-                    clearSearchButton.classList.remove('d-none');
-                    searchInput.classList.add('search-input-active');
-                } else {
-                    clearSearchButton.classList.add('d-none');
-                    searchInput.classList.remove('search-input-active');
-                }
-            });
-
-            searchForm.addEventListener('submit', function(event) {
-                event.preventDefault();
-                const query = searchInput.value.toLowerCase().trim();
-                if (!query) return;
-                showSearchResults(query);
-            });
-            clearSearchButton.addEventListener('click', function () {
-                searchInput.value = '';
-                clearSearchButton.classList.add('d-none');
-                searchInput.classList.remove('search-input-active');
-                searchResultsSection.classList.add('d-none');
-                newBooksSection.classList.remove('d-none');
-                newMagazinesSection.classList.remove('d-none');
-                
-                searchResultsList.classList.remove('d-flex', 'justify-content-center', 'align-items-center', 'py-5');
-                searchResultsList.innerHTML = '';
-            });
-        });
-    </script>
+    
+    <%- include('../partials/footer/__footPengguna.ejs') %>
+    <%- include('../partials/script/__scriptPengguna.ejs') %>
 </body>
 </html>
