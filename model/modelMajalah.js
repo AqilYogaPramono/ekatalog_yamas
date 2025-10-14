@@ -1,9 +1,10 @@
 const connection = require('../config/database')
 
 class ModelMajalah {
+    // mengambil detail majalah berdasarkan id
     static async getDetailMajalah(id) {
         try {
-            const [rows] = await connection.query(`SELECT m.judul, m.foto_cover, m.edisi, m.no_klasifikasi, m.bahasa, m.tahun_terbit, m.sinopsis, m.tempat_terbit, m.penerbit, CONCAT(r.kode_rak, ' - ', ru.kode_ruangan, ' - ', l.kode_lantai) AS lokasi FROM majalah m LEFT JOIN rak r ON m.id_rak = r.id LEFT JOIN ruangan ru ON r.id_ruangan = ru.id LEFT JOIN lantai l ON ru.id_lantai = l.id WHERE m.id = ? AND m.status_data = 'Tampil'`,[id])
+            const [rows] = await connection.query(`SELECT m.id, m.judul, m.foto_cover, m.edisi, m.no_klasifikasi, m.bahasa, m.tahun_terbit, m.sinopsis, m.tempat_terbit, m.penerbit, m.ketersediaan, CONCAT(r.kode_rak, ' - ', ru.kode_ruangan, ' - ', l.kode_lantai) AS lokasi FROM majalah m LEFT JOIN rak r ON m.id_rak = r.id LEFT JOIN ruangan ru ON r.id_ruangan = ru.id LEFT JOIN lantai l ON ru.id_lantai = l.id WHERE m.id = ? AND m.status_data = 'Tampil'`,[id])
             return rows
         } catch (err) {
             throw err

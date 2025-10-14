@@ -1,16 +1,20 @@
 const connection = require('../config/database')
 
 class modelBuku {
+    // mencari data buku dan majalah berdasarkan keyword
     static async getBukuAndMajalah(keyword) {
-        try {const [rows] = await connection.query(`SELECT m.id AS id, m.foto_cover AS 'foto-cover', CONCAT(m.judul, ' - ', m.edisi) AS 'judul - edisi', m.judul AS judul, m.no_klasifikasi, CONCAT(r.kode_rak, ' - ', ru.kode_ruangan, ' - ', l.kode_lantai) AS lokasi, 'Majalah' AS tipe FROM majalah m LEFT JOIN rak r ON m.id_rak = r.id LEFT JOIN ruangan ru ON r.id_ruangan = ru.id LEFT JOIN lantai l ON ru.id_lantai = l.id WHERE m.status_data = 'Tampil' AND (m.judul LIKE CONCAT('%', ?, '%') OR m.edisi LIKE CONCAT('%', ?, '%')) UNION SELECT b.id AS id, b.foto_cover AS 'foto-cover', NULL AS 'judul - edisi', b.judul AS judul, b.no_klasifikasi, CONCAT(r.kode_rak, ' - ', ru.kode_ruangan, ' - ', l.kode_lantai) AS lokasi, 'Buku' AS tipe FROM buku b LEFT JOIN rak r ON b.id_rak = r.id LEFT JOIN ruangan ru ON r.id_ruangan = ru.id LEFT JOIN lantai l ON ru.id_lantai = l.id WHERE b.status_data = 'Tampil' AND b.judul LIKE CONCAT('%', ?, '%')`,[keyword, keyword, keyword])
+        try {
+            const [rows] = await connection.query(`SELECT m.id AS id, m.foto_cover AS 'foto-cover', m.judul AS judul, m.edisi AS edisi, m.no_klasifikasi, CONCAT(r.kode_rak, ' - ', ru.kode_ruangan, ' - ', l.kode_lantai) AS lokasi, 'Majalah' AS tipe FROM majalah m LEFT JOIN rak r ON m.id_rak = r.id LEFT JOIN ruangan ru ON r.id_ruangan = ru.id LEFT JOIN lantai l ON ru.id_lantai = l.id WHERE m.status_data = 'Tampil' AND (m.judul LIKE CONCAT('%', ?, '%') OR m.edisi LIKE CONCAT('%', ?, '%')) UNION SELECT b.id AS id, b.foto_cover AS 'foto-cover', b.judul AS judul, NULL AS edisi, b.no_klasifikasi, CONCAT(r.kode_rak, ' - ', ru.kode_ruangan, ' - ', l.kode_lantai) AS lokasi, 'Buku' AS tipe FROM buku b LEFT JOIN rak r ON b.id_rak = r.id LEFT JOIN ruangan ru ON r.id_ruangan = ru.id LEFT JOIN lantai l ON ru.id_lantai = l.id WHERE b.status_data = 'Tampil' AND b.judul LIKE CONCAT('%', ?, '%')`,[keyword, keyword, keyword])
             return rows
         } catch (err) {
             throw err
         }
     }
 
+    // mengambil detail buku berdasarkan id
     static async getDetailBuku(id) {
-        try {const [rows] = await connection.query(`SELECT b.judul, b.foto_cover, b.isbn_issn, b.no_klasifikasi, b.bahasa, b.jumlah_halaman, b.tahun_terbit, b.sinopsis, b.tempat_terbit, b.penerbit, b.kategori, b.pengarang, CONCAT(r.kode_rak, ' - ', ru.kode_ruangan, ' - ', l.kode_lantai) AS lokasi FROM buku b LEFT JOIN rak r ON b.id_rak = r.id LEFT JOIN ruangan ru ON r.id_ruangan = ru.id LEFT JOIN lantai l ON ru.id_lantai = l.id WHERE b.id = ? AND b.status_data = 'Tampil'`, [id])
+        try {
+            const [rows] = await connection.query(`SELECT b.id, b.judul, b.foto_cover, b.isbn_issn, b.no_klasifikasi, b.bahasa, b.jumlah_halaman, b.tahun_terbit, b.sinopsis, b.tempat_terbit, b.penerbit, b.kategori, b.pengarang, b.ketersediaan, CONCAT(r.kode_rak, ' - ', ru.kode_ruangan, ' - ', l.kode_lantai) AS lokasi FROM buku b LEFT JOIN rak r ON b.id_rak = r.id LEFT JOIN ruangan ru ON r.id_ruangan = ru.id LEFT JOIN lantai l ON ru.id_lantai = l.id WHERE b.id = ? AND b.status_data = 'Tampil'`, [id])
             return rows
         } catch (err) {
             throw err
