@@ -1,0 +1,29 @@
+<%- include('../../../../partials/header/__headerDashboard.ejs', { title: 'Tambah Nama penerbit Koran' }) %>
+<%- include('../../../../partials/nav-side/__nav-sidePengurus.ejs') %>
+<%- include('../../../../partials/messages/messagesDashboard.ejs') %>
+
+<div class="main-panel">
+    <div class="content-wrapper">
+        <div class="row">
+            <div class="col-12 grid-margin stretch-card">
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="card-title">Tambah Penerbit Koran</h4>
+                  <form action="/pustakawan/penerbit-koran/create" method="POST" data-loading>
+                    <div class="form-group">
+                      <label for="nama_penerbit">Nama Penerbit Koran</label>
+                      <input type="text" class="form-control" id="nama_penerbit" name="nama_penerbit" placeholder="Masukkan nama Penerbit Koran, contoh: 'Jawa Pos'" value="<%= (typeof data != 'undefined' && data.nama_penerbit) || '' %>" required>
+                    </div>
+                    <div class="d-flex">
+                      <button type="submit" class="btn btn-primary mr-2">Simpan</button>
+                      <a href="/pustakawan/penerbit-koran" class="btn btn-light" data-loading>Kembali</a>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('../../../../partials/script/__scriptDashboard.ejs') %>
