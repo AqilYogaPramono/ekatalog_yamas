@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.2.3
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Waktu pembuatan: 14 Okt 2025 pada 07.16
--- Versi server: 8.0.30
--- Versi PHP: 8.1.10
+-- Generation Time: Oct 15, 2025 at 05:40 AM
+-- Server version: 8.0.30
+-- PHP Version: 8.1.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -24,7 +24,7 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `buku`
+-- Table structure for table `buku`
 --
 
 CREATE TABLE `buku` (
@@ -46,37 +46,37 @@ CREATE TABLE `buku` (
   `dibuat_pada` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `diubah_pada` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   `dihapus_pada` datetime DEFAULT NULL,
-  `dibuat_oleh` int NOT NULL,
-  `diubah_oleh` int DEFAULT NULL,
-  `dihapus_oleh` int DEFAULT NULL,
+  `dibuat_oleh` varchar(255) NOT NULL,
+  `diubah_oleh` varchar(255) DEFAULT NULL,
+  `dihapus_oleh` varchar(255) DEFAULT NULL,
   `status_data` enum('Tampil','Hapus') NOT NULL DEFAULT 'Tampil'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `koran`
+-- Table structure for table `koran`
 --
 
 CREATE TABLE `koran` (
   `id` int NOT NULL,
-  `id_nama_koran` int DEFAULT NULL,
+  `id_penerbit_koran` int DEFAULT NULL,
   `tahun` varchar(4) DEFAULT NULL,
   `bulan` enum('Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember') DEFAULT NULL,
   `ketersediaan` enum('Tersedia','Tidak Tersedia') NOT NULL DEFAULT 'Tersedia',
   `dibuat_pada` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `diubah_pada` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   `dihapus_pada` datetime DEFAULT NULL,
-  `dibuat_oleh` int NOT NULL,
-  `diubah_oleh` int DEFAULT NULL,
-  `dihapus_oleh` int DEFAULT NULL,
+  `dibuat_oleh` varchar(255) NOT NULL,
+  `diubah_oleh` varchar(255) DEFAULT NULL,
+  `dihapus_oleh` varchar(255) DEFAULT NULL,
   `status_data` enum('Tampil','Hapus') NOT NULL DEFAULT 'Tampil'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `lantai`
+-- Table structure for table `lantai`
 --
 
 CREATE TABLE `lantai` (
@@ -87,7 +87,7 @@ CREATE TABLE `lantai` (
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `majalah`
+-- Table structure for table `majalah`
 --
 
 CREATE TABLE `majalah` (
@@ -106,27 +106,27 @@ CREATE TABLE `majalah` (
   `dibuat_pada` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `diubah_pada` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   `dihapus_pada` datetime DEFAULT NULL,
-  `dibuat_oleh` int NOT NULL,
-  `diubah_oleh` int DEFAULT NULL,
-  `dihapus_oleh` int DEFAULT NULL,
+  `dibuat_oleh` varchar(255) NOT NULL,
+  `diubah_oleh` varchar(255) DEFAULT NULL,
+  `dihapus_oleh` varchar(255) DEFAULT NULL,
   `status_data` enum('Tampil','Hapus') NOT NULL DEFAULT 'Tampil'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `nama_koran`
+-- Table structure for table `penerbit_koran`
 --
 
-CREATE TABLE `nama_koran` (
+CREATE TABLE `penerbit_koran` (
   `id` int NOT NULL,
-  `nama_koran` varchar(255) NOT NULL
+  `nama_penerbit` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `pengguna`
+-- Table structure for table `pengguna`
 --
 
 CREATE TABLE `pengguna` (
@@ -141,7 +141,7 @@ CREATE TABLE `pengguna` (
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `rak`
+-- Table structure for table `rak`
 --
 
 CREATE TABLE `rak` (
@@ -153,7 +153,7 @@ CREATE TABLE `rak` (
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `ruangan`
+-- Table structure for table `ruangan`
 --
 
 CREATE TABLE `ruangan` (
@@ -167,7 +167,7 @@ CREATE TABLE `ruangan` (
 --
 
 --
--- Indeks untuk tabel `buku`
+-- Indexes for table `buku`
 --
 ALTER TABLE `buku`
   ADD PRIMARY KEY (`id`),
@@ -177,42 +177,44 @@ ALTER TABLE `buku`
   ADD KEY `id_rak` (`id_rak`);
 
 --
--- Indeks untuk tabel `koran`
+-- Indexes for table `koran`
 --
 ALTER TABLE `koran`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `id_penerbit_koran` (`id_penerbit_koran`);
 
 --
--- Indeks untuk tabel `lantai`
+-- Indexes for table `lantai`
 --
 ALTER TABLE `lantai`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `kode_lantai` (`kode_lantai`);
 
 --
--- Indeks untuk tabel `majalah`
+-- Indexes for table `majalah`
 --
 ALTER TABLE `majalah`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `foto_cover` (`foto_cover`),
-  ADD UNIQUE KEY `no_klasifikasi` (`no_klasifikasi`);
+  ADD UNIQUE KEY `no_klasifikasi` (`no_klasifikasi`),
+  ADD KEY `id_rak` (`id_rak`);
 
 --
--- Indeks untuk tabel `nama_koran`
+-- Indexes for table `penerbit_koran`
 --
-ALTER TABLE `nama_koran`
+ALTER TABLE `penerbit_koran`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `nama_koran` (`nama_koran`);
+  ADD UNIQUE KEY `nama_penerbit` (`nama_penerbit`);
 
 --
--- Indeks untuk tabel `pengguna`
+-- Indexes for table `pengguna`
 --
 ALTER TABLE `pengguna`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `NP` (`NP`);
 
 --
--- Indeks untuk tabel `rak`
+-- Indexes for table `rak`
 --
 ALTER TABLE `rak`
   ADD PRIMARY KEY (`id`),
@@ -220,7 +222,7 @@ ALTER TABLE `rak`
   ADD KEY `id_ruangan` (`id_ruangan`);
 
 --
--- Indeks untuk tabel `ruangan`
+-- Indexes for table `ruangan`
 --
 ALTER TABLE `ruangan`
   ADD PRIMARY KEY (`id`),
@@ -228,78 +230,90 @@ ALTER TABLE `ruangan`
   ADD KEY `id_lantai` (`id_lantai`);
 
 --
--- AUTO_INCREMENT untuk tabel yang dibuang
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT untuk tabel `buku`
+-- AUTO_INCREMENT for table `buku`
 --
 ALTER TABLE `buku`
   MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT untuk tabel `koran`
+-- AUTO_INCREMENT for table `koran`
 --
 ALTER TABLE `koran`
   MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT untuk tabel `lantai`
+-- AUTO_INCREMENT for table `lantai`
 --
 ALTER TABLE `lantai`
   MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT untuk tabel `majalah`
+-- AUTO_INCREMENT for table `majalah`
 --
 ALTER TABLE `majalah`
   MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT untuk tabel `nama_koran`
+-- AUTO_INCREMENT for table `penerbit_koran`
 --
-ALTER TABLE `nama_koran`
+ALTER TABLE `penerbit_koran`
   MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT untuk tabel `pengguna`
+-- AUTO_INCREMENT for table `pengguna`
 --
 ALTER TABLE `pengguna`
   MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT untuk tabel `rak`
+-- AUTO_INCREMENT for table `rak`
 --
 ALTER TABLE `rak`
   MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT untuk tabel `ruangan`
+-- AUTO_INCREMENT for table `ruangan`
 --
 ALTER TABLE `ruangan`
   MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
--- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
+-- Constraints for dumped tables
 --
 
 --
--- Ketidakleluasaan untuk tabel `buku`
+-- Constraints for table `buku`
 --
 ALTER TABLE `buku`
   ADD CONSTRAINT `buku_ibfk_1` FOREIGN KEY (`id_rak`) REFERENCES `rak` (`id`) ON DELETE SET NULL;
 
 --
--- Ketidakleluasaan untuk tabel `rak`
+-- Constraints for table `koran`
 --
-ALTER TABLE `rak`
-  ADD CONSTRAINT `rak_ibfk_1` FOREIGN KEY (`id_ruangan`) REFERENCES `ruangan` (`id`) ON DELETE SET NULL;
+ALTER TABLE `koran`
+  ADD CONSTRAINT `koran_ibfk_1` FOREIGN KEY (`id_penerbit_koran`) REFERENCES `penerbit_koran` (`id`) ON DELETE SET NULL;
 
 --
--- Ketidakleluasaan untuk tabel `ruangan`
+-- Constraints for table `majalah`
+--
+ALTER TABLE `majalah`
+  ADD CONSTRAINT `majalah_ibfk_1` FOREIGN KEY (`id_rak`) REFERENCES `rak` (`id`) ON DELETE SET NULL;
+
+--
+-- Constraints for table `rak`
+--
+ALTER TABLE `rak`
+  ADD CONSTRAINT `rak_ibfk_1` FOREIGN KEY (`id_ruangan`) REFERENCES `ruangan` (`id`);
+
+--
+-- Constraints for table `ruangan`
 --
 ALTER TABLE `ruangan`
-  ADD CONSTRAINT `ruangan_ibfk_1` FOREIGN KEY (`id_lantai`) REFERENCES `lantai` (`id`) ON DELETE SET NULL;
+  ADD CONSTRAINT `ruangan_ibfk_1` FOREIGN KEY (`id_lantai`) REFERENCES `lantai` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
