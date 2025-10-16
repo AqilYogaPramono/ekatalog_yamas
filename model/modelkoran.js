@@ -99,6 +99,51 @@ class modelKoran {
             throw err
         }
     }
+
+    static async getKoranHapus(limit, offset) {
+        try {
+            const [rows] = await connection.query('SELECT k.id, pk.nama_penerbit, k.tahun, k.bulan FROM koran k LEFT JOIN penerbit_koran pk ON k.id_penerbit_koran = pk.id WHERE k.status_data = "Hapus" ORDER BY k.dihapus_pada DESC LIMIT ? OFFSET ?', [limit, offset])
+            return rows
+        } catch (err) {
+            throw err
+        }
+    }
+
+    static async getByIdHapus(id) {
+        try {
+            const [rows] = await connection.query('SELECT k.id, pk.nama_penerbit, k.tahun, k.bulan, k.ketersediaan, k.dibuat_pada, k.diubah_pada, k.dihapus_pada, k.dibuat_oleh, k.diubah_oleh, k.dihapus_oleh FROM koran k LEFT JOIN penerbit_koran pk ON k.id_penerbit_koran = pk.id WHERE k.status_data = "Hapus" AND k.id = ?', [id])
+            return rows[0]
+        } catch (err) {
+            throw err
+        }
+    }
+
+    static async updateStatusData(data, id) {
+        try {
+            const [rows] = await connection.query('UPDATE koran SET ? WHERE id = ?', [data, id])
+            return rows
+        } catch (err) {
+            throw err
+        }
+    }
+
+    static async searchKoranHapus(data) {
+        try {
+            const [rows] = await connection.query('SELECT k.id, pk.nama_penerbit, k.tahun, k.bulan FROM koran k JOIN penerbit_koran pk ON k.id_penerbit_koran = pk.id WHERE k.status_data = "Hapus" AND k.id_penerbit_koran = ? AND k.tahun = ? AND k.bulan = ? ORDER BY k.dihapus_pada DESC', [data.id_penerbit_koran, data.tahun, data.bulan])
+            return rows
+        } catch (err) {
+            throw err
+        }
+    }
+
+    static async hardDelete(id) {
+        try {
+            const [result] = await connection.query('DELETE FROM koran WHERE id = ?', [id])
+            return result
+        } catch (err) {
+            throw err
+        }
+    }
 }
 
 module.exports = modelKoran
