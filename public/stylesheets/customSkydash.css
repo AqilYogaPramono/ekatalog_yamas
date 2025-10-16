@@ -285,6 +285,22 @@
     }
 }
 
+/* align search button inline with filters (koran page filter row) */
+.content-wrapper .card-body form .form-row > .col-md-1 .btn {
+    white-space: nowrap !important;
+    height: 100% !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+}
+@media (max-width: 575.98px) {
+    .content-wrapper .card-body form .form-row > .col-md-1 .btn {
+        height: auto !important;
+    }
+}
+
 /* force center alignment for action column - desktop only */
 @media (min-width: 576px) {
     .table th.text-right,

@@ -1,0 +1,158 @@
+<%- include('../../../../partials/header/__headerDashboard.ejs', { title: 'Tambah Koran' }) %>
+<%- include('../../../../partials/nav-side/__nav-sidePengurus.ejs') %>
+<%- include('../../../../partials/messages/messagesDashboard.ejs') %>
+
+<div class="main-panel">
+    <div class="content-wrapper">
+        <div class="row">
+            <div class="col-12 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Tambah Koran</h4>
+                        <form action="/pustakawan/koran/create" method="POST" data-loading>
+                            <div class="form-group">
+                                <label for="id_penerbit_koran">Penerbit</label>
+                                <select class="form-control" id="id_penerbit_koran" name="id_penerbit_koran" required>
+                                    <option value="">Pilih Penerbit</option>
+                                    <% if (Array.isArray(penerbitList)) { %>
+                                        <% penerbitList.forEach(function(p){ %>
+                                            <option value="<%= p.id %>" <%= (data && data.id_penerbit_koran == p.id) ? 'selected' : '' %>><%= p.nama_penerbit %></option>
+                                        <% }) %>
+                                    <% } %>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="tahun">Tahun</label>
+                                <select class="form-control" id="tahun" name="tahun" required>
+                                    <option value="">Pilih Tahun</option>
+                                    <% for (let y = 2100; y >= 1900; y--) { %>
+                                        <option value="<%= y %>" <%= (data && data.tahun == y) ? 'selected' : '' %>><%= y %></option>
+                                    <% } %>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="bulan">Bulan</label>
+                                <select class="form-control" id="bulan" name="bulan" required>
+                                    <option value="">Pilih Bulan</option>
+                                    <% const bulanList = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember']; %>
+                                    <% bulanList.forEach(function(b){ %>
+                                        <option value="<%= b %>" <%= (data && data.bulan == b) ? 'selected' : '' %>><%= b %></option>
+                                    <% }) %>
+                                </select>
+                            </div>
+
+                            <div class="d-flex">
+                                <button type="submit" class="btn btn-primary mr-2">Simpan</button>
+                                <a href="/pustakawan/koran" class="btn btn-light" data-loading>Kembali</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade modal-below-navbar modal-top" id="globalImagePreviewModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Pratinjau Gambar</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body p-0">
+                <img id="globalImagePreviewEl" src="" alt="preview" style="width:100%;height:auto;display:block;">
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('../../../../partials/script/__scriptDashboard.ejs') %>
+<script>
+    (function(){
+        var selectEl = document.getElementById('id_penerbit_koran');
+        var inputEl = document.getElementById('nama_penerbit_baru');
+        var formEl = document.querySelector('form[action="/pustakawan/koran/create"]');
+
+        if (!selectEl || !inputEl) return;
+
+        var defaultOpt = selectEl.options[0] ? { value: selectEl.options[0].value, text: selectEl.options[0].text } : { value: '', text: 'Pilih Penerbit' };
+        var allOptions = [];
+        for (var i = 0; i < selectEl.options.length; i++) {
+            var o = selectEl.options[i];
+            if (i === 0) continue;
+            allOptions.push({ value: o.value, text: o.text });
+        }
+
+        function renderOptions(list) {
+            while (selectEl.options.length) selectEl.remove(0);
+            var opt0 = document.createElement('option');
+            opt0.value = defaultOpt.value;
+            opt0.text = defaultOpt.text;
+            selectEl.add(opt0);
+            list.forEach(function(item){
+                var opt = document.createElement('option');
+                opt.value = item.value;
+                opt.text = item.text;
+                selectEl.add(opt);
+            });
+        }
+
+        function onQueryChange() {
+            var q = (inputEl.value || '').trim();
+            var ql = q.toLowerCase();
+            if (!q) {
+                renderOptions(allOptions);
+                selectEl.selectedIndex = 0;
+                return;
+            }
+            var matches = allOptions.filter(function(item){ return item.text.toLowerCase().indexOf(ql) !== -1; });
+            if (matches.length === 1) {
+                renderOptions(matches);
+                selectEl.selectedIndex = 1;
+                inputEl.value = '';
+                return;
+            }
+            if (matches.length > 1) {
+                renderOptions(matches);
+                selectEl.selectedIndex = 0;
+                return;
+            }
+            // no match: show virtual "<Tambah Baru>"
+            while (selectEl.options.length) selectEl.remove(0);
+            var optBase = document.createElement('option');
+            optBase.value = '';
+            optBase.text = 'Select an Option';
+            selectEl.add(optBase);
+            var optNew = document.createElement('option');
+            optNew.value = '';
+            optNew.text = q + ' <Tambah Baru>';
+            optNew.setAttribute('data-new', '1');
+            selectEl.add(optNew);
+            selectEl.selectedIndex = 1;
+        }
+
+        inputEl.addEventListener('input', onQueryChange);
+        selectEl.addEventListener('change', function(){
+            // if user picks existing option, clear typed new-name
+            var selVal = selectEl.value;
+            if (selVal) inputEl.value = '';
+        });
+
+        if (formEl) {
+            formEl.addEventListener('submit', function(e){
+                var hasSelect = !!selectEl.value;
+                var hasInput = !!(inputEl.value || '').trim();
+                if (!hasSelect && !hasInput) {
+                    e.preventDefault();
+                    try { window.alert('Pilih penerbit atau ketik nama penerbit baru.'); } catch(_) {}
+                }
+            });
+        }
+    })();
+</script>

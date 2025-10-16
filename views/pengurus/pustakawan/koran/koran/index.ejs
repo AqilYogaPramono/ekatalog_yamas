@@ -1,0 +1,160 @@
+<%- include('../../../../partials/header/__headerDashboard.ejs', { title: 'Data Koran' }) %>
+<%- include('../../../../partials/nav-side/__nav-sidePengurus.ejs') %>
+<%- include('../../../../partials/messages/messagesDashboard.ejs') %>
+
+<div class="main-panel">
+    <div class="content-wrapper">
+        <div class="row">
+            <div class="col-lg-12 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-3">
+                            <h4 class="card-title mb-3 mb-md-0">Data Koran</h4>
+                            <div class="d-flex gap-2">
+                                <a href="/templateExcel/Koran.xlsx" class="btn btn-outline-primary btn-sm mr-2" download>Template Excel</a>
+                                <button type="button" class="btn btn-primary btn-sm mr-2" data-toggle="modal" data-target="#modalUploadBatch" data-loading>Tambah Batch</button>
+                                <a href="/pustakawan/koran/buat" class="btn btn-primary btn-sm" data-loading>Tambah Koran</a>
+                            </div>
+                        </div>
+
+                        <form action="/pustakawan/koran/search" method="POST" class="mb-3" data-loading>
+                            <div class="form-row">
+                                <div class="col-md-5 mb-2">
+                                    <select class="form-control" name="id_penerbit_koran">
+                                        <option value="">Pilih Penerbit</option>
+                                        <% if (Array.isArray(penerbitList)) { %>
+                                            <% penerbitList.forEach(function(p){ %>
+                                                <option value="<%= p.id %>" <%= (filters && filters.id_penerbit_koran == p.id) ? 'selected' : '' %>><%= p.nama_penerbit %></option>
+                                            <% }) %>
+                                        <% } %>
+                                    </select>
+                                </div>
+                                <div class="col-md-3 mb-2">
+                                    <select class="form-control" name="tahun">
+                                        <option value="">Pilih Tahun</option>
+                                        <% for (let y = 2100; y >= 1900; y--) { %>
+                                            <option value="<%= y %>" <%= (filters && filters.tahun == y) ? 'selected' : '' %>><%= y %></option>
+                                        <% } %>
+                                    </select>
+                                </div>
+                                <div class="col-md-3 mb-2">
+                                    <select class="form-control" name="bulan">
+                                        <option value="">Pilih Bulan</option>
+                                        <% const bulanList = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember']; %>
+                                        <% bulanList.forEach(function(b){ %>
+                                            <option value="<%= b %>" <%= (filters && filters.bulan == b) ? 'selected' : '' %>><%= b %></option>
+                                        <% }) %>
+                                    </select>
+                                </div>
+                                <div class="col-md-1 mb-2 d-flex">
+                                    <button class="btn btn-primary btn-block w-100" type="submit">Cari</button>
+                                </div>
+                            </div>
+                        </form>
+
+                        <div class="table-responsive">
+                            <table class="table table-hover table-stacked">
+                                <thead>
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Penerbit</th>
+                                        <th>Tahun</th>
+                                        <th>Bulan</th>
+                                        <th style="width: 200px;" class="text-right">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% if (Array.isArray(koran) && koran.length) { %>
+                                        <% for (let i = 0; i < koran.length; i++) { const item = koran[i]; %>
+                                            <tr>
+                                                <td data-label="No"><%= i + 1 %></td>
+                                                <td data-label="Penerbit"><%= item.nama_penerbit || '-' %></td>
+                                                <td data-label="Tahun"><%= item.tahun || '-' %></td>
+                                                <td data-label="Bulan"><%= item.bulan || '-' %></td>
+                                                <td class="text-right" data-label="Aksi">
+                                                    <div class="btn-actions">
+                                                        <a href="/pustakawan/koran/<%= item.id %>" class="btn btn-sm btn-outline-primary" data-loading>Detail</a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        <% } %>
+                                    <% } else { %>
+                                        <tr>
+                                            <td colspan="5" class="text-center">Belum ada data</td>
+                                        </tr>
+                                    <% } %>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="d-flex justify-content-between align-items-center mt-3">
+                            <div class="text-muted small">Halaman <%= (typeof page !== 'undefined' && page) ? page : 1 %> dari <%= (typeof totalHalaman !== 'undefined' && totalHalaman) ? totalHalaman : 1 %></div>
+                            <nav>
+                                <ul class="pagination mb-0">
+                                    <% const currentPage = (typeof page !== 'undefined' && page) ? page : 1; %>
+                                    <% const totalPages = (typeof totalHalaman !== 'undefined' && totalHalaman) ? totalHalaman : 1; %>
+                                    <li class="page-item <%= currentPage <= 1 ? 'disabled' : '' %>">
+                                        <a class="page-link" href="?page=<%= currentPage - 1 %>" data-loading aria-label="Sebelumnya">
+                                            <span aria-hidden="true">&laquo;</span>
+                                        </a>
+                                    </li>
+                                    <% for (let p = 1; p <= totalPages; p++) { %>
+                                        <li class="page-item <%= p === currentPage ? 'active' : '' %>"><a class="page-link" href="?page=<%= p %>" data-loading><%= p %></a></li>
+                                    <% } %>
+                                    <li class="page-item <%= currentPage >= totalPages ? 'disabled' : '' %>">
+                                        <a class="page-link" href="?page=<%= currentPage + 1 %>" data-loading aria-label="Berikutnya">
+                                            <span aria-hidden="true">&raquo;</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade modal-below-navbar" id="modalUploadBatch" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Upload Batch Koran</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="formUploadBatch" action="/pustakawan/koran/create-batch-koran" method="POST" enctype="multipart/form-data" data-loading>
+                    <div class="form-group">
+                        <label>File Excel</label>
+                        <input type="file" name="file" class="form-control" accept=".xlsx,.xls" required>
+                        <small class="form-text text-muted">Kolom: nama_penerbit, tahun, bulan.</small>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" form="formUploadBatch" class="btn btn-primary">Upload</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade modal-below-navbar modal-top" id="globalImagePreviewModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Pratinjau Gambar</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body p-0">
+                <img id="globalImagePreviewEl" src="" alt="preview" style="width:100%;height:auto;display:block;">
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('../../../../partials/script/__scriptDashboard.ejs') %>
