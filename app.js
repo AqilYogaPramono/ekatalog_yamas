@@ -15,6 +15,7 @@ const dashboardManajerRouter = require('./routes/manajer/dashboard')
 const pustakawanRouter = require('./routes/manajer/pustakawan')
 const bukuManajerRouter = require('./routes/manajer/buku')
 const majalahManajerRouter = require('./routes/manajer/majalah')
+const koranManajerRouter = require('./routes/manajer/koran')
 const manajerRouter = require('./routes/manajer/manajer')
 
 //routes pengguna
@@ -25,6 +26,8 @@ const dashboardPustakawanRouter = require('./routes/pustakawan/dashboard')
 const changePasswordRouter = require('./routes/pustakawan/pustakawan/pustakawan')
 const bukuRouter = require('./routes/pustakawan/buku/buku')
 const majalahRouter = require('./routes/pustakawan/majalah/majalah')
+const penerbitKoran = require('./routes/pustakawan/koran/penerbitKoran')
+const koran = require('./routes/pustakawan/koran/koran')
 const lantaiRouter = require('./routes/pustakawan/lokasi/lantai')
 const ruanganRouter = require('./routes/pustakawan/lokasi/ruangan')
 const rakRouter = require('./routes/pustakawan/lokasi/rak')
@@ -65,16 +68,19 @@ app.use('/manajer/dashboard', dashboardManajerRouter)
 app.use('/manajer/pustakawan', pustakawanRouter)
 app.use('/manajer/buku', bukuManajerRouter)
 app.use('/manajer/majalah', majalahManajerRouter)
+app.use('/manajer/koran', koranManajerRouter)
 app.use('/manajer', manajerRouter)
 
 //routes pengguna
 app.use('/', penggunaRouter)
 
-//folder dashboard
+//folder pustakawan
 app.use('/pustakawan/dashboard', dashboardPustakawanRouter)
 app.use('/pustakawan', changePasswordRouter)
 app.use('/pustakawan/buku', bukuRouter)
 app.use('/pustakawan/majalah', majalahRouter)
+app.use('/pustakawan/penerbit-koran', penerbitKoran)
+app.use('pustakawan/koran', koran)
 app.use('/pustakawan/lantai', lantaiRouter)
 app.use('/pustakawan/ruangan', ruanganRouter)
 app.use('/pustakawan/rak', rakRouter)

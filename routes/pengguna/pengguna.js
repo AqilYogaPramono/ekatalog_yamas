@@ -5,11 +5,11 @@ const modelMajalah = require('../../model/modelMajalah')
 
 router.get('/', async (req, res) => {
     try {
-        res.render('pengguna/index')
+        res.render('pengguna/katalogBukuDanMajalah/index')
     } catch (err) {
         console.log(err)
         req.flash('error', err.message)
-        res.render('pengguna/index')
+        res.redirect('/login')
     }
 })
 
@@ -18,16 +18,14 @@ router.post('/', async (req, res) => {
         const {keyword} = req.body
         const result = await modelBuku.getBukuAndMajalah(keyword)
 
-        res.render('pengguna/index', { 
+        res.render('pengguna/katalogBukuDanMajalah/index', { 
             result, 
             keyword
         })
     } catch(err) {
+        console.log(err)
         req.flash('error', err.message)
-        res.render('pengguna/index', { 
-            result: [],
-            keyword: ''
-        })
+        res.redirect('/login')
     }
 })
 
@@ -42,7 +40,7 @@ router.get('/detail/:tipe/:id', async (req, res) => {
                 return res.redirect('/')
             }
             const majalah = rows[0]
-            res.render('pengguna/detail_majalah', { majalah })
+            res.render('pengguna/katalogBukuDanMajalah/detail_majalah', { majalah })
         } else if (tipe == 'Buku') {
             const rows = await modelBuku.getDetailBuku(id)
             if (rows.length === 0) {
@@ -50,12 +48,13 @@ router.get('/detail/:tipe/:id', async (req, res) => {
                 return res.redirect('/')
             }
             const buku = rows[0]
-            res.render('pengguna/detail_buku', { buku })
+            res.render('pengguna/katalogBukuDanMajalah/detail_buku', { buku })
         } else {
             req.flash('error', 'Tipe tidak valid')
             res.redirect('/')
         }
     } catch (err) {
+        console.log(err)
         req.flash('error', err.message)
         res.redirect('/')
     }
