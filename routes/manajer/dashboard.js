@@ -6,6 +6,8 @@ const modelPengguna = require('../../model/modelPengguna')
 const modelMajalah = require('../../model/modelMajalah')
 // import model buku
 const modelBuku = require('../../model/modelBuku')
+// import model koran
+const modelKoran = require('../../model/modelKoran')
 // import middleware untuk mengecek peran pengguna login
 const {authManajer} = require('../../middleware/auth')
 
@@ -24,12 +26,16 @@ router.get('/', authManajer, async (req, res) => {
         const totalBukuHapus = await modelBuku.getCountBukuHapus()
         // total majalah dengan status hapus
         const totalMajalahHapus = await modelMajalah.getCountMajalahHapus()
+        // total koran dengan status data hapus
+        const totalKoranHapus = await modelKoran.getCountKoranHapus()
         // mengambil buku terbaru yang di hapus
         const newBukuHapus = await modelBuku.getNewBukuHapus()
         // mengambil majalah terbaru yang di hapus
         const newMajalahHapus = await modelMajalah.getNewMajalahHapus()
+        // mengambil koran terbaru yang di hapus
+        const newKoranHapus = await modelKoran.getNewKoranHapus()
 
-        res.render('pengurus/manajer/dashboard', { pustakawanProses, pustakawanAktif, totalBukuHapus, totalMajalahHapus, newBukuHapus, newMajalahHapus, user })
+        res.render('pengurus/manajer/dashboard', { pustakawanProses, pustakawanAktif, totalBukuHapus, totalMajalahHapus, totalKoranHapus, newBukuHapus, newMajalahHapus, newKoranHapus, user })
     } catch(err) {
         console.log(err)
         req.flash('error', err.message)

@@ -81,6 +81,24 @@ class modelKoran {
             throw err
         }
     }
+
+    static async getCountKoranHapus() {
+        try {
+            const [rows] = await connection.query('SELECT COUNT(*) as total FROM koran WHERE status_data = "Hapus"')
+            return rows
+        } catch (err) {
+            throw err
+        }
+    }
+
+    static async getNewKoranHapus() {
+        try {
+            const [rows] = await connection.query('SELECT k.id, pk.nama_penerbit, k.tahun, k.bulan, k.dibuat_pada FROM koran k LEFT JOIN penerbit_koran pk ON k.id_penerbit_koran = pk.id WHERE k.status_data = "Hapus" ORDER BY k.dibuat_pada DESC LIMIT 5')
+            return rows
+        } catch (err) {
+            throw err
+        }
+    }
 }
 
 module.exports = modelKoran
