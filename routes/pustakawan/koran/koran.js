@@ -3,7 +3,7 @@ const router = express.Router()
 const xlsx = require('xlsx')
 const multer = require('multer')
 const modelPengguna = require('../../../model/modelPengguna')
-const modelKoran = require('../../../model/modelkoran')
+const modelKoran = require('../../../model/modelKoran')
 const modelPenerbitKoran = require('../../../model/modelPenerbitKoran')
 const {authPustakawan} = require('../.././../middleware/auth')
 
@@ -243,7 +243,9 @@ router.post('/delete/:id', authPustakawan, async (req, res) => {
     try {
         const { id } = req.params
         const userId = req.session.penggunaId
-        await modelKoran.softDelete(userId, id)
+        const user = await modelPengguna.getNamaPenggunaById(userId)
+        
+        await modelKoran.softDelete(user, id)
         req.flash('success', 'Koran berhasil dihapus')
         res.redirect('/pustakawan/koran')
     } catch (err) {
