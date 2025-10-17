@@ -1,0 +1,122 @@
+<%- include('../../../partials/header/__headerDashboard.ejs', { title: 'Detail Koran Dihapus' }) %>
+<%- include('../../../partials/nav-side/__nav-sideManajer.ejs') %>
+<%- include('../../../partials/messages/messagesDashboard.ejs') %>
+
+<div class="main-panel">
+    <div class="content-wrapper">
+        <div class="row">
+            <div class="col-12 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="d-flex justify-content-between align-items-start mb-3">
+                                    <h4 class="card-title mb-0">Detail Koran</h4>
+                                    <div class="btn-actions d-none d-md-flex">
+                                        <a href="/manajer/koran" class="btn btn-light btn-sm" data-loading>Kembali</a>
+                                        <button type="button" class="btn btn-outline-success btn-sm" data-toggle="modal" data-target="#modalPulihkan">Tampilkan</button>
+                                        <button type="button" class="btn btn-outline-danger btn-sm" data-toggle="modal" data-target="#modalConfirmDelete">Hapus</button>
+                                    </div>
+                                </div>
+                                <div class="d-md-none mb-3 w-100">
+                                    <div class="btn-actions-mobile d-flex gap-2 justify-content-start">
+                                        <a href="/manajer/koran" class="btn btn-light btn-sm" data-loading>Kembali</a>
+                                        <button type="button" class="btn btn-outline-success btn-sm" data-toggle="modal" data-target="#modalPulihkan">Tampilkan</button>
+                                        <button type="button" class="btn btn-outline-danger btn-sm" data-toggle="modal" data-target="#modalConfirmDelete">Hapus</button>
+                                    </div>
+                                </div>
+                                <div class="detail-info">
+                                    <div class="info-item">
+                                        <span class="info-label">Penerbit</span>
+                                        <span class="info-value"><%= (koran && koran.nama_penerbit) ? koran.nama_penerbit : '-' %></span>
+                                    </div>
+                                    <div class="info-item">
+                                        <span class="info-label">Tahun</span>
+                                        <span class="info-value"><%= (koran && koran.tahun) ? koran.tahun : '-' %></span>
+                                    </div>
+                                    <div class="info-item">
+                                        <span class="info-label">Bulan</span>
+                                        <span class="info-value"><%= (koran && koran.bulan) ? koran.bulan : '-' %></span>
+                                    </div>
+                                    <div class="info-item">
+                                        <span class="info-label">Dihapus Pada</span>
+                                        <span class="info-value"><%= (koran && koran.dihapus_pada) ? new Date(koran.dihapus_pada).toLocaleString('id-ID') : '-' %></span>
+                                    </div>
+                                    <div class="info-item">
+                                        <span class="info-label">Dihapus Oleh</span>
+                                        <span class="info-value"><%= (koran && koran.dihapus_oleh) ? koran.dihapus_oleh : '-' %></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade modal-below-navbar" id="modalPulihkan" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Tampilkan Buku</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Ubah status data koran menjadi "Tampil"?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-dismiss="modal">Batal</button>
+                <form action="/manajer/koran/edit/<%= koran && koran.id %>" method="POST" data-loading>
+                    <input type="hidden" name="status_data" value="Tampil">
+                    <button type="submit" class="btn btn-success">Tampilkan</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade modal-below-navbar" id="modalConfirmDelete" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Konfirmasi Hapus</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Apakah Anda yakin ingin menghapus data koran ini secara permanen?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-dismiss="modal">Batal</button>
+                <form action="/manajer/koran/delete/<%= koran && koran.id %>" method="POST" data-loading>
+                    <button type="submit" class="btn btn-danger">Hapus</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade modal-below-navbar modal-top" id="globalImagePreviewModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Pratinjau Gambar</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body p-0">
+                <img id="globalImagePreviewEl" src="" alt="preview" style="width:100%;height:auto;display:block;">
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('../../../partials/script/__scriptDashboard.ejs') %>
+
+
