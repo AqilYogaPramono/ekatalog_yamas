@@ -1,0 +1,82 @@
+<%- include('../../../../partials/header/__headerDashboard.ejs', { title: 'Edit Koran' }) %>
+<%- include('../../../../partials/nav-side/__nav-sidePengurus.ejs') %>
+<%- include('../../../../partials/messages/messagesDashboard.ejs') %>
+
+<div class="main-panel">
+    <div class="content-wrapper">
+        <div class="row">
+            <div class="col-12 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Edit Koran</h4>
+                        <form action="/pustakawan/koran/update/<%= koran.id %>" method="POST" data-loading>
+                            <div class="form-group">
+                                <label for="id_penerbit_koran">Penerbit</label>
+                                <select class="form-control" id="id_penerbit_koran" name="id_penerbit_koran" required>
+                                    <option value="">Pilih Penerbit</option>
+                                    <% if (Array.isArray(penerbitList)) { %>
+                                        <% penerbitList.forEach(function(p){ %>
+                                            <option value="<%= p.id %>" <%= (koran.id_penerbit_koran == p.id) ? 'selected' : '' %>><%= p.nama_penerbit %></option>
+                                        <% }) %>
+                                    <% } %>
+                                </select>
+                                </div>
+
+                            <div class="form-group">
+                                <label for="tahun">Tahun</label>
+                                <select class="form-control" id="tahun" name="tahun" required>
+                                    <option value="">Pilih Tahun</option>
+                                    <% for (let y = 2100; y >= 1900; y--) { %>
+                                        <option value="<%= y %>" <%= (koran.tahun == y) ? 'selected' : '' %>><%= y %></option>
+                                    <% } %>
+                                </select>
+                                </div>
+
+                            <div class="form-group">
+                                <label for="bulan">Bulan</label>
+                                <select class="form-control" id="bulan" name="bulan" required>
+                                    <option value="">Pilih Bulan</option>
+                                    <% const bulanList = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember']; %>
+                                    <% bulanList.forEach(function(b){ %>
+                                        <option value="<%= b %>" <%= (koran.bulan == b) ? 'selected' : '' %>><%= b %></option>
+                                            <% }) %>
+                                    </select>
+                                </div>
+
+                            <div class="form-group">
+                                    <label for="ketersediaan">Ketersediaan</label>
+                                    <select class="form-control" id="ketersediaan" name="ketersediaan">
+                                    <option value="Tersedia" <%= (koran.ketersediaan === 'Tersedia') ? 'selected' : '' %>>Tersedia</option>
+                                    <option value="Tidak Tersedia" <%= (koran.ketersediaan === 'Tidak Tersedia') ? 'selected' : '' %>>Tidak Tersedia</option>
+                                    </select>
+                            </div>
+
+                            <div class="d-flex">
+                                <button type="submit" class="btn btn-primary mr-2">Simpan</button>
+                                <a href="/pustakawan/koran" class="btn btn-light" data-loading>Kembali</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade modal-below-navbar modal-top" id="globalImagePreviewModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Pratinjau Gambar</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body p-0">
+                <img id="globalImagePreviewEl" src="" alt="preview" style="width:100%;height:auto;display:block;">
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('../../../../partials/script/__scriptDashboard.ejs') %>
